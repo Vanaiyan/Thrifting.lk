@@ -23,3 +23,23 @@ exports.getUsers = catchAsyncError(async (req, res, next) => {
     users,
   });
 });
+
+exports.getUserProfile = catchAsyncError(async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    // Handle other errors (e.g., database connection error)
+    return next(
+      new ErrorHandler("An error occurred while fetching user profile", 500)
+    );
+  }
+});

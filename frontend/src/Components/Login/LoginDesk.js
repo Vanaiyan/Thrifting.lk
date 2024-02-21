@@ -34,13 +34,14 @@ const LoginDesk = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const data = await loginUser(email, password);
+      const response = await loginUser(email, password);
 
-      if (data.success) {
-        console.log("Success:", data);
+      if (response.data.success) {
+        console.log("Success:", response.data);
+
         showSnackbar("Login successful!");
       } else {
-        showSnackbar(data.message);
+        showSnackbar(response.data.message);
       }
     } catch (error) {
       showSnackbar("An error occurred. Please try again.");
