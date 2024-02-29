@@ -7,6 +7,7 @@ import { HomePage } from "./Pages/User/HomePage";
 import { Route, Routes } from "react-router-dom";
 import { Demo } from "./Components/demo";
 import { ChatPage } from "./Pages/User/ChatPage";
+import Register_S from "./Pages/Seller/Register_S";
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -17,6 +18,7 @@ function App() {
           <Route path="/signup" Component={SignUp} />
           <Route path="/demo" Component={Demo} />
           <Route path="/chat" Component={ChatPage} />
+          <Route path="/seller/register" Component={Register_S} />
         </Routes>
       </div>
     </ThemeProvider>
