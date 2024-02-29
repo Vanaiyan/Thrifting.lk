@@ -1,22 +1,26 @@
-import { Box, Paper } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import ChatUser from "./ChatUser";
-import { Colors } from "../../Styles/Theme";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../../Reducers/userSlice";
 
-const ChatUserPanel = ({ users, setCurrentUser }) => {
+const ChatUserPanel = ({ users }) => {
+  const dispatch = useDispatch();
   const handleUserClick = (user) => {
-    setCurrentUser(user);
+    dispatch(setCurrentUser(user));
   };
 
   return (
-    <Box>
-      {users.map((user) => (
-        <ChatUser
-          key={user.id}
-          firstName={user.firstName}
-          lastName={user.lastName}
-          onClick={() => handleUserClick(user)}
-        />
-      ))}
+    <Box width={"100%"}>
+      {users.map(
+        (user) =>
+          user._id && ( // Check if _id exists
+            <ChatUser
+              key={user._id}
+              user={user}
+              onClick={() => handleUserClick(user)}
+            />
+          )
+      )}
     </Box>
   );
 };
