@@ -1,10 +1,10 @@
-import { Avatar, Box, Divider, Typography } from "@mui/material";
-import React from "react";
+import { Box, Divider, Typography } from "@mui/material";
+import React, { useEffect } from "react";
 import { Colors } from "../../Styles/Theme";
 import { useSelector } from "react-redux";
 import UserProfileView from "./UserProfileView";
 
-const ChatUser = ({ user, onClick }) => {
+const ChatUser = ({ user, onClick, unreadCount }) => {
   const { currentUser } = useSelector((state) => state.user);
   const activeColor = () => {
     if (currentUser && user._id === currentUser._id) {
@@ -13,6 +13,11 @@ const ChatUser = ({ user, onClick }) => {
       return "transparent";
     }
   };
+
+  useEffect(() => {
+    console.log(unreadCount);
+  }, []);
+
   return (
     <div>
       <Box
@@ -33,15 +38,7 @@ const ChatUser = ({ user, onClick }) => {
           "&:hover": { backgroundColor: Colors.dimgrey },
         }}
       >
-        <Avatar
-          src="/path/to/avatar-image.jpg"
-          alt="Avatar"
-          sx={{
-            cursor: "pointer",
-            border: "2px solid",
-            borderColor: Colors.orgchat,
-          }}
-        />
+        <UserProfileView user={user} />
         <Box margin={"15px 20px"}>
           <Typography fontSize={14} fontWeight={600}>
             {user.firstName}
@@ -50,7 +47,11 @@ const ChatUser = ({ user, onClick }) => {
             Registered Seller
           </Typography>
         </Box>
-        <UserProfileView user={user} />
+        {unreadCount && (
+          <span style={{ marginLeft: "5px", fontWeight: 700 }}>
+            ({unreadCount})
+          </span>
+        )}
       </Box>
       <Divider
         sx={{
