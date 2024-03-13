@@ -41,14 +41,14 @@ export const NavSubTitle = styled(Typography)(() => ({
   width: "194px", 
   height: "30px",
   fontFamily: "'Courier New', sans-serif",
-  fontStyle: "normal",
-  fontWeight: 100,
-  fontSize: "24px",
+  fontStyle:'normal',
+  fontWeight: 700,
+  fontSize: "28px",
   lineHeight: "100%",
-  letterSpacing: "-0.02em",
+  letterSpacing: "-0.01em",
   flexGrow: 0,
 }));
-
+//
 export const NavList = styled(List)(({ type }) => ({
   display: type === "row" ? "flex" : "block",
   justifyContent: "space-between",

@@ -1,10 +1,7 @@
 import React from "react";
 import {
-  NavContainer,
-  NavList,
   NavTitle,
-  NavSubTitle,
-  NavListItemText,
+  NavSubTitle
 } from "../../../Styles/NavBar/nav01";
 import { Divider, Grid } from "@mui/material";
 
