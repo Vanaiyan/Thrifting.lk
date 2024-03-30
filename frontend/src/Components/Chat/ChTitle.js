@@ -7,26 +7,30 @@ export const ChTitle = ({ userFirstName }) => {
 
   return (
     <Box
-      margin={"10px"}
-      width={"65vw"}
+      // width="100%"
       sx={{
         display: "flex",
         alignItems: "center",
-        borderRadius: "10px",
-        padding: "10px",
-        backgroundColor: Colors.org6,
+        borderRadius: "20px 20px 0 0",
+        boxShadow: "0 10px 15px rgba(0, 0, 0, 0.4)",
+        padding: " 5px 20px",
+        backgroundColor: Colors.chatdark,
       }}
     >
       <Avatar
         src="/path/to/avatar-image.jpg"
         alt="Avatar"
-        sx={{ cursor: "pointer" }}
+        sx={{
+          cursor: "pointer",
+          border: "2px solid",
+          borderColor: Colors.orgchat,
+        }}
       />
       <Box margin={"15px 20px"}>
-        <Typography fontSize={14} fontWeight={600}>
+        <Typography fontSize={14} fontWeight={600} color={Colors.orgchat}>
           {userFirstName}
         </Typography>
-        <Typography fontSize={12} color={Colors.dimgrey}>
+        <Typography fontSize={12} color={Colors.orgchatsub}>
           Registered Seller
         </Typography>
       </Box>
