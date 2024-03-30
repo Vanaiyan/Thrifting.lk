@@ -27,7 +27,7 @@ export const BannerSeller = () => {
             variant="title1"
             sx={{ fontWeight: "600", color: "#ffff" }}
           >
-            Earn from your extras
+            Earn from your extrasghgfhgf
           </Typography>
           <Typography
             variant="subtitle1"
