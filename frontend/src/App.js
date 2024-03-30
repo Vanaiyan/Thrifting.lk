@@ -6,7 +6,7 @@ import Login from "./Pages/User/LoginMain";
 import { HomePage } from "./Pages/User/HomePage";
 import { Route, Routes } from "react-router-dom";
 import { Demo } from "./Components/demo";
-import { ChatPage } from "./Pages/User/ChatPage";
+import ChatPage from "./Pages/User/ChatPage";
 import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 
 function App() {
