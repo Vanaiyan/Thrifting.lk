@@ -11,6 +11,8 @@ import CartCard from "./Components/Cards/CartCard";
 import CartSum from "./Components/Cards/CartSum";
 import CartPage from "./Pages/User/CartPage";
 
+import ProductDetailPage from "./Pages/Product/ProductDetailPage";
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -22,6 +24,7 @@ function App() {
           <Route path="/signup" Component={SignUp} />
           <Route path="/demo" Component={Demo} />
           <Route path="/chat" Component={ChatPage} />
+          <Route path="/productDetail" Component={ProductDetailPage} />
         </Routes>
       </div>
     </ThemeProvider>
