@@ -3,8 +3,10 @@ import NavChat from "../../Components/Chat/Navchat";
 import { Grid } from "@mui/material";
 import ChatUserPanel from "../../Components/Chat/ChatUserPanel";
 import { getUsers } from "../../Actions/chatActions";
+import { getUserProfile } from "../../Actions/chatActions";
 import ChatSearch from "../../Components/Chat/ChatSearch";
 import { MessageField } from "../../Components/Chat/MessageField";
+
 export const ChatPage = () => {
   const [users, setUsers] = useState([]);
   const [keyword, setkeyword] = useState("");
@@ -28,9 +30,26 @@ export const ChatPage = () => {
     }
   };
 
+  const fetchUserProfile = async () => {
+    try {
+      const userProfile = await getUserProfile();
+      if (userProfile.success) {
+        console.log(userProfile.user);
+      } else {
+        console.log("Error:", userProfile?.message);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [keyword]); // Refetch data when search term changes
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
 
   return (
     <div>
