@@ -11,12 +11,10 @@ const RecProducts = () => {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         flexWrap: "wrap",
         gap: "15px 5px",
-        overflow: "hidden",
-        padding: { lg: "2vw", md: "1.8vw", sm: "1vw", xs: "1vw" },
-        margin: { lg: "0 6vw", md: "0 3vw", sm: "0 0.5vw", xs: "0 0.3vw" },
+        margin: { lg: "0 7vw", md: "0 2vw", sm: "0 0.5vw", xs: "0 0.3vw" },
       }}
     >
       {limitedProducts.map((product) => (
