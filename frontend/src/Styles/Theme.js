@@ -97,6 +97,19 @@ const theme = createTheme({
         fontSize: "12px", // xs
       },
     },
+    subtitle3: {
+      color: Colors.InPholder,
+      fontSize: "14px", // lg
+      "@media (max-width: 1280px)": {
+        fontSize: "14px", // md
+      },
+      "@media (max-width: 960px)": {
+        fontSize: "12px", // sm
+      },
+      "@media (max-width: 600px)": {
+        fontSize: "12px", // xs
+      },
+    },
     chat1: {
       fontSize: "12px", // lg
       fontWeight: "400",
