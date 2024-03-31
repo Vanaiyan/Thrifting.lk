@@ -12,7 +12,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { Colors } from "../../Styles/Theme";
 
-const CartCard = () => {
+const CartCard = ({ productId, productName, price, quantity }) => {
   return (
     <Box
       padding={"15px"}
@@ -51,20 +51,21 @@ const CartCard = () => {
         >
           <CloseIcon sx={{ width: "16px", height: "16px" }} />
         </IconButton>
-        <Stack spacing={1} height={"100%"}>
+        <Stack spacing={1} height={"100%"} width={"100%"}>
           <Typography variant="subtitle2">
-            Tshirt with multiple lines
+            {/* Tshirt with multiple lines */}
+            {productName}
           </Typography>
 
           <Typography variant="subtitle3">
             Size: medium, Color: blue, Material: Plastic Seller: Artel Market
           </Typography>
 
-          <Typography variant="subtitle2">3990 LKR</Typography>
+          <Typography variant="subtitle2">{price}</Typography>
 
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="subtitle2" sx={{ color: Colors.InPholder }}>
-              Quantity:
+              Quantity:{quantity}
             </Typography>
             <Select
               size="small"
@@ -88,7 +89,7 @@ const CartCard = () => {
             justifyContent={"flex-end"}
           >
             <Button variant="outlined" color="primary" size="small">
-              Buy Now
+              <Typography sx={{ fontSize: "12px" }}>Buy Now</Typography>
             </Button>
           </Stack>
         </Stack>

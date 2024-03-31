@@ -18,13 +18,13 @@ function App() {
     <ThemeProvider theme={theme}>
       <div>
         <Routes>
-          <Route path="/" Component={CartPage} />
-          {/* <Route path="/" Component={HomePage} /> */}
+          <Route path="/" Component={HomePage} />
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={SignUp} />
           <Route path="/demo" Component={Demo} />
           <Route path="/chat" Component={ChatPage} />
           <Route path="/productDetail" Component={ProductDetailPage} />
+          <Route path="/cart" Component={CartPage} />
         </Routes>
       </div>
     </ThemeProvider>

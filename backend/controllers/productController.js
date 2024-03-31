@@ -4,7 +4,7 @@ const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-  const resPerPage = 2;
+  const resPerPage = 6;
   const apiFeatures = new APIFeatures(Product.find(), req.query)
     .search()
     .filter()
@@ -19,7 +19,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 });
 
 exports.newProduct = async (req, res, next) => {
-  req.body.user = req.user.id;
+  req.body.user = req.user._id;
   const product = await Product.create(req.body);
   res.status(201).json({
     success: true,

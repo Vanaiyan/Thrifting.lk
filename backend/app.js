@@ -5,6 +5,7 @@ const errorMiddleware = require("./middlewares/error");
 const products = require("./routes/product");
 const auth = require("./routes/auth");
 const chat = require("./routes/chat");
+const cart = require("./routes/cart");
 
 const cookieParser = require("cookie-parser");
 
@@ -20,6 +21,7 @@ app.use(
 app.use("/api", products);
 app.use("/api", auth);
 app.use("/api", chat);
+app.use("/api", cart);
 
 app.use(errorMiddleware);
 app.set("trust proxy", 1);
