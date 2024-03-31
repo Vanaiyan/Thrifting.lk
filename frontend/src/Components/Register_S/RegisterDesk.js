@@ -4,18 +4,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import {
   Box,
-  Paper,
-  // Alert,
-  // Snackbar,
-  // Hidden,
-  // Input,
-  // InputLabel,
-  // IconButton,
+  Paper
 } from "@mui/material";
 import theme from "../../Styles/Theme";
 import { NavSeller } from "../Navigation bar/desktop/nav-seller";
 import RegisterForm from "./RegisterForm";
-// import Temp from "../../Pages/Seller/Temp";
+
 
 const RegisterDesk = () => {
   const [frontImage, setFrontImage] = useState(null);
@@ -72,11 +66,6 @@ const RegisterDesk = () => {
                   setFrontImage={setFrontImage}
                   frontImage={frontImage}
                   backImage={backImage}/>
-                  {/* <Temp 
-                  setBackImage={setBackImage}
-                  setFrontImage={setFrontImage}
-                  frontImage={frontImage}
-                  backImage={backImage}/> */}
                   
                 </Grid>
               </form>
