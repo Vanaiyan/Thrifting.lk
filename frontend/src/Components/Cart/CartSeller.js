@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartProducts } from "../../Actions/cartActions";
-import CartCard from "../Cards/CartCard";
-import CartSum from "../Cards/CartSum";
+import CartCard from "./CartCard";
+import CartSum from "./CartSum";
 
 const CartSeller = () => {
   const dispatch = useDispatch();
@@ -38,7 +38,9 @@ const CartSeller = () => {
                 cartItems.map((item) => (
                   <CartCard
                     key={item.productId}
+                    productId={item.productId}
                     productName={item.name}
+                    discount={item.discount}
                     price={item.price}
                     quantity={item.quantity}
                   />

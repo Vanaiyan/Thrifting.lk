@@ -9,8 +9,6 @@ const { isAuthenticatedUser } = require("../middlewares/authenticate");
 
 router.route("/addToCart").post(isAuthenticatedUser, addToCart);
 router.route("/getCart").get(isAuthenticatedUser, getCartProduct);
-router
-  .route("/deleteFromCart/:id")
-  .delete(isAuthenticatedUser, deleteProductFromCart);
+router.route("/cart/:id").delete(isAuthenticatedUser, deleteProductFromCart);
 
 module.exports = router;

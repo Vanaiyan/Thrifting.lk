@@ -1,18 +1,25 @@
 import React from "react";
 import {
   Box,
-  Grid,
   Stack,
-  Typography,
-  Button,
-  IconButton,
-  MenuItem,
   Select,
+  MenuItem,
+  Button,
+  Typography,
+  IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Colors } from "../../Styles/Theme";
+import { useDispatch } from "react-redux";
+import { removeItem } from "../../Actions/cartActions";
 
 const CartCard = ({ productId, productName, price, quantity }) => {
+  const dispatch = useDispatch();
+
+  const clickDelete = () => {
+    console.log("prod Id", productId);
+    dispatch(removeItem(productId));
+  };
   return (
     <Box
       padding={"15px"}
@@ -48,6 +55,7 @@ const CartCard = ({ productId, productName, price, quantity }) => {
             top: "5px",
             right: "5px",
           }}
+          onClick={clickDelete}
         >
           <CloseIcon sx={{ width: "16px", height: "16px" }} />
         </IconButton>

@@ -1,10 +1,11 @@
 const catchAsyncError = require("../middlewares/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const Cart = require("../models/cartModel");
+const Product = require("../models/productModel");
 
 exports.addToCart = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
-  const { productId, quantity, productName, price } = req.body;
+  const { productId, quantity } = req.body;
 
   // Validate request data
   if (!userId || !productId || !quantity) {
@@ -27,8 +28,6 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
     // If the product doesn't exist, add it to the cart
     cart.products.push({
       productId: productId, // Ensure that the field name matches the schema definition
-      productName,
-      price,
       quantity,
     });
   }
@@ -54,15 +53,29 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
         .json({ success: false, message: "Cart not found" });
     }
 
-    // Extract products from the cart
-    const products = cart.products.map((item) => ({
-      productId: item.productId, // Potential issue: Ensure item.product is not null before accessing _id
-      name: item.productName, // Potential issue: Ensure item.product is not null before accessing name
-      price: item.price, // Potential issue: Ensure item.product is not null before accessing price
-      quantity: item.quantity,
-    }));
+    // Extract product IDs from the cart
+    const productIds = cart.products.map((item) => item.productId);
 
-    res.status(200).json({ success: true, products });
+    // Fetch all product details associated with the product IDs
+    const products = await Product.find({ _id: { $in: productIds } });
+
+    // Combine product details with quantities from the cart
+    const cartProducts = cart.products.map((cartItem) => {
+      const product = products.find((product) =>
+        product._id.equals(cartItem.productId)
+      );
+      console.log("product: ", product);
+      return {
+        productId: cartItem.productId,
+        name: product ? product.name : "Unknown Product",
+        price: product ? product.price : 0,
+        quantity: cartItem.quantity,
+        discount: product ? product.discount : 0,
+        description: product.description,
+      };
+    });
+
+    res.status(200).json({ success: true, products: cartProducts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });

@@ -7,8 +7,6 @@ import { HomePage } from "./Pages/User/HomePage";
 import { Route, Routes } from "react-router-dom";
 import { Demo } from "./Components/demo";
 import ChatPage from "./Pages/User/ChatPage";
-import CartCard from "./Components/Cards/CartCard";
-import CartSum from "./Components/Cards/CartSum";
 import CartPage from "./Pages/User/CartPage";
 
 import ProductDetailPage from "./Pages/Product/ProductDetailPage";

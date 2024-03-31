@@ -21,6 +21,12 @@ const cartSlice = createSlice({
     getCartFailure(state, action) {
       state.error = action.payload;
     },
+    removeFromCart(state, action) {
+      const productId = action.payload;
+      state.cartItems = state.cartItems.filter(
+        (item) => item.productId !== productId
+      );
+    },
   },
 });
 
@@ -29,5 +35,6 @@ export const {
   addToCartFailure,
   getCartSuccess,
   getCartFailure,
+  removeFromCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

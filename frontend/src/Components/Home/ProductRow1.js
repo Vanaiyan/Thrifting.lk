@@ -114,13 +114,11 @@ const ProductRow = () => {
     // Define userId, productId, and quantity here
     // const userId = "65cf938387be38bf626c1563";
     const productId = product._id;
-    const productName = product.name;
-    const price = product.price;
+
     // const discount = product.discount;
     const quantity = 1; // Set the quantity as needed
-    console.log(productId, productName, price, quantity);
     // Dispatch the addToCart action with the product and additional information
-    dispatch(addToCart({ productId, quantity, productName, price }));
+    dispatch(addToCart({ productId, quantity }));
   };
   return (
     <Box

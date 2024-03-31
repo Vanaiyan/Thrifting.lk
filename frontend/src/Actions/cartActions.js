@@ -3,6 +3,7 @@ import {
   addToCartFailure,
   getCartSuccess,
   getCartFailure,
+  removeFromCart,
 } from "../Reducers/cartSlice";
 import axios from "axios";
 
@@ -36,5 +37,23 @@ export const getCartProducts = () => async (dispatch) => {
   } catch (error) {
     // Dispatch action to handle failure
     dispatch(getCartFailure(error.response.data.message));
+  }
+};
+
+export const removeItem = (productId) => async (dispatch) => {
+  try {
+    // Call API to remove item from cart
+    const response = await axios.delete(
+      `http://localhost:8000/api/cart/${productId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log("res", response);
+    // Dispatch action to update state upon success
+    dispatch(removeFromCart(productId));
+  } catch (error) {
+    // Handle error
+    console.log("error", error);
   }
 };
