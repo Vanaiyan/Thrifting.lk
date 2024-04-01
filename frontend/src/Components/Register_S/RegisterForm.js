@@ -6,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Box, MenuItem, Snackbar, Input, InputLabel } from "@mui/material";
 import { Alert } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 const RegisterForm = ({
   frontImage,
@@ -29,10 +28,9 @@ const RegisterForm = ({
   const [submitting, setSubmitting] = useState(false);
 
   const [errors, setErrors] = useState({});
-  const [backErrors,setBackErrors]=useState({});
+  const [backErrors, setBackErrors] = useState({});
   const [openAlert, setOpenAlert] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleCloseAlert = (event, reason) => {
     if (reason === "clickaway") {
@@ -109,7 +107,7 @@ const RegisterForm = ({
       newErrors.nicNumber =
         "NIC Number must be either 12 digits or 9 digits followed by 'V'";
     }
-  
+
     if (!frontImage || !frontImage.type.startsWith("image/")) {
       newErrors.frontImage = "Please select a valid front image file";
     }
@@ -124,13 +122,27 @@ const RegisterForm = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  
+  const clearForm = () => {
+    setFirstName("");
+    setLastName("");
+    setPassword("");
+    setEmail("");
+    setPhoneNumber("");
+    setAddress("");
+    setCity("");
+    setDistrict("");
+    setPostalCode("");
+    setNicName("");
+    setNicNumber("");
+    setFrontImage(null);
+    setBackImage(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      setSubmitting(true); 
+      setSubmitting(true);
       try {
-       
         const response = await axios.post(
           "http://localhost:8000/seller",
           {
@@ -147,16 +159,14 @@ const RegisterForm = ({
             },
             nicName,
             nicNumber,
-            frontImage:{
-              name:frontImage.name,
-              type:frontImage.type,
-             
+            frontImage: {
+              name: frontImage.name,
+              type: frontImage.type,
             },
-            
-            backImage:{
-              name:backImage.name,
-              type:backImage.type,
-              
+
+            backImage: {
+              name: backImage.name,
+              type: backImage.type,
             },
           },
           {
@@ -172,19 +182,19 @@ const RegisterForm = ({
         if (dataStatus === 200) {
           console.log("Form submitted successfully!");
           setSuccessMessage("Form submitted successfully!");
-          setTimeout(() => setSuccessMessage(""), 5000); //
+          setTimeout(() => {
+            clearForm();
+            setSuccessMessage("");
+          }, 5000);
         } else {
-          
           console.log("Form validation failed. Please check the errors.");
         }
       } catch (error) {
         setBackErrors(error.response.data);
         console.log("hi");
-       console.log(backErrors);
+        console.log(backErrors);
         console.error("Error:", error.response.data);
-      }
-
-      finally {
+      } finally {
         setSubmitting(false); // Reset submitting state
       }
     } else {
@@ -198,7 +208,6 @@ const RegisterForm = ({
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
-      
       if (side === "front") {
         setFrontImage(file);
       } else if (side === "back") {
@@ -248,10 +257,10 @@ const RegisterForm = ({
         <Snackbar
           open={!!backErrors && Object.keys(backErrors).length > 0}
           autoHideDuration={6000}
-          onClose={handleCloseAlert}
+          onClose={() => setBackErrors("")}
         >
           <Alert
-            onClose={handleCloseAlert}
+            onClose={() => setBackErrors("")}
             severity="error"
             sx={{ width: "100%" }}
           >
@@ -260,8 +269,10 @@ const RegisterForm = ({
         </Snackbar>
         <Snackbar
           open={!!successMessage}
-          autoHideDuration={3000}
-          onClose={() => setSuccessMessage("")}
+          autoHideDuration={6000}
+          onClose={() => {
+            setSuccessMessage("");
+          }}
         >
           <Alert
             onClose={() => setSuccessMessage("")}
@@ -422,10 +433,7 @@ const RegisterForm = ({
             </Box>
           </Grid>
           <Grid item lg={12} md={12} xs={12}>
-            <Box
-              
-              p={2}
-            >
+            <Box p={2}>
               <Typography variant="subtitle1">Identity Verification</Typography>
               <Grid item lg={6} md={12} xs={12}>
                 <TextField
