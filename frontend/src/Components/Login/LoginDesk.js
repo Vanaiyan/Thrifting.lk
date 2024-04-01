@@ -18,6 +18,7 @@ import loginImage from "./images/img-login.png";
 import NavLogin from "../Navigation bar/nav-login";
 import { loginUser } from "../../Actions/userAction";
 import { useSnackbar } from "../../Actions/snackbar";
+import { NavLink } from "react-router-dom";
 
 const LoginDesk = () => {
   const { snackbarOpen, successMessage, handleSnackbarClose, showSnackbar } =
@@ -34,13 +35,14 @@ const LoginDesk = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const data = await loginUser(email, password);
+      const response = await loginUser(email, password);
 
-      if (data.success) {
-        console.log("Success:", data);
+      if (response.data.success) {
+        console.log("Success:", response.data);
+
         showSnackbar("Login successful!");
       } else {
-        showSnackbar(data.message);
+        showSnackbar(response.data.message);
       }
     } catch (error) {
       showSnackbar("An error occurred. Please try again.");
@@ -87,6 +89,13 @@ const LoginDesk = () => {
               >
                 Login
               </Typography>
+              <Typography variant="subtitle2">
+                Don't you have an account?
+                <NavLink to="/signup" exact activeClassName="active">
+                  SignUp
+                </NavLink>
+              </Typography>
+              <br />
               <Typography variant="subtitle2">
                 Please fill your detail to access your account.{" "}
               </Typography>

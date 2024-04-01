@@ -6,9 +6,8 @@ import Login from "./Pages/User/LoginMain";
 import { HomePage } from "./Pages/User/HomePage";
 import { Route, Routes } from "react-router-dom";
 import { Demo } from "./Components/demo";
-import { ChatPage } from "./Pages/User/ChatPage";
-import ProductMain from "./Pages/User/ProductMain";
-
+import ChatPage from "./Pages/User/ChatPage";
+import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 
 function App() {
   return (
@@ -20,7 +19,7 @@ function App() {
           <Route path="/signup" Component={SignUp} />
           <Route path="/demo" Component={Demo} />
           <Route path="/chat" Component={ChatPage} />
-          <Route path="/product" Component={ProductMain}/>
+          <Route path="/productDetail" Component={ProductDetailPage} />
         </Routes>
       </div>
     </ThemeProvider>

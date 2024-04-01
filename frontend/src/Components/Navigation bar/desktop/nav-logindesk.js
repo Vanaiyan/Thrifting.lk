@@ -11,6 +11,7 @@ import {
 } from "../../../Styles/NavBar/nav01";
 import SearchIcon from "@mui/icons-material/Search"; // Import Search icon from Material-UI
 import { Divider, Grid } from "@mui/material";
+import { NavLink } from "react-router-dom";
 
 export const NavLoginDesktop = () => {
   return (
@@ -31,7 +32,9 @@ export const NavLoginDesktop = () => {
         }}
       >
         <NavList type="row" gap="10px">
-          <NavListItemText>HOME</NavListItemText>
+          <NavLink to="/" exact activeClassName="active">
+            <NavListItemText>HOME</NavListItemText>
+          </NavLink>
           <NavListItemText>SELL</NavListItemText>
           <NavListItemText>CATEGORIES</NavListItemText>
           <NavListItemText>ABOUT</NavListItemText>
