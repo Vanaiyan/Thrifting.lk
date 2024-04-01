@@ -17,17 +17,15 @@ const ProductMain = () => {
     try {
       const response = await axios.get("http://localhost:8000/api/products");
       console.log(response);
-      const productsValue = response.data.products;
+      
       // Assuming the response data is an array of products
-      setProducts(productsValue);
-      console.log(response.data.products);
-      console.log(productsValue);
-      console.log(products);
+      setProducts(response.data.products);
+      
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
-  fetchProducts();
+ 
 
 
 
@@ -46,7 +44,7 @@ const ProductMain = () => {
           margin: { lg: "0 6vw", md: "0 3vw", sm: "0 0.5vw", xs: "0 0.3vw" },
         }}
       >
-         {/* {products.map((product) => (
+          {products.map((product) => (
           <ProductCards
             key={product._id}
             title={product.name}
@@ -56,7 +54,7 @@ const ProductMain = () => {
               console.log(`Product ${product.id} added to cart`);
             }}
           />
-        ))}  */}
+        ))}  
       </Box>
     </Box>
   );
