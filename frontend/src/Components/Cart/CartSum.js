@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Divider, Grid, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Colors } from "../../Styles/Theme";
-
+import { useEffect } from "react";
 const CartSum = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
 
@@ -22,6 +22,11 @@ const CartSum = () => {
   };
 
   const { totalSum, totalDiscount, amountToPay } = calculateTotals();
+
+  useEffect(() => {
+    const { totalSum, totalDiscount, amountToPay } = calculateTotals();
+    // Update state or perform any other actions based on new totals
+  }, [cartItems]);
 
   return (
     <Grid container justifyContent="center" alignItems="center">

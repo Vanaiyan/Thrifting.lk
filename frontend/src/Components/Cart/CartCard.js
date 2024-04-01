@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   Box,
   Stack,
@@ -11,9 +12,16 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { Colors } from "../../Styles/Theme";
 import { useDispatch } from "react-redux";
-import { removeItem } from "../../Actions/cartActions";
+import { removeItem, updateCartItemQuantity } from "../../Actions/cartActions";
 
-const CartCard = ({ productId, productName, price, quantity }) => {
+const CartCard = ({ productId, productName, price, quantity, description }) => {
+  const [selectedQuantity, setSelectedQuantity] = useState(quantity);
+
+  const handleQuantityChange = (event) => {
+    const newQuantity = event.target.value;
+    setSelectedQuantity(newQuantity);
+    dispatch(updateCartItemQuantity(productId, newQuantity));
+  };
   const dispatch = useDispatch();
 
   const clickDelete = () => {
@@ -66,21 +74,22 @@ const CartCard = ({ productId, productName, price, quantity }) => {
           </Typography>
 
           <Typography variant="subtitle3">
-            Size: medium, Color: blue, Material: Plastic Seller: Artel Market
+            {description}
+            {/* Size: medium, Color: blue, Material: Plastic Seller: Artel Market */}
           </Typography>
 
           <Typography variant="subtitle2">{price}</Typography>
 
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="subtitle2" sx={{ color: Colors.InPholder }}>
-              Quantity:{quantity}
+              Quantity:
             </Typography>
             <Select
               size="small"
-              value={1}
-              onChange={() => {}}
+              value={selectedQuantity}
+              onChange={handleQuantityChange}
               variant="outlined"
-              sx={{ fontSize: "0.6rem", minWidth: "rem" }} // Adjust font size and box size here
+              sx={{ fontSize: "0.8rem", minWidth: "rem" }} // Adjust font size and box size here
             >
               {/* Generate dropdown options */}
               {[...Array(10).keys()].map((quantity) => (

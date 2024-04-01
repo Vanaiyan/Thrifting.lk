@@ -64,7 +64,6 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
       const product = products.find((product) =>
         product._id.equals(cartItem.productId)
       );
-      console.log("product: ", product);
       return {
         productId: cartItem.productId,
         name: product ? product.name : "Unknown Product",
@@ -122,4 +121,43 @@ exports.deleteProductFromCart = catchAsyncError(async (req, res, next) => {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
+});
+
+//update product quantity
+exports.updateCartItemQuantity = catchAsyncError(async (req, res, next) => {
+  const userId = req.user._id;
+  const productId = req.params.id;
+  const { quantity } = req.body;
+
+  // Validate request data
+  if (!userId || !productId || !quantity) {
+    return next(new ErrorHandler(400, "Invalid request data"));
+  }
+
+  // Find the user's cart
+  let cart = await Cart.findOne({ user: userId });
+
+  if (!cart) {
+    return next(new ErrorHandler(404, "Cart not found"));
+  }
+
+  // Find the index of the product in the cart
+  const productIndex = cart.products.findIndex((item) => {
+    return item.productId.toString() === productId;
+  });
+
+  if (productIndex === -1) {
+    return next(new ErrorHandler(404, "Product not found in cart"));
+  }
+
+  // Update the quantity of the product
+  cart.products[productIndex].quantity = quantity;
+
+  // Save the updated cart to the database
+  await cart.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Cart item quantity updated successfully",
+  });
 });

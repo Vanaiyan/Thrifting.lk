@@ -4,6 +4,8 @@ import {
   getCartSuccess,
   getCartFailure,
   removeFromCart,
+  updateCartItemQuantitySuccess,
+  updateCartItemQuantityFailure,
 } from "../Reducers/cartSlice";
 import axios from "axios";
 
@@ -57,3 +59,23 @@ export const removeItem = (productId) => async (dispatch) => {
     console.log("error", error);
   }
 };
+export const updateCartItemQuantity =
+  (productId, newQuantity) => async (dispatch) => {
+    try {
+      await axios.put(
+        `http://localhost:8000/api/cart/${productId}`,
+        {
+          productId,
+          quantity: newQuantity,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("Quantity updated successfully", productId, newQuantity);
+      dispatch(updateCartItemQuantitySuccess({ productId, newQuantity }));
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      dispatch(updateCartItemQuantityFailure(error.message));
+    }
+  };

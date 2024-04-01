@@ -40,6 +40,7 @@ const CartSeller = () => {
                     key={item.productId}
                     productId={item.productId}
                     productName={item.name}
+                    description={item.description}
                     discount={item.discount}
                     price={item.price}
                     quantity={item.quantity}

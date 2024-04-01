@@ -13,18 +13,6 @@ const CartItemSchema = new Schema({
     default: "",
   },
   quantity: Number,
-  price: {
-    type: Number,
-    default: 0,
-  },
-  totalPrice: {
-    type: Number,
-    default: 0,
-  },
-  discount: {
-    type: Number,
-    default: 0,
-  },
 });
 
 module.exports = Mongoose.model("CartItem", CartItemSchema);

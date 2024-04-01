@@ -9,7 +9,12 @@ import FloatingButton from "../../Components/Chat/floatingbutton";
 
 export const HomePage = () => {
   return (
-    <Box sx={{}}>
+    <Box
+      sx={{
+        width: "100%",
+        overflowX: "visible",
+      }}
+    >
       <NavBar />
       <Banner />
       <Typography

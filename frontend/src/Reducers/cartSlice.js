@@ -27,6 +27,23 @@ const cartSlice = createSlice({
         (item) => item.productId !== productId
       );
     },
+    updateCartItemQuantitySuccess(state, action) {
+      const { productId, newQuantity } = action.payload;
+      console.log("Try to change qunatity");
+
+      // Find the index of the product in the cartItems array
+      const productIndex = state.cartItems.findIndex(
+        (item) => item.productId === productId
+      );
+      if (productIndex !== -1) {
+        // Update the quantity of the product
+        state.cartItems[productIndex].quantity = newQuantity;
+      }
+      state.error = null;
+    },
+    updateCartItemQuantityFailure(state, action) {
+      state.error = action.payload;
+    },
   },
 });
 
@@ -36,5 +53,7 @@ export const {
   getCartSuccess,
   getCartFailure,
   removeFromCart,
+  updateCartItemQuantitySuccess,
+  updateCartItemQuantityFailure,
 } = cartSlice.actions;
 export default cartSlice.reducer;
