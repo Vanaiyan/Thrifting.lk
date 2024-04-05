@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import {CardActions} from '@mui/material';
-import {Box } from '@mui/material';
+//import {Box } from '@mui/material';
 import {IconButton} from '@mui/material';
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useState } from "react";
@@ -16,7 +16,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 export default function ProductCards({
     title,
     price,
-   
     onAddToCartClick,
 }) {
   const [isWishlist, setIsWishlist] = useState(false);
@@ -33,7 +32,7 @@ export default function ProductCards({
         borderRadius: "20px",
         padding: "0",
         //margin: "30px 10px",
-         margin: { lg: "1.5vw 0.5vw", md: "3vw 1vw 3vw 6vw", sm: "3vw 1vw 3vw 2vw", xs:"3vw 1vw 3vw 1vw" },
+        margin: { lg: "1.5vw 0.5vw", md: "3vw 1vw 3vw 6vw", sm: "3vw 1vw 3vw 2vw", xs:"3vw 1vw 3vw 1vw" },
         position: "relative",
         transition: "box-shadow 0.3s ease-in",
         "&:hover": {
@@ -41,13 +40,13 @@ export default function ProductCards({
         },
       }}
     >
-        {/* <CardMedia sx={{ height: 200 }} image={imageSrc} title={title} /> */}
+       {/* <CardMedia sx={{ height: 200 }} image={image} title={title} />  */}
          <CardContent
              sx={{
                 border: "1px #DEE2E7",
                 height: 120,
                 marginBottom: "10px",
-               transition: "background-color 0.4s ease-in", // Increased transition time to 2 seconds
+                transition: "background-color 0.4s ease-in", // Increased transition time to 2 seconds
                "&:hover": {
                bgcolor: "#D9D9D9",
                 },
@@ -58,7 +57,7 @@ export default function ProductCards({
               component="div"
               sx={{ fontWeight: 600, position: "absolute", top: "210px" }}
             >
-              {title}Original Beats Solo Pro
+              {title} Original Beats Solo Pro
             </Typography>
             <Typography
               fontSize="14px"

@@ -2,38 +2,55 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCards from "../../Components/AllProduct.js/ProductCards";
 import { Box } from "@mui/material";
-import { SelectItem } from "../../Components/AllProduct.js/SelectItem";
 import NavBar from "../../Components/Navigation bar/navigation";
+import SelectItem from "../../Components/AllProduct.js/SelectItem";
 
 const ProductMain = () => {
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    // Fetch products from backend when component mounts
+    // Fetch all products from backend when component mounts
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    // Fetch products based on selected category when it changes
+    if (selectedCategory) {
+      fetchProductsByCategory(selectedCategory);
+    }
+  }, [selectedCategory]);
 
   const fetchProducts = async () => {
     try {
       const response = await axios.get("http://localhost:8000/api/products");
-      console.log(response);
-      
-      // Assuming the response data is an array of products
       setProducts(response.data.products);
-      
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
- 
 
+  const fetchProductsByCategory = async (category) => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/products", {
+        params: {
+          category: category,
+        },
+      });
+      setProducts(response.data.products);
+    } catch (error) {
+      //console.error(Error fetching products for category ${category}:, error);
+    }
+  };
 
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
 
   return (
     <Box>
       <NavBar />
-      <SelectItem />
-
+      <SelectItem onCategoryChange={handleCategoryChange} />
       <Box
         sx={{
           display: "flex",
@@ -44,20 +61,20 @@ const ProductMain = () => {
           margin: { lg: "0 6vw", md: "0 3vw", sm: "0 0.5vw", xs: "0 0.3vw" },
         }}
       >
-          {products.map((product) => (
+        {products.map((product) => (
           <ProductCards
             key={product._id}
             title={product.name}
             price={product.price}
-           // imageSrc={product.imageSrc}
+             //imageSrc={product.image}
             onAddToCartClick={() => {
-              console.log(`Product ${product.id} added to cart`);
+              //console.log(Product ${product.name} added to cart);
             }}
           />
-        ))}  
+        ))}
       </Box>
     </Box>
   );
 };
 
-export default ProductMain;
+export default ProductMain;

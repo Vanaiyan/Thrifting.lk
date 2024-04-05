@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import { Demo } from "./Components/demo";
 import ChatPage from "./Pages/User/ChatPage";
 import ProductDetailPage from "./Pages/Product/ProductDetailPage";
+import ProductMain from "./Pages/User/ProductMain";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/demo" Component={Demo} />
           <Route path="/chat" Component={ChatPage} />
           <Route path="/productDetail" Component={ProductDetailPage} />
+          <Route path="/product" Component={ProductMain} />
         </Routes>
       </div>
     </ThemeProvider>
