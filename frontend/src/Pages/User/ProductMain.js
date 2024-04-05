@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ProductCards from "../../Components/AllProduct.js/ProductCards";
+import ProductCards from "../../Components/AllProduct/ProductCards";
 import { Box } from "@mui/material";
 import NavBar from "../../Components/Navigation bar/navigation";
-import SelectItem from "../../Components/AllProduct.js/SelectItem";
+import SelectItem from "../../Components/AllProduct/SelectItem";
 
 const ProductMain = () => {
   const [products, setProducts] = useState([]);
