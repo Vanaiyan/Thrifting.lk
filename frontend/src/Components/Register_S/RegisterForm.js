@@ -7,12 +7,7 @@ import Button from "@mui/material/Button";
 import { Box, MenuItem, Snackbar, Input, InputLabel } from "@mui/material";
 import { Alert } from "@mui/material";
 
-const RegisterForm = ({
-  frontImage,
-  setFrontImage,
-  backImage,
-  setBackImage,
-}) => {
+const RegisterForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,6 +20,8 @@ const RegisterForm = ({
   const [postalCode, setPostalCode] = useState("");
   const [nicName, setNicName] = useState("");
   const [nicNumber, setNicNumber] = useState("");
+  const [frontImage, setFrontImage] = useState(null);
+  const [backImage, setBackImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const [errors, setErrors] = useState({});

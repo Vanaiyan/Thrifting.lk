@@ -42,7 +42,7 @@ const createSeller = async (req, res) => {
       !nicName ||
       !nicNumber ||
       !frontImage ||
-       !backImage
+      !backImage
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }

@@ -2,19 +2,12 @@ import React, { useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import {
-  Box,
-  Paper
-} from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import theme from "../../Styles/Theme";
 import { NavSeller } from "../Navigation bar/desktop/nav-seller";
 import RegisterForm from "./RegisterForm";
 
-
 const RegisterDesk = () => {
-  const [frontImage, setFrontImage] = useState(null);
-  const [backImage, setBackImage] = useState(null);
-
   return (
     <ThemeProvider theme={theme} sx={{ position: "relative" }}>
       <NavSeller Subtitle="Sign Up" />
@@ -61,16 +54,11 @@ const RegisterDesk = () => {
               </Typography>
               <form>
                 <Grid container spacing={2}>
-                  <RegisterForm 
-                  setBackImage={setBackImage}
-                  setFrontImage={setFrontImage}
-                  frontImage={frontImage}
-                  backImage={backImage}/>
-                  
+                  <RegisterForm />
                 </Grid>
               </form>
             </Paper>
-          </Grid>  
+          </Grid>
         </Grid>
       </Box>
     </ThemeProvider>
