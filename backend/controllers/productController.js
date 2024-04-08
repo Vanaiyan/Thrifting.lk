@@ -4,7 +4,7 @@ const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-  const resPerPage = 6;
+  const resPerPage = 16;
   const apiFeatures = new APIFeatures(Product.find(), req.query)
     .search()
     .filter()
