@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { useTheme } from "@mui/system";
+import { Colors } from "../Theme";
 
 export const NavContainer = styled(Container)(({ theme }) => ({
   display: "flex",
@@ -17,8 +18,6 @@ export const NavContainer = styled(Container)(({ theme }) => ({
   alignItems: "center",
   padding: "0px",
   width: "100%",
-  gap: "10px",
-
   [theme.breakpoints.down("md")]: {
     justifyContent: "flex-start",
   },
@@ -59,10 +58,14 @@ export const NavList = styled(List)(({ type }) => ({
 export const NavListItemText = styled(Button)({
   fontSize: "14px",
   fontWeight: 500,
+  textDecoration: "none",
+
+  // borderRadius: "30px",
+  padding: "5px 10px",
   color: "#000000",
   "&:hover": {
-    background: "#fffafa",
-    borderRadius: 0,
+    background: Colors.dovegrey,
+    borderRadius: "5px",
   },
 });
 
@@ -73,7 +76,6 @@ export const SearchContainer = styled(Box)({
   alignItems: "center",
   padding: "12px",
   gap: "10px",
-  margin: "0",
   maxHeight: "35px",
   background: "#FFFFFF",
   border: "1px solid #CED4DA",
@@ -111,7 +113,7 @@ export const ButtonContainer = styled(Box)(() => {
 export const SignUpButton = styled(Button)({
   justifyContent: "center",
   alignItems: "center",
-  padding: "6px 0px",
+  padding: "6px 20px",
   background: "#FF5003",
   borderRadius: "45px",
   border: "none",
@@ -121,5 +123,6 @@ export const SignUpButton = styled(Button)({
 
   "&:hover": {
     color: "#000",
+    backgroundColor: Colors.org3,
   },
 });
