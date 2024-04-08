@@ -3,6 +3,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 
+//Add a product to the cart
 exports.addToCart = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
   const { productId, quantity } = req.body;
@@ -27,7 +28,7 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
   } else {
     // If the product doesn't exist, add it to the cart
     cart.products.push({
-      productId: productId, // Ensure that the field name matches the schema definition
+      productId: productId, 
       quantity,
     });
   }

@@ -10,6 +10,7 @@ import { Colors } from "../../Styles/Theme";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { addToCart } from "../../Actions/cartActions";
+
 const NextArrow = (props) => {
   const { onClick } = props;
   return (
