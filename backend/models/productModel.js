@@ -11,9 +11,18 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0.0,
   },
+  images: [
+    {
+      image: {
+        type:String,
+        required: true
+      }
+    }
+  ],
   category: {
     type: String,
     required: [true, "Please Enter product Category"],
+   
   },
   description: {
     type: String,
