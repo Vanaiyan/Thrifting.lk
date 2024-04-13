@@ -41,7 +41,10 @@ export const NavDesktop = () => {
           <NavLink to="/" exact activeClassName="active">
             <NavListItemText>Home</NavListItemText>
           </NavLink>
-          <NavListItemText>SELL</NavListItemText>
+          <NavLink to="/seller" exact activeClassName="active">
+            <NavListItemText>SELL</NavListItemText>
+          </NavLink>
+
           <NavListItemText>CATEGORIES</NavListItemText>
           <NavListItemText>ABOUT</NavListItemText>
         </NavList>
