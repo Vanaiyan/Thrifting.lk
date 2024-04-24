@@ -136,6 +136,33 @@ const theme = createTheme({
         fontSize: "6px", // xs
       },
     },
+    // sellerpage titles
+    subtitle5: {
+      fontFamily:'Inter',
+      fontSize: "30px", // lg
+      "@media (max-width: 1280px)": {
+        fontSize: "24px", // md
+      },
+      "@media (max-width: 960px)": {
+        fontSize: "18px", // sm
+      },
+      "@media (max-width: 600px)": {
+        fontSize: "10px", // xs
+      },
+    },
+    title4: {
+      fontFamily:'Roboto Serif',
+      fontSize: "50px", // lg
+      "@media (max-width: 1280px)": {
+        fontSize: "40px", // md
+      },
+      "@media (max-width: 960px)": {
+        fontSize: "35px", // sm
+      },
+      "@media (max-width: 600px)": {
+        fontSize: "30px", // xs
+      },
+    },
     inputField: {
       fontSize: "16px", // lg
       "@media (max-width: 1280px)": {
