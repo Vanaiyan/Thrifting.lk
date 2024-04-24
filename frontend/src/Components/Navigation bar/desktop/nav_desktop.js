@@ -1,7 +1,6 @@
 // NavDesktop.js
 import React from "react";
 import {
-  NavContainer,
   NavList,
   NavTitle,
   NavListItemText,
@@ -10,7 +9,7 @@ import {
   ButtonContainer,
   SignUpButton,
 } from "../../../Styles/NavBar/nav01";
-import { Link, NavLink } from "react-router-dom";
+import {NavLink } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { Divider, Grid } from "@mui/material";
 
@@ -44,7 +43,6 @@ export const NavDesktop = () => {
           <NavLink to="/seller" exact activeClassName="active">
             <NavListItemText>SELL</NavListItemText>
           </NavLink>
-
           <NavListItemText>CATEGORIES</NavListItemText>
           <NavListItemText>ABOUT</NavListItemText>
         </NavList>
