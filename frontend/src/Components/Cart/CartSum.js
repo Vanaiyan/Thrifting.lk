@@ -3,15 +3,15 @@ import { Box, Button, Divider, Grid, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Colors } from "../../Styles/Theme";
 import { useEffect } from "react";
-const CartSum = () => {
-  const cartItems = useSelector((state) => state.cart.cartItems);
+const CartSum = (products) => {
+  // const cartItems = useSelector((state) => state.cart.cartItems);
 
   // Calculate total sum, discount, and amount to pay
   const calculateTotals = () => {
     let totalSum = 0;
     let totalDiscount = 0;
 
-    cartItems.forEach((item) => {
+    products.products.forEach((item) => {
       totalSum += item.price * item.quantity;
       totalDiscount += item.discount * item.quantity;
     });
@@ -25,8 +25,9 @@ const CartSum = () => {
 
   useEffect(() => {
     const { totalSum, totalDiscount, amountToPay } = calculateTotals();
+    console.log(products.products);
     // Update state or perform any other actions based on new totals
-  }, [cartItems]);
+  }, [products]);
 
   return (
     <Grid container justifyContent="center" alignItems="center">

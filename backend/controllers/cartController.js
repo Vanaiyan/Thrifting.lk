@@ -1,6 +1,7 @@
 const catchAsyncError = require("../middlewares/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const Cart = require("../models/cartModel");
+const User = require("../models/userModel"); //It wants to change as seller model
 const Product = require("../models/productModel");
 
 //Add a product to the cart
@@ -28,7 +29,7 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
   } else {
     // If the product doesn't exist, add it to the cart
     cart.products.push({
-      productId: productId, 
+      productId: productId,
       quantity,
     });
   }
@@ -41,6 +42,7 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
     .json({ success: true, message: "Product added to cart successfully" });
 });
 
+//Function for get products of a user
 exports.getCartProduct = catchAsyncError(async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -60,22 +62,39 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
     // Fetch all product details associated with the product IDs
     const products = await Product.find({ _id: { $in: productIds } });
 
-    // Combine product details with quantities from the cart
-    const cartProducts = cart.products.map((cartItem) => {
+    // Create an object to store products grouped by seller ID
+    const productsBySeller = {};
+
+    // Combine product details with quantities from the cart and group by seller ID
+    cart.products.forEach((cartItem) => {
       const product = products.find((product) =>
         product._id.equals(cartItem.productId)
       );
-      return {
+      if (!productsBySeller[product.user]) {
+        productsBySeller[product.user] = [];
+      }
+      productsBySeller[product.user].push({
         productId: cartItem.productId,
         name: product ? product.name : "Unknown Product",
         price: product ? product.price : 0,
         quantity: cartItem.quantity,
         discount: product ? product.discount : 0,
-        description: product.description,
-      };
+        description: product ? product.description : "No description",
+        seller: product ? product.user : "Unknown Seller",
+      });
     });
 
-    res.status(200).json({ success: true, products: cartProducts });
+    // Fetch the name of the seller for each seller ID
+    for (const sellerId of Object.keys(productsBySeller)) {
+      const seller = await User.findById(sellerId); // It want to change as fetch details from Seller collection
+      console.log("seller", seller);
+      const sellerName = seller ? seller.firstName : "Unknown Seller"; //It want to be change as seller userName After implement seller Login
+      productsBySeller[sellerId].forEach((product) => {
+        product.sellerName = sellerName;
+      });
+    }
+
+    res.status(200).json({ success: true, productsBySeller });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });

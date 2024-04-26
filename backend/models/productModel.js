@@ -32,6 +32,7 @@ const productSchema = new mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
+    required: [true, "Please Enter Seller"],
   },
   createdAt: {
     type: Date,

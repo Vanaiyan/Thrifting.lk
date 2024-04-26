@@ -32,10 +32,10 @@ export const getCartProducts = () => async (dispatch) => {
     const response = await axios.get("http://localhost:8000/api/getcart", {
       withCredentials: true,
     });
-    console.log("get cart : ", response.data.products);
+    console.log("get cart : ", response.data.productsBySeller);
 
     // Dispatch action to update state upon success
-    dispatch(getCartSuccess(response.data.products));
+    dispatch(getCartSuccess(response.data.productsBySeller));
   } catch (error) {
     // Dispatch action to handle failure
     dispatch(getCartFailure(error.response.data.message));
