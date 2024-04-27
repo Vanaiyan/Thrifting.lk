@@ -27,8 +27,10 @@ const productSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  user: {
+  seller: {
     type: mongoose.Schema.Types.ObjectId,
+    ref:"Seller",
+    required:true
   },
   createdAt: {
     type: Date,

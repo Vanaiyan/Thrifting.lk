@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -29,6 +30,7 @@ const RegisterForm = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  const navigate = useNavigate();
   const handleCloseAlert = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -177,12 +179,17 @@ const RegisterForm = () => {
         const dataStatus = response.status;
         console.log(data);
         if (dataStatus === 200) {
+          const sellerId = data.sellerId;
+          console.log(sellerId);
           console.log("Form submitted successfully!");
           setSuccessMessage("Form submitted successfully!");
           setTimeout(() => {
-            clearForm();
-            setSuccessMessage("");
-          }, 5000);
+            // clearForm();
+            // setSuccessMessage("");
+            navigate("/seller/dashboard");
+          }, 3000);
+
+         
         } else {
           console.log("Form validation failed. Please check the errors.");
         }
@@ -192,7 +199,7 @@ const RegisterForm = () => {
         console.log(backErrors);
         console.error("Error:", error.response.data);
       } finally {
-        setSubmitting(false); // Reset submitting state
+        setSubmitting(false); 
       }
     } else {
       console.log(
