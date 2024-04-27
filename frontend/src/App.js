@@ -12,6 +12,8 @@ import CartPage from "./Pages/User/CartPage";
 
 import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 import ProductMain from "./Pages/User/ProductMain";
+import WishlistCard from "./Components/WishList/WishListCard";
+import WishlistPage from "./Pages/User/WishListPage";
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
           <Route path="/productDetail" Component={ProductDetailPage} />
           <Route path="/product" Component={ProductMain} />
           <Route path="/cart" Component={CartPage} />
+          <Route path="/wishlist" Component={WishlistPage} />
         </Routes>
       </div>
     </ThemeProvider>

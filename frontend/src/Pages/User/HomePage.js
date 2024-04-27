@@ -6,8 +6,17 @@ import CategoriesList from "../../Components/Home/CategoryList";
 import RecProducts from "../../Components/Home/RecProducts";
 import { Box, Typography } from "@mui/material";
 import FloatingButton from "../../Components/Chat/floatingbutton";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getWishlistItems } from "../../Actions/wishListActions";
 
 export const HomePage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getWishlistItems()); // Fetch wishlist items when the component mounts
+  }, [dispatch]); // Empty dependency array ensures the effect runs only once, when the component mounts
+
   return (
     <Box
       sx={{

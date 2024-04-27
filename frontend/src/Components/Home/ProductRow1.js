@@ -132,6 +132,7 @@ const ProductRow = () => {
         {products.map((product) => (
           <ProductCardsm
             key={product.id}
+            id={product._id}
             title={product.name}
             price={product.price}
             imageSrc={product.imageSrc}
