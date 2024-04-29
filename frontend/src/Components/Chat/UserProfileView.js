@@ -84,16 +84,16 @@ const UserProfileView = ({ user }) => {
 
   return (
     <div>
-      <IconButton
-        size="large"
-        edge="start"
-        color="inherit"
-        aria-label="menu"
+      <Avatar
+        src="/path/to/avatar-image.jpg"
+        alt="Avatar"
         onClick={toggleDrawer(true)}
-        sx={{ ml: "auto" }}
-      >
-        <MoreVertIcon />
-      </IconButton>
+        sx={{
+          cursor: "pointer",
+          border: "2px solid",
+          borderColor: Colors.orgchat,
+        }}
+      />
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

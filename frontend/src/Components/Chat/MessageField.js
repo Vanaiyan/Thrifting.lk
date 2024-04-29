@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Paper, Box, Grid, Typography } from "@mui/material";
-import { Colors } from "../../Styles/Theme";
+import { Paper, Box, Typography } from "@mui/material";
 import { setChatId, setMessages } from "../../Reducers/messageSlice";
+import { setUnreadMessages } from "../../Reducers/userSlice";
 import { getMessagesForChat } from "../../Actions/chatFirebase";
 import { ChTitle } from "./ChTitle";
 import ChatInput from "./ChatInput";
 import { MsgReceiver } from "./MsgReceiver";
 import { MsgSender } from "./MsgSender";
+import ChatUserPanel from "./ChatUserPanel";
+import { Colors } from "../../Styles/Theme";
+
 const MessageField = () => {
   const dispatch = useDispatch();
   const { messages, chatId } = useSelector((state) => state.messages);
-  const { loginUser, currentUser } = useSelector((state) => state.user);
+  const { loginUser, currentUser, unreadMessages } = useSelector(
+    (state) => state.user
+  );
   const [render, setRender] = useState(0);
 
   const onSend = () => {
     setRender(render + 1);
   };
 
-  // Function to format date in a readable format
   const formatDate = (timestamp) => {
     return timestamp
       ? timestamp.toDate().toLocaleDateString(undefined, {
@@ -30,11 +34,18 @@ const MessageField = () => {
       : "";
   };
 
-  let prevDate = null; // Variable to keep track of the previous date
+  let prevDate = null;
+
+  const handleNewMessage = (message) => {
+    const { senderId } = message;
+    console.log("test100");
+    dispatch(setUnreadMessages({ userId: senderId, count: 1 }));
+    dispatch(setMessages([...messages, message]));
+  };
 
   useEffect(() => {
     if (!currentUser || !loginUser) {
-      return; // Exit early if currentUser or loginUser is null or undefined
+      return;
     }
 
     const newChatId =
@@ -44,18 +55,21 @@ const MessageField = () => {
 
     dispatch(setChatId(newChatId));
 
-    // Call getMessagesForChat with a callback function to handle the messages
     const unsubscribe = getMessagesForChat(
       newChatId,
       currentUser._id,
       (messages) => {
-        // Update your component state with the messages
+        console.log("test200");
         dispatch(setMessages(messages));
-      }
+      },
+      handleNewMessage
     );
-    // Cleanup the listener when the component unmounts or when needed
-    return;
-  }, [currentUser, loginUser, render]); // Include loginUser and currentUser in the dependency array
+
+    return () => {
+      // Cleanup the listener when the component unmounts
+      // unsubscribe();
+    };
+  }, [currentUser, loginUser, render]);
 
   return (
     <Paper
@@ -82,17 +96,15 @@ const MessageField = () => {
           bottom: "62px",
           left: 0,
           right: 0,
-          overflowY: "auto", // Add this line to make the container scrollable
-          // maxHeight: "64vh", // Set the maximum height for scrolling
+          overflowY: "auto",
           "&::-webkit-scrollbar": {
-            width: "0.5em", // Set the width of the scrollbar
+            width: "0.5em",
           },
           "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0, 0, 0, 0.4)", // Set the color of the scrollbar thumb
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
           },
         }}
         ref={(el) => {
-          // Scroll to the bottom when the component mounts
           el && (el.scrollTop = el.scrollHeight);
         }}
       >
@@ -103,7 +115,6 @@ const MessageField = () => {
 
           return (
             <div key={message.id}>
-              {/* To Print Date if date changes */}
               {shouldPrintDate && (
                 <Typography
                   variant="chat2"
@@ -121,7 +132,6 @@ const MessageField = () => {
                 </Typography>
               )}
 
-              {/* To Print Messages and check sender or receiver */}
               {message.senderId === loginUser._id ? (
                 <MsgSender key={message.id} message={message} />
               ) : (
