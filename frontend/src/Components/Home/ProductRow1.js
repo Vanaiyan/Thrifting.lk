@@ -9,7 +9,6 @@ import { fetchProducts } from "../../Actions/homeProductActions"; // Adjust the 
 import { Colors } from "../../Styles/Theme";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { addToCart } from "../../Actions/cartActions";
 
 const NextArrow = (props) => {
   const { onClick } = props;
@@ -111,16 +110,6 @@ const ProductRow = () => {
     prevArrow: <PrevArrow />, // Custom previous arrow component
   };
 
-  const handleAddToCartClick = ({ product }) => {
-    // Define userId, productId, and quantity here
-    // const userId = "65cf938387be38bf626c1563";
-    const productId = product._id;
-
-    // const discount = product.discount;
-    const quantity = 1; // Set the quantity as needed
-    // Dispatch the addToCart action with the product and additional information
-    dispatch(addToCart({ productId, quantity }));
-  };
   return (
     <Box
       sx={{
@@ -132,10 +121,10 @@ const ProductRow = () => {
         {products.map((product) => (
           <ProductCardsm
             key={product.id}
+            id={product._id}
             title={product.name}
             price={product.price}
             imageSrc={product.imageSrc}
-            onAddToCartClick={() => handleAddToCartClick({ product })}
           />
         ))}
       </Slider>
