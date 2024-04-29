@@ -12,7 +12,7 @@ const ProductManagement = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/myproduct/662ba747e59446416eacee2d"
+          "http://localhost:8000/api/myproducts/662ba6ddffd7af4f4a7fd633"
         );
         setProducts(response.data);
         setLoading(false);
