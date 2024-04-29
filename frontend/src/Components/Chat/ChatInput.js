@@ -89,7 +89,7 @@ const ChatInput = ({ onSend }) => {
         borderColor: Colors.org1,
         border: "1px",
         backgroundColor: "rgba(0,0,0,0.1)",
-        margin: "10px 20px",
+        margin: "10px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",

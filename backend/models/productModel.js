@@ -14,21 +14,25 @@ const productSchema = new mongoose.Schema({
   images: [
     {
       image: {
-        type:String,
-        required: true
-      }
-    }
+        type: String,
+        required: true,
+      },
+    },
   ],
+  discount: {
+    type: Number,
+    default: 0.0,
+  },
   category: {
     type: String,
     required: [true, "Please Enter product Category"],
-   
   },
   description: {
     type: String,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
+    required: [true, "Please Enter Seller"],
   },
   createdAt: {
     type: Date,

@@ -49,16 +49,16 @@ export const getMessagesForChat = async (chatId, currentUser, callback) => {
       // Return the unsubscribe function to allow the caller to stop listening when needed
       return unsubscribe;
     } else {
-      // if (currentUser) {
-      //   // Create a new document with the specified chatId and initial data
-      //   const initialData = {
-      //     ReceiverId: currentUser,
-      //     lastTimestamp: serverTimestamp(),
-      //   }; // You can customize the initial data
-      //   await setDoc(docRef, initialData);
-      //   console.log("New document created:", initialData);
-      //   return initialData.messages;
-      // }
+      if (currentUser) {
+        // Create a new document with the specified chatId and initial data
+        const initialData = {
+          ReceiverId: currentUser,
+          lastTimestamp: serverTimestamp(),
+        }; // You can cusstomize the initial data
+        await setDoc(docRef, initialData);
+        console.log("New document created:", initialData);
+        return initialData.messages;
+      }
     }
   } catch (error) {
     console.error("Error fetching messages:", error);
