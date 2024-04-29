@@ -46,7 +46,7 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
 exports.getCartProduct = catchAsyncError(async (req, res, next) => {
   try {
     const userId = req.user._id;
-
+    console.log("1 check", req.user._id);
     // Find the user's cart
     const cart = await Cart.findOne({ user: userId });
 
@@ -61,6 +61,7 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
 
     // Fetch all product details associated with the product IDs
     const products = await Product.find({ _id: { $in: productIds } });
+    console.log("2 check", products);
 
     // Create an object to store products grouped by seller ID
     const productsBySeller = {};
@@ -70,19 +71,21 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
       const product = products.find((product) =>
         product._id.equals(cartItem.productId)
       );
-      if (!productsBySeller[product.user]) {
-        productsBySeller[product.user] = [];
+
+      if (!productsBySeller[product.seller]) {
+        productsBySeller[product.seller] = [];
       }
-      productsBySeller[product.user].push({
+      productsBySeller[product.seller].push({
         productId: cartItem.productId,
         name: product ? product.name : "Unknown Product",
         price: product ? product.price : 0,
         quantity: cartItem.quantity,
         discount: product ? product.discount : 0,
         description: product ? product.description : "No description",
-        seller: product ? product.user : "Unknown Seller",
+        seller: product ? product.seller : "Unknown Seller",
       });
     });
+    console.log("3 check", productsBySeller);
 
     // Fetch the name of the seller for each seller ID
     for (const sellerId of Object.keys(productsBySeller)) {

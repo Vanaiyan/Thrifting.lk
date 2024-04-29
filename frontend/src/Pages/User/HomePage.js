@@ -33,7 +33,7 @@ export const HomePage = () => {
         <Typography
           variant="subtitle1"
           sx={{
-            margin: { lg: "2vw 7vw 0vw 7vw", md: "1vw 2vw" },
+            margin: { lg: "3vw 7vw 0vw 7vw", md: "1vw 2vw" },
             fontWeight: 600,
           }}
         >

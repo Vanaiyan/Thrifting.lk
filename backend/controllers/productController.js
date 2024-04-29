@@ -19,7 +19,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 });
 
 exports.newProduct = async (req, res, next) => {
-  req.body.user = req.user._id;
+  req.body.seller = req.user._id;
   const product = await Product.create(req.body);
   res.status(201).json({
     success: true,
@@ -93,7 +93,7 @@ exports.deleteProduct = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    req.body.user = req.user.id;
+    req.body.seller = req.user.id;
     const newProduct = await Product.create(req.body);
 
     res.status(201).json({
