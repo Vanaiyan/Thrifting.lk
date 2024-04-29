@@ -9,12 +9,10 @@ import { Demo } from "./Components/demo";
 import Register_S from "./Pages/Seller/Register_S";
 import ChatPage from "./Pages/User/ChatPage";
 import CartPage from "./Pages/User/CartPage";
-
 import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 import ProductMain from "./Pages/User/ProductMain";
-import WishlistCard from "./Components/WishList/WishListCard";
 import WishlistPage from "./Pages/User/WishListPage";
-
+import { SellerPage } from "./Pages/Seller/SellerPage";
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -25,6 +23,7 @@ function App() {
           <Route path="/signup" Component={SignUp} />
           <Route path="/demo" Component={Demo} />
           <Route path="/chat" Component={ChatPage} />
+          <Route path="/seller" Component={SellerPage} />
           <Route path="/seller/register" Component={Register_S} />
           <Route path="/productDetail" Component={ProductDetailPage} />
           <Route path="/product" Component={ProductMain} />

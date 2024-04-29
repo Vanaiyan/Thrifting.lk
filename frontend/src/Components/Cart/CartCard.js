@@ -32,7 +32,6 @@ const CartCard = ({ productId, productName, price, quantity, description }) => {
     <Box
       padding={"15px"}
       border={"1px solid"}
-      //   boxShadow={"0px 10px 30px rgba(0, 0, 0, 0.2)"}
       sx={{
         borderColor: Colors.Inborder,
         borderRadius: "6px",

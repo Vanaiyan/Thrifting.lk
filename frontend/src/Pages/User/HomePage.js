@@ -4,7 +4,7 @@ import ProductRow from "../../Components/Home/ProductRow1";
 import { BannerSeller } from "../../Components/Home/BannerSeller";
 import CategoriesList from "../../Components/Home/CategoryList";
 import RecProducts from "../../Components/Home/RecProducts";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, CssBaseline } from "@mui/material";
 import FloatingButton from "../../Components/Chat/floatingbutton";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -18,47 +18,52 @@ export const HomePage = () => {
   }, [dispatch]); // Empty dependency array ensures the effect runs only once, when the component mounts
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        overflowX: "visible",
-      }}
-    >
-      <NavBar />
-      <Banner />
-      <Typography
-        variant="subtitle1"
-        sx={{
-          margin: { lg: "2vw 7vw 0vw 7vw", md: "1vw 2vw" },
-          fontWeight: 600,
-        }}
-      >
-        Top Choices for you
-      </Typography>
-      <ProductRow />
-      <Typography
-        variant="subtitle1"
-        sx={{
-          margin: { lg: "2vw 7vw", md: "1vw 2vw" },
-          fontWeight: 600,
-        }}
-      >
-        Explore Popular Categories{" "}
-      </Typography>
-      <CategoriesList />
+    <>
+      <CssBaseline />
+      <style>{`body {overflow-x: hidden;}`}</style>
 
-      <BannerSeller />
-      <Typography
-        variant="subtitle1"
+      <Box
         sx={{
-          margin: { lg: "2vw 7vw", md: "1vw 2vw" },
-          fontWeight: 600,
+          width: "100vw",
+          overflowX: "hidden",
         }}
       >
-        Recommended items{" "}
-      </Typography>
-      <RecProducts />
-      <FloatingButton />
-    </Box>
+        <NavBar />
+        <Banner />
+        <Typography
+          variant="subtitle1"
+          sx={{
+            margin: { lg: "2vw 7vw 0vw 7vw", md: "1vw 2vw" },
+            fontWeight: 600,
+          }}
+        >
+          Top Choices for you
+        </Typography>
+        <ProductRow />
+        <Typography
+          variant="subtitle1"
+          sx={{
+            margin: { lg: "2vw 7vw", md: "1vw 2vw" },
+            fontWeight: 600,
+          }}
+        >
+          Explore Popular Categories{" "}
+        </Typography>
+        <CategoriesList />
+
+        <BannerSeller />
+        <Typography
+          variant="subtitle1"
+          sx={{
+            margin: { lg: "2vw 7vw", md: "1vw 2vw" },
+            fontWeight: 600,
+          }}
+        >
+          Recommended items{" "}
+        </Typography>
+        <RecProducts />
+        <FloatingButton />
+      </Box>
+    </>
   );
 };
