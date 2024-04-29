@@ -20,6 +20,7 @@ const RecProducts = () => {
       {limitedProducts.map((product) => (
         <ProductCardlg
           key={product.id}
+          id={product.id} // Change to actual ID  value to get correct functionalities of WishList
           title={product.title}
           price={product.price}
           imageSrc={product.imageSrc}

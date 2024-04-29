@@ -6,7 +6,16 @@ import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Typography from "@mui/material/Typography";
+import WishlistIconButton from "../WishList/WishListIcon";
+import { Box } from "@mui/material";
 import AddToCartButton from "../Cart/AddtoCartBtn";
+export default function ProductCardsm({
+  id,
+  title,
+  price,
+  imageSrc,
+  onAddToCartClick,
+}) {
 
 export default function ProductCardsm({ id, title, price, imageSrc }) {
   return (
@@ -49,6 +58,9 @@ export default function ProductCardsm({ id, title, price, imageSrc }) {
       >
         <AddToCartButton productId={id} />
       </CardActions>
+      <Box sx={{ position: "absolute", top: 0, right: 0 }}>
+        <WishlistIconButton productId={id} />
+      </Box>
     </Card>
   );
 }

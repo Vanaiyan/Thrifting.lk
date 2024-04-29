@@ -7,8 +7,9 @@ import IconButton from "@mui/material/IconButton";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Typography from "@mui/material/Typography";
+import WishlistIconButton from "../WishList/WishListIcon";
 
-export default function ProductCardlg({ title, price, imageSrc }) {
+export default function ProductCardlg({ title, price, imageSrc, id }) {
   const [isWishlist, setIsWishlist] = useState(false);
 
   const handleWishlistClick = () => {
@@ -47,28 +48,13 @@ export default function ProductCardlg({ title, price, imageSrc }) {
           sx={{ color: "dimgrey" }}
         >
           {title}
+          {id}
         </Typography>
         <Typography variant="subtitle2">Price: {price}</Typography>
       </CardContent>
 
       <CardActions sx={{ position: "absolute", top: 0, right: 0 }}>
-        {isWishlist ? (
-          <IconButton
-            color="error"
-            aria-label="remove from wishlist"
-            onClick={handleWishlistClick}
-          >
-            <FavoriteIcon />
-          </IconButton>
-        ) : (
-          <IconButton
-            color="default"
-            aria-label="add to wishlist"
-            onClick={handleWishlistClick}
-          >
-            <FavoriteBorderIcon />
-          </IconButton>
-        )}
+        <WishlistIconButton />
       </CardActions>
     </Card>
   );

@@ -9,11 +9,10 @@ import { Demo } from "./Components/demo";
 import Register_S from "./Pages/Seller/Register_S";
 import ChatPage from "./Pages/User/ChatPage";
 import CartPage from "./Pages/User/CartPage";
-
 import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 import ProductMain from "./Pages/User/ProductMain";
+import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
-
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -29,6 +28,7 @@ function App() {
           <Route path="/productDetail" Component={ProductDetailPage} />
           <Route path="/product" Component={ProductMain} />
           <Route path="/cart" Component={CartPage} />
+          <Route path="/wishlist" Component={WishlistPage} />
         </Routes>
       </div>
     </ThemeProvider>
