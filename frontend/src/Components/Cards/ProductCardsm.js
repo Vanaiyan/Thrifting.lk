@@ -9,13 +9,6 @@ import Typography from "@mui/material/Typography";
 import WishlistIconButton from "../WishList/WishListIcon";
 import { Box } from "@mui/material";
 import AddToCartButton from "../Cart/AddtoCartBtn";
-export default function ProductCardsm({
-  id,
-  title,
-  price,
-  imageSrc,
-  onAddToCartClick,
-}) {
 
 export default function ProductCardsm({ id, title, price, imageSrc }) {
   return (
