@@ -30,6 +30,7 @@ const CartSeller = ({ cartItems }) => {
                     discount={item.discount}
                     price={item.price}
                     quantity={item.quantity}
+                    cartTimestamp={item.cartTimestamp}
                   />
                 ))
               ) : (

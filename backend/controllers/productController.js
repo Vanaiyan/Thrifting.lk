@@ -5,7 +5,18 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 
 exports.getProducts = catchAsyncError(async (req, res, next) => {
   const resPerPage = 16;
-  const apiFeatures = new APIFeatures(Product.find(), req.query)
+  const userId = req.user._id; // Get the current user ID
+
+  // Build the base query
+  let baseQuery = Product.find({
+    $or: [
+      { inCart: false }, // Include products that are not in any cart
+      { cartUser: userId }, // Include products that are in the cart of the current user
+    ],
+  });
+
+  // Apply search, filter, and pagination
+  const apiFeatures = new APIFeatures(baseQuery, req.query)
     .search()
     .filter()
     .paginate(resPerPage);

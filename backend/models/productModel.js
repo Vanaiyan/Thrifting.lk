@@ -37,8 +37,23 @@ const productSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
+  },
+  // Fields for cart tracking
+  inCart: {
+    type: Boolean,
+    default: false,
+  },
+  cartUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+  },
+  cartTimestamp: {
+    type: Date,
+    default: null,
   },
 });
-let schema = mongoose.model("Product", productSchema);
-module.exports = schema;
+
+const Product = mongoose.model("Product", productSchema);
+module.exports = Product;

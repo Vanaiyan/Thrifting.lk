@@ -11,6 +11,7 @@ import { MsgSender } from "./MsgSender";
 import ChatUserPanel from "./ChatUserPanel";
 import { Colors } from "../../Styles/Theme";
 
+// Component for Title of Receiver, Input field and showing messages
 const MessageField = () => {
   const dispatch = useDispatch();
   const { messages, chatId } = useSelector((state) => state.messages);
@@ -58,6 +59,7 @@ const MessageField = () => {
     const unsubscribe = getMessagesForChat(
       newChatId,
       currentUser._id,
+      loginUser._id,
       (messages) => {
         console.log("test200");
         dispatch(setMessages(messages));

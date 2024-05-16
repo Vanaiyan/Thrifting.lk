@@ -3,6 +3,7 @@ import {
   collection,
   addDoc,
   orderBy,
+  where,
   onSnapshot,
   getDocs,
   query,
@@ -15,7 +16,12 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../firebase";
 
-export const getMessagesForChat = async (chatId, currentUser, callback) => {
+export const getMessagesForChat = async (
+  chatId,
+  currentUser,
+  loginUser,
+  callback
+) => {
   const db = getFirestore(app);
 
   try {
@@ -52,9 +58,9 @@ export const getMessagesForChat = async (chatId, currentUser, callback) => {
       if (currentUser) {
         // Create a new document with the specified chatId and initial data
         const initialData = {
-          ReceiverId: currentUser,
+          AuthorizedId: [loginUser, currentUser],
           lastTimestamp: serverTimestamp(),
-        }; // You can cusstomize the initial data
+        }; // You can customize the initial data
         await setDoc(docRef, initialData);
         console.log("New document created:", initialData);
         return initialData.messages;
@@ -112,26 +118,52 @@ export const generateUniqueIdentifier = () => {
   return uniqueIdentifier;
 };
 
-export const getSortedUsers = async () => {
+export const getSortedUsers = async (loginUser) => {
   const db = getFirestore(app);
 
   try {
     // Get all chat documents sorted by lastTimestamp in descending order
     const chatsCollectionRef = collection(db, "chats");
+    console.log("lg Id in actions", loginUser);
     const chatsQuery = query(
       chatsCollectionRef,
+      where("AuthorizedId", "array-contains", loginUser),
       orderBy("lastTimestamp", "desc")
     );
 
     const chatsSnapshot = await getDocs(chatsQuery);
-    const chatDocuments = chatsSnapshot.docs.map((doc) => doc.data());
+    const chatDocuments = chatsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      data: doc.data(),
+    }));
 
-    // Extract ReceiverId from each sorted chat document
-    const sortedReceivers = chatDocuments.map((chat) => chat.ReceiverId);
+    console.log("chDocs", chatDocuments);
+    // Filter out documents that do not have a messages subcollection
+    const validChatDocumentsPromises = chatDocuments.map(async (chat) => {
+      const messagesCollectionRef = collection(
+        db,
+        "chats",
+        chat.id,
+        "messages"
+      );
+      const messagesSnapshot = await getDocs(messagesCollectionRef);
+      return messagesSnapshot.size > 0 ? chat.data : null;
+    });
 
-    // Remove duplicates (if needed)
+    const validChatDocuments = (
+      await Promise.all(validChatDocumentsPromises)
+    ).filter((chat) => chat);
+    console.log("valid chat docs", validChatDocuments);
+    // Extract ReceiverId from each valid chat document
+    const sortedReceivers = validChatDocuments.map((chat) => {
+      // Find the ID that is not equal to loginUser
+      return chat.AuthorizedId.find((id) => id !== loginUser);
+    });
+    console.log("sorted Receivers", sortedReceivers);
+
+    // Remove duplicates
     const uniqueSortedReceivers = Array.from(new Set(sortedReceivers));
-
+    console.log("from Actions", uniqueSortedReceivers);
     return uniqueSortedReceivers;
   } catch (error) {
     console.error("Error fetching sorted receivers:", error);

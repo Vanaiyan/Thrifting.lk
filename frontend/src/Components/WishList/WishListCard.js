@@ -3,6 +3,7 @@ import { Box, Stack, Button, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Colors } from "../../Styles/Theme";
 import { grey } from "@mui/material/colors";
+import AddToCartButton from "../Cart/AddtoCartBtn";
 
 const WishlistCard = ({
   productId,
@@ -63,9 +64,10 @@ const WishlistCard = ({
             alignItems="center"
             justifyContent={"flex-end"}
           >
-            <Button variant="outlined" color="primary" size="small">
+            <AddToCartButton productId={productId} />
+            {/* <Button variant="outlined" color="primary" size="small">
               <Typography sx={{ fontSize: "12px" }}>Buy Now</Typography>
-            </Button>
+            </Button> */}
           </Stack>
         </Stack>
       </Stack>

@@ -27,7 +27,7 @@ const ChatPage = () => {
       if (users.length > 0 && usersLoaded) {
         // Ensure users array is not empty
         console.log("all user list: ", users);
-        const sortedUserIds = await getSortedUsers();
+        const sortedUserIds = await getSortedUsers(loginUser._id);
         console.log("Sorted Users:", sortedUserIds);
         // Sort users based on the order of sortedUserIds
         const sortedUserObjects = sortedUserIds.map((userId) =>

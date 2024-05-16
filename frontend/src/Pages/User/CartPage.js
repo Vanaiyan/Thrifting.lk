@@ -13,6 +13,7 @@ const CartPage = () => {
 
   useEffect(() => {
     dispatch(getCartProducts());
+    console.log("cartIt", cartItems);
   }, [dispatch]);
 
   return (
@@ -21,6 +22,17 @@ const CartPage = () => {
       <h2 variant="title" style={{ padding: "30px 7vw 10px 7vw" }}>
         Shopping Cart
       </h2>
+      <h5
+        style={{
+          padding: "10px 7vw 10px 7vw",
+          color: "red",
+          fontWeight: "100",
+        }}
+      >
+        Hey there! Just a heads-up <br />
+        Items in your cart are reserved for 48 hours. Make sure to complete your
+        purchase soon so you don’t miss out on your favorite finds!
+      </h5>
       {Object.entries(cartItems).map(([sellerId, products]) => (
         <Box key={sellerId} sx={{ margin: "2vw 7vw" }}>
           <CartSeller cartItems={products} />

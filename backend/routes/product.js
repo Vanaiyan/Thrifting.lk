@@ -15,7 +15,7 @@ const {
 
 router
   .route("/products")
-  .get(getProducts)
+  .get(isAuthenticatedUser, getProducts)
   .post(isAuthenticatedUser, createProduct);
 // .get(isAuthenticatedUser, getProducts)
 router.route("/products/new").post(authorizeRoles("admin"), newProduct);

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Stack,
@@ -13,9 +13,45 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Colors } from "../../Styles/Theme";
 import { useDispatch } from "react-redux";
 import { removeItem, updateCartItemQuantity } from "../../Actions/cartActions";
+import ReportIcon from "@mui/icons-material/Report";
 
-const CartCard = ({ productId, productName, price, quantity, description }) => {
+const CartCard = ({
+  productId,
+  productName,
+  price,
+  quantity,
+  description,
+  cartTimestamp,
+}) => {
+  const expirationHours = 48; // 48 hours in milliseconds
   const [selectedQuantity, setSelectedQuantity] = useState(quantity);
+  const [remainingTime, setRemainingTime] = useState("");
+
+  useEffect(() => {
+    const calculateRemainingTime = () => {
+      const timeAdded = new Date(cartTimestamp).getTime();
+      const timeNow = Date.now();
+      const timeDifference =
+        expirationHours * 60 * 60 * 1000 - (timeNow - timeAdded);
+
+      const hoursRemaining = Math.floor(timeDifference / (1000 * 60 * 60));
+      const minutesRemaining = Math.floor(
+        (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+      );
+
+      if (hoursRemaining > 1) {
+        return `${hoursRemaining} hours`;
+      } else if (hoursRemaining === 1) {
+        return `${hoursRemaining} hour`;
+      } else if (minutesRemaining > 30) {
+        return `about 1 hour`;
+      } else {
+        return `${minutesRemaining} minutes`;
+      }
+    };
+
+    setRemainingTime(calculateRemainingTime());
+  }, [cartTimestamp]);
 
   const handleQuantityChange = (event) => {
     const newQuantity = event.target.value;
@@ -67,11 +103,12 @@ const CartCard = ({ productId, productName, price, quantity, description }) => {
           <CloseIcon sx={{ width: "16px", height: "16px" }} />
         </IconButton>
         <Stack spacing={1} height={"100%"} width={"100%"}>
-          <Typography variant="subtitle2">
-            {/* Tshirt with multiple lines */}
-            {productName}
-          </Typography>
-
+          <Stack>
+            <Typography variant="subtitle2">
+              {/* Tshirt with multiple lines */}
+              {productName}
+            </Typography>
+          </Stack>
           <Typography variant="subtitle3">
             {description}
             {/* Size: medium, Color: blue, Material: Plastic Seller: Artel Market */}
@@ -96,6 +133,9 @@ const CartCard = ({ productId, productName, price, quantity, description }) => {
                   {quantity + 1}
                 </MenuItem>
               ))}
+
+              {/* To check the remainingTime */}
+              {/* <h5>{remainingTime}</h5> */}
             </Select>
           </Stack>
 
@@ -104,10 +144,27 @@ const CartCard = ({ productId, productName, price, quantity, description }) => {
             alignItems="center"
             justifyContent={"flex-end"}
           >
-            <Button variant="outlined" color="primary" size="small">
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              position="absolute"
+              right="0px"
+            >
               <Typography sx={{ fontSize: "12px" }}>Buy Now</Typography>
             </Button>
           </Stack>
+
+          {remainingTime &&
+          remainingTime.includes("hour") &&
+          parseInt(remainingTime) < 6 ? ( //To change the warning time limit. It is set to 6 hours
+            <Stack direction="row" alignItems="center">
+              <ReportIcon sx={{ color: "red" }} />
+              <Typography variant="body2" color="red">
+                This item will be removed from your cart in {remainingTime}.
+              </Typography>
+            </Stack>
+          ) : null}
         </Stack>
       </Stack>
     </Box>

@@ -4,7 +4,6 @@ const Cart = require("../models/cartModel");
 const User = require("../models/userModel"); //It wants to change as seller model
 const Product = require("../models/productModel");
 
-//Add a product to the cart
 exports.addToCart = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
   const { productId, quantity } = req.body;
@@ -14,11 +13,25 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(400, "Invalid request data"));
   }
 
+  // Find the product to ensure it exists
+  const product = await Product.findById(productId);
+  if (!product) {
+    return next(new ErrorHandler(404, "Product not found"));
+  }
+
+  // Check if the product is already in another user's cart
+  if (product.inCart && product.cartUser.toString() !== userId.toString()) {
+    return next(
+      new ErrorHandler(400, "Product is already in another user's cart")
+    );
+  }
+
   // Find the user's cart or create a new one if it doesn't exist
   let cart = await Cart.findOne({ user: userId });
   if (!cart) {
     cart = new Cart({ user: userId, products: [] });
   }
+
   const existingProductIndex = cart.products.findIndex((item) => {
     return item.productId.toString() === productId;
   });
@@ -32,10 +45,16 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
       productId: productId,
       quantity,
     });
+
+    // Update the product's cart status
+    product.inCart = true;
+    product.cartUser = userId;
+    product.cartTimestamp = new Date();
   }
 
-  // Update the cart in the database
+  // Save the updated cart and product
   await cart.save();
+  await product.save();
 
   res
     .status(201)
@@ -46,7 +65,6 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
 exports.getCartProduct = catchAsyncError(async (req, res, next) => {
   try {
     const userId = req.user._id;
-    console.log("1 check", req.user._id);
     // Find the user's cart
     const cart = await Cart.findOne({ user: userId });
 
@@ -61,7 +79,6 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
 
     // Fetch all product details associated with the product IDs
     const products = await Product.find({ _id: { $in: productIds } });
-    console.log("2 check", products);
 
     // Create an object to store products grouped by seller ID
     const productsBySeller = {};
@@ -83,9 +100,9 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
         discount: product ? product.discount : 0,
         description: product ? product.description : "No description",
         seller: product ? product.seller : "Unknown Seller",
+        cartTimestamp: product.cartTimestamp,
       });
     });
-    console.log("3 check", productsBySeller);
 
     // Fetch the name of the seller for each seller ID
     for (const sellerId of Object.keys(productsBySeller)) {
@@ -104,7 +121,6 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
   }
 });
 
-// Delete a single product from the cart
 exports.deleteProductFromCart = catchAsyncError(async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -112,7 +128,6 @@ exports.deleteProductFromCart = catchAsyncError(async (req, res, next) => {
 
     // Find the user's cart
     const cart = await Cart.findOne({ user: userId });
-    console.log(productIdToDelete);
     if (!cart) {
       return res
         .status(404)
@@ -135,6 +150,15 @@ exports.deleteProductFromCart = catchAsyncError(async (req, res, next) => {
 
     // Update the cart in the database
     await cart.save();
+
+    // Update the product's cart details
+    const product = await Product.findById(productIdToDelete);
+    if (product) {
+      product.inCart = false;
+      product.cartUser = null;
+      product.cartTimestamp = null;
+      await product.save();
+    }
 
     res.status(200).json({
       success: true,
