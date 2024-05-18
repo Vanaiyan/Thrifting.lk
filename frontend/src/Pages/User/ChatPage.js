@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import NavChat from "../../Components/Chat/Navchat";
 import ChatUserPanel from "../../Components/Chat/ChatUserPanel";
 import { getUsers } from "../../Actions/chatActions";
@@ -14,8 +15,9 @@ import { Colors } from "../../Styles/Theme";
 
 const ChatPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loginUser, currentUser } = useSelector((state) => state.user);
-  const { keyword } = useSelector((state) => state.messages);
+  const { keyword, chatId } = useSelector((state) => state.messages);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [usersLoaded, setUsersLoaded] = useState(false);
@@ -25,22 +27,17 @@ const ChatPage = () => {
   const fetchSortedUsers = async () => {
     try {
       if (users.length > 0 && usersLoaded) {
-        // Ensure users array is not empty
         console.log("all user list: ", users);
         const sortedUserIds = await getSortedUsers(loginUser._id);
         console.log("Sorted Users:", sortedUserIds);
-        // Sort users based on the order of sortedUserIds
         const sortedUserObjects = sortedUserIds.map((userId) =>
           users.find((user) => user._id === userId)
         );
         setSortedUsers(sortedUserObjects);
-
-        // Handle the sortedUserObjects as needed
         console.log("Sorted User Objects:", sortedUserObjects);
       }
     } catch (error) {
       console.error("Error fetching sorted users:", error);
-      // Handle the error appropriately
     }
   };
 
@@ -85,11 +82,17 @@ const ChatPage = () => {
     if (users.length > 0) {
       setUsersLoaded(true);
     }
-  }, [users]); // Update usersLoaded when users data is loaded
+  }, [users]);
 
   useEffect(() => {
     fetchSortedUsers();
-  }, [usersLoaded, users, userPRender]); // Fetch sorted users when users data is loaded or updated
+  }, [usersLoaded, users, userPRender]);
+
+  useEffect(() => {
+    if (chatId) {
+      navigate(`/chat/${chatId}`);
+    }
+  }, [chatId]);
 
   return (
     <div>
@@ -114,17 +117,16 @@ const ChatPage = () => {
             backgroundColor: Colors.chatdark,
           }}
         >
-          {/* {loading ? <p>Loading...</p> : <ChLoginUser />} */}
           <ChatSearch />
           <Box
             sx={{
-              overflowY: "auto", // Add this line to make the container scrollable
+              overflowY: "auto",
               maxHeight: "75vh",
               "&::-webkit-scrollbar": {
-                width: "0.5em", // Set the width of the scrollbar
+                width: "0.5em",
               },
               "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "rgba(255, 255, 255, 0.4)", // Set the color of the scrollbar thumb
+                backgroundColor: "rgba(255, 255, 255, 0.4)",
               },
             }}
           >

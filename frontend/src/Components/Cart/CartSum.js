@@ -61,10 +61,6 @@ const CartSum = (products) => {
           <Typography variant="subtitle2">Total</Typography>
           <Typography variant="subtitle2">LKR {amountToPay}</Typography>
         </Stack>
-
-        <Button variant="contained" sx={{ width: "100%", margin: "10px 0" }}>
-          Buy all
-        </Button>
       </Box>
     </Grid>
   );

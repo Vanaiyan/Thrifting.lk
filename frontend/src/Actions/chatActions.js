@@ -42,3 +42,21 @@ export const getUserProfile = async () => {
     throw error;
   }
 };
+
+export const getSellerProfileAction = async (sellerId) => {
+  try {
+    console.log(sellerId);
+    const response = await axios.get(
+      `http://localhost:8000/api/seller-profile/${sellerId}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};

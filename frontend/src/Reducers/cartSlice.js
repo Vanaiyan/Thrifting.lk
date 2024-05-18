@@ -41,7 +41,6 @@ const cartSlice = createSlice({
     },
     updateCartItemQuantitySuccess(state, action) {
       const { productId, newQuantity } = action.payload;
-      console.log("Try to change quantity");
 
       // Iterate over each seller ID in the cartItems object
       Object.keys(state.cartItems).forEach((sellerId) => {
@@ -59,9 +58,28 @@ const cartSlice = createSlice({
 
       state.error = null;
     },
-
     updateCartItemQuantityFailure(state, action) {
       state.error = action.payload;
+    },
+    updatesoldConfirmedSellerReducer(state, action) {
+      const { productId, soldConfirmedBuyer } = action.payload;
+
+      // Iterate over each seller ID in the cartItems object
+      Object.keys(state.cartItems).forEach((sellerId) => {
+        // Find the index of the product with the given productId in the current seller's array
+        const productIndex = state.cartItems[sellerId].findIndex(
+          (item) => item.productId === productId
+        );
+
+        // If the product is found in the current seller's array
+        if (productIndex !== -1) {
+          // Update the soldConfirmedBuyer status of the product
+          state.cartItems[sellerId][productIndex].soldConfirmedBuyer =
+            soldConfirmedBuyer;
+        }
+      });
+
+      state.error = null;
     },
   },
 });
@@ -74,5 +92,7 @@ export const {
   removeFromCart,
   updateCartItemQuantitySuccess,
   updateCartItemQuantityFailure,
+  updatesoldConfirmedSellerReducer,
 } = cartSlice.actions;
+
 export default cartSlice.reducer;

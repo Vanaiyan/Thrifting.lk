@@ -49,9 +49,24 @@ const productSchema = new mongoose.Schema({
     ref: "User",
     default: null,
   },
+  //Time whn product added to cart
   cartTimestamp: {
     type: Date,
     default: null,
+  },
+  //If any user Interested to buy this
+  isInterested: {
+    type: Boolean,
+    default: false,
+  },
+  //When user Click Buy now Button
+  interestedTimestamp: {
+    type: Date,
+    default: null,
+  },
+  soldConfirmedBuyer: {
+    type: Boolean,
+    default: false,
   },
 });
 

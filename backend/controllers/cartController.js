@@ -101,6 +101,9 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
         description: product ? product.description : "No description",
         seller: product ? product.seller : "Unknown Seller",
         cartTimestamp: product.cartTimestamp,
+        isInterested: product.isInterested,
+        soldConfirmedBuyer: product.soldConfirmedBuyer,
+        interestedTimestamp: product.interestedTimestamp,
       });
     });
 
@@ -157,6 +160,8 @@ exports.deleteProductFromCart = catchAsyncError(async (req, res, next) => {
       product.inCart = false;
       product.cartUser = null;
       product.cartTimestamp = null;
+      product.isInterested = false;
+      product.interestedTimestamp = null;
       await product.save();
     }
 
@@ -207,4 +212,111 @@ exports.updateCartItemQuantity = catchAsyncError(async (req, res, next) => {
     success: true,
     message: "Cart item quantity updated successfully",
   });
+});
+
+//To add a Product is interested to a user
+exports.interestedProduct = catchAsyncError(async (req, res, next) => {
+  try {
+    // const userId = req.user._id;
+    const productId = req.params.productId;
+
+    // Find the product by its ID
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+
+    // Update the product's interested status and timestamp
+    product.isInterested = true;
+    product.interestedTimestamp = new Date();
+
+    // Save the updated product
+    await product.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Product interest marked successfully",
+      product,
+    });
+  } catch (error) {
+    // Handle other errors (e.g., database connection error)
+    return next(
+      new ErrorHandler("An error occurred while updating product interest", 500)
+    );
+  }
+});
+
+exports.notInterestedProduct = catchAsyncError(async (req, res, next) => {
+  try {
+    const productId = req.params.productId;
+
+    // Find the product by its ID
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+
+    // Update the product's interested status and timestamp
+    product.isInterested = false;
+    product.interestedTimestamp = null; // Clear the timestamp if needed
+    product.inCart = false;
+    product.cartUser = null;
+    product.cartTimestamp = null;
+    // Save the updated product
+    await product.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Product interest removed successfully",
+      product,
+    });
+  } catch (error) {
+    // Handle other errors (e.g., database connection error)
+    return next(
+      new ErrorHandler(
+        "An error occurred while updating product interest status",
+        500
+      )
+    );
+  }
+});
+
+//When a buyer says Product is sold
+exports.soldConfirmByBuyer = catchAsyncError(async (req, res, next) => {
+  try {
+    // const userId = req.user._id;
+    const productId = req.params.productId;
+
+    // Find the product by its ID
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+
+    // Update the product's interested status and timestamp
+    product.soldConfirmedBuyer = true;
+
+    // Save the updated product
+    await product.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Product Sold Confirmed By Buyer Updated successfully",
+      product,
+    });
+  } catch (error) {
+    // Handle other errors (e.g., database connection error)
+    return next(
+      new ErrorHandler(
+        "An error occurred while updating product sold status by buyer",
+        500
+      )
+    );
+  }
 });

@@ -6,6 +6,7 @@ const products = require("./routes/product");
 const auth = require("./routes/auth");
 const chat = require("./routes/chat");
 const cart = require("./routes/cart");
+const feedback = require("./routes/feedback");
 const wishlist = require("./routes/wishList");
 const register_S = require("./routes/register_S");
 const cookieParser = require("cookie-parser");
@@ -27,6 +28,7 @@ app.use("/api", auth);
 app.use("/api", chat);
 app.use("/api", cart);
 app.use("/api", wishlist);
+app.use("/api", feedback);
 app.use("/seller", register_S);
 
 app.use(errorMiddleware);

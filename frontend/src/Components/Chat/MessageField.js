@@ -25,14 +25,15 @@ const MessageField = () => {
   };
 
   const formatDate = (timestamp) => {
-    return timestamp
-      ? timestamp.toDate().toLocaleDateString(undefined, {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-      : "";
+    if (!timestamp) return "";
+
+    const date = new Date(timestamp); // Create a Date object from the milliseconds
+    return date.toLocaleDateString(undefined, {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   let prevDate = null;

@@ -5,8 +5,10 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 
 exports.getProducts = catchAsyncError(async (req, res, next) => {
   const resPerPage = 16;
-  const userId = req.user._id; // Get the current user ID
-
+  let userId = null;
+  if (req.user && req.user._id) {
+    userId = req.user._id; // Get the current user ID
+  }
   // Build the base query
   let baseQuery = Product.find({
     $or: [

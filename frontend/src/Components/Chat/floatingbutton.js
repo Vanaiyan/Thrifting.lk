@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const FloatingButton = () => {
   return (
-    <Link to="/chat" style={{ textDecoration: "none" }}>
+    <Link to="/chat/:chatId" style={{ textDecoration: "none" }}>
       <Fab
         color="primary"
         aria-label="chat"

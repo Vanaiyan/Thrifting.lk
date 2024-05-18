@@ -35,7 +35,13 @@ export const getMessagesForChat = async (
 
       // Fetch old messages
       const messagesSnapshot = await getDocs(messagesQuery);
-      const oldMessages = messagesSnapshot.docs.map((doc) => doc.data());
+      const oldMessages = messagesSnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          timestamp: data.timestamp ? data.timestamp.toMillis() : null, // Handle null timestamp
+        };
+      });
 
       // Log old messages
       console.log("Old Messages:", oldMessages);
@@ -45,7 +51,13 @@ export const getMessagesForChat = async (
 
       // Set up a real-time listener for subsequent updates
       const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-        const updatedMessages = snapshot.docs.map((doc) => doc.data());
+        const updatedMessages = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            ...data,
+            timestamp: data.timestamp ? data.timestamp.toMillis() : null, // Handle null timestamp
+          };
+        });
         console.log("Updated Messages:", updatedMessages);
 
         // Use the callback to update the frontend state with new messages
@@ -56,6 +68,7 @@ export const getMessagesForChat = async (
       return unsubscribe;
     } else {
       if (currentUser) {
+        console.log("Authorized Ids", currentUser, loginUser);
         // Create a new document with the specified chatId and initial data
         const initialData = {
           AuthorizedId: [loginUser, currentUser],
