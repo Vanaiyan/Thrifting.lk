@@ -1,8 +1,7 @@
 import React from "react";
 import NavDashboard_V from "../../Components/Navigation bar/desktop/nav-sellerDashboard_V";
 import NavDashboard_H from "../../Components/Navigation bar/desktop/nav-sellerDashboard_H";
-import { Box, Grid, Typography } from "@mui/material";
-import ProductManagement from "../../Components/SellerDashboard/ProductManagement/ProductManagement";
+import { Grid } from "@mui/material";
 
 const Dashboard_S = () => {
   return (

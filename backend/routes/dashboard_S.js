@@ -13,7 +13,7 @@ router
   .get(Dashboard_S.getProductsBySellerId);
 router
   .route("/myproducts/:productId")
-  .delete(Dashboard_S.deleteProduct);
+  .put(Dashboard_S.changeProductStatus);
 
 router.route("/profile").get(Dashboard_S.getSellerProfile);
 

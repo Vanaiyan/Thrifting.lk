@@ -12,12 +12,14 @@ import axios from "axios"; // Assuming you use axios for HTTP requests
 
 const OrderManagement = () => {
   const [products, setProducts] = useState([]);
-  
+
   useEffect(() => {
     // Fetch products from your API endpoint
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/myproducts/662ba6ddffd7af4f4a7fd633");
+        const response = await axios.get(
+          "http://localhost:8000/api/myproducts/662ba6ddffd7af4f4a7fd633"
+        );
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -27,14 +29,19 @@ const OrderManagement = () => {
     fetchProducts();
   }, []);
 
-  const handleRemoveProduct = async (productId) => {
+  const handleProductStatus = async (productId) => {
     try {
-     console.log("productId");
+      console.log("productId");
 
       console.log(productId);
-      await axios.delete(`http://localhost:8000/api/myproducts/${productId}`);
-
-      setProducts(products.filter(product => product._id !== productId));
+      await axios.put(`http://localhost:8000/api/myproducts/${productId}`);
+      setProducts(
+        products.map((product) =>
+          product._id === productId
+            ? { ...product, status: !product.status }
+            : product
+        )
+      );
     } catch (error) {
       console.error("Error removing product:", error);
     }
@@ -50,7 +57,6 @@ const OrderManagement = () => {
                 <TableCell>Name</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Status</TableCell>
-                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -58,18 +64,24 @@ const OrderManagement = () => {
                 <TableRow key={product._id}>
                   <TableCell>{product.name}</TableCell>
                   <TableCell>{product.price}</TableCell>
-                  <TableCell>{product.status ? "Sold" : "Not Sold"}</TableCell>
+
                   <TableCell>
                     {!product.status ? (
                       <Button
                         variant="contained"
-                        color="secondary"
-                        onClick={() => handleRemoveProduct(product._id)}
+                        color="primary"
+                        onClick={() => handleProductStatus(product._id)}
                       >
-                        Remove
+                        Not Sold
                       </Button>
                     ) : (
-                      "N/A"
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleProductStatus(product._id)}
+                      >
+                        Sold
+                      </Button>
                     )}
                   </TableCell>
                 </TableRow>

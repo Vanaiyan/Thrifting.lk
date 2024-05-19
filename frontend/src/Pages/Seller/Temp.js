@@ -1,61 +1,30 @@
-import React from 'react'
+import React from "react";
+import { NavSubTitle, NavTitle } from "../../../Styles/NavBar/nav01";
+import { Divider, Grid, Box, Typography } from "@mui/material";
 
-function Sidebar({openSidebarToggle, OpenSidebar}) {
+const navsellerDashboard_H = () => {
   return (
-    <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive": ""}>
-        <div className='sidebar-title'>
-            <div className='sidebar-brand'>
-                {/* <BsCart3  className='icon_header'/> SHOP */}
-            </div>
-            <span className='icon close_icon' onClick={OpenSidebar}>X</span>
-        </div>
+    <Grid
+      container
+      spacing={2}
+      alignItems="center"
+      sx={{ padding: { md: "0 2vw", lg: "2vw 11vw" } }}
+    >
+      <Grid item md={6} lg={10}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <NavTitle sx={{ color: "#ff5003", mr: 1 }}>Thrifting.lk</NavTitle>
+          <Divider orientation="vertical" flexItem />
+          {/* <NavSubTitle sx={{ color: "#ff5003", mr: 1 }}>SellerDashboard</NavSubTitle> */}
+        </Box>
+      </Grid>
+      <Grid item md={6} lg={2} textAlign={"right"}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography>Shathurya P {/* Seller's name */}</Typography>
+          
+        </Box>
+      </Grid>
+    </Grid>
+  );
+};
 
-        <ul className='sidebar-list'>
-            <li className='sidebar-list-item'>
-                <a href="">
-                    {/* <BsGrid1X2Fill className='icon'/>  */}
-                    Dashboard
-                </a>
-            </li>
-            <li className='sidebar-list-item'>
-                <a href="">
-                    {/* <BsFillArchiveFill className='icon'/> */}
-                     Products
-                </a>
-            </li>
-            <li className='sidebar-list-item'>
-                <a href="">
-                    {/* <BsFillGrid3X3GapFill className='icon'/>  */}
-                    Categories
-                </a>
-            </li>
-            <li className='sidebar-list-item'>
-                <a href="">
-                    {/* <BsPeopleFill className='icon'/>  */}
-                    Customers
-                </a>
-            </li>
-            <li className='sidebar-list-item'>
-                <a href="">
-                    {/* <BsListCheck className='icon'/>  */}
-                    Inventory
-                </a>
-            </li>
-            <li className='sidebar-list-item'>
-                <a href="">
-                    {/* <BsMenuButtonWideFill className='icon'/>  */}
-                    Reports
-                </a>
-            </li>
-            <li className='sidebar-list-item'>
-                <a href="">
-                    {/* <BsFillGearFill className='icon'/>  */}
-                    Setting
-                </a>
-            </li>
-        </ul>
-    </aside>
-  )
-}
-
-export default Sidebar
+export default navsellerDashboard_H;

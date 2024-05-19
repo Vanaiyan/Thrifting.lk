@@ -14,7 +14,11 @@ const ProductManagement = () => {
         const response = await axios.get(
           "http://localhost:8000/api/myproducts/662ba6ddffd7af4f4a7fd633"
         );
-        setProducts(response.data);
+        const availableProducts = response.data.filter(
+          (product) => !product.status
+        );
+
+        setProducts(availableProducts);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -26,7 +30,7 @@ const ProductManagement = () => {
   }, []);
 
   return (
-    <div >
+    <div>
       {loading ? (
         <Box
           sx={{

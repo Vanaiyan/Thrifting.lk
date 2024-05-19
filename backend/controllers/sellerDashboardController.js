@@ -3,10 +3,9 @@ const Product = require("../models/productModel");
 
 const getProductsBySellerId = async (req, res) => {
   try {
-    const  id  = req.params.sellerId;
+    const id = req.params.sellerId;
     // const id = "662ba6ddffd7af4f4a7fd633";
 
-    console.log(id);
     const seller = await Seller.findById(id);
 
     if (!seller) {
@@ -27,36 +26,28 @@ const getSellerProfile = async (req, res) => {
     //const id = req.user.id;
     const seller = await Seller.findById(id);
     if (!seller) {
-      return res.status(404).json({ message: 'Seller not found' });
+      return res.status(404).json({ message: "Seller not found" });
     }
     res.json(seller);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
-const deleteProduct = async (req, res, next) => {
+const changeProductStatus = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const product = await Product.findById(productId);
-
     if (!product) {
       return next(new ErrorHandler("Product not found", 400));
     }
+    product.status = !product.status;
+    await product.save();
 
-    if (product.status === false) {
-      product.status = true; // Update the status to indicate the product is sold
-      await product.save(); // Save the updated product
-
-      await product.deleteOne(); // Delete the product from the database
-
-      return res.status(200).json({
-        success: true,
-        message: "Product deleted successfully",
-      });
-    } else {
-      return next(new ErrorHandler("Product cannot be deleted as it is not available", 400));
-    }
+    return res.status(200).json({
+      success: true,
+      message: `Product ${product.status ? "sold" : "available"} successfully`,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -65,10 +56,8 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
-
-
 module.exports = {
   getProductsBySellerId,
   getSellerProfile,
-  deleteProduct
+  changeProductStatus,
 };
