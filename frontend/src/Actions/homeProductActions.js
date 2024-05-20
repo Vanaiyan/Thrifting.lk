@@ -8,7 +8,9 @@ import {
 export const fetchProducts = () => async (dispatch) => {
   dispatch(fetchProductsStart());
   try {
-    const response = await axios.get("http://localhost:8000/api/products");
+    const response = await axios.get("http://localhost:8000/api/products", {
+      withCredentials: true,
+    });
     dispatch(fetchProductsSuccess(response.data.products));
   } catch (error) {
     dispatch(fetchProductsFailure(error.message));

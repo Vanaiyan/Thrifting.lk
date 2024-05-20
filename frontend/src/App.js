@@ -26,7 +26,7 @@ function App() {
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={SignUp} />
           <Route path="/demo" Component={Demo} />
-          <Route path="/chat" Component={ChatPage} />
+          <Route path="/chat/:chatId" Component={ChatPage} />
           <Route path="/seller" Component={SellerPage} />
           <Route path="/seller/register" Component={Register_S} />
           <Route path="/productDetail" Component={ProductDetailPage} />

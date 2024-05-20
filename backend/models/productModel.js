@@ -39,16 +39,46 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-
-  status:{
+  // Fields for cart tracking
+  inCart: {
     type: Boolean,
-    default:false
-  }
+    default: false,
+  },
+  cartUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+  },
+  //Time whn product added to cart
+  cartTimestamp: {
+    type: Date,
+    default: null,
+  },
+  //If any user Interested to buy this
+  isInterested: {
+    type: Boolean,
+    default: false,
+  },
+  //When user Click Buy now Button
+  interestedTimestamp: {
+    type: Date,
+    default: null,
+  },
+  soldConfirmedBuyer: {
+    type: Boolean,
+    default: false,
+  },
+  status: {
+    type: Boolean,
+    default: false,
+  },
 });
 productSchema.query.byId = function (_id) {
   return this.find({ _id: new RegExp(_id, "i") });
 };
 
-
 let schema = mongoose.model("Product", productSchema);
 module.exports = schema;
+
+const Product = mongoose.model("Product", productSchema);
+module.exports = Product;

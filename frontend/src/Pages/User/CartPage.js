@@ -13,6 +13,7 @@ const CartPage = () => {
 
   useEffect(() => {
     dispatch(getCartProducts());
+    console.log("cartIt", cartItems);
   }, [dispatch]);
 
   return (
@@ -21,6 +22,29 @@ const CartPage = () => {
       <h2 variant="title" style={{ padding: "30px 7vw 10px 7vw" }}>
         Shopping Cart
       </h2>
+      <h5
+        style={{
+          padding: "10px 7vw 1px 7vw",
+          color: "red",
+          fontWeight: "100",
+        }}
+      >
+        Hey there! Just a heads-up <br />
+        <ul style={{ marginLeft: "20px" }}>
+          <li>
+            Items in your cart are reserved for<strong> 24 hours</strong>. Make
+            sure to complete your purchase soon so you don’t miss out on your
+            favorite finds!
+          </li>
+          <br />
+          <li>
+            Once you click the "Buy Now" button, you have
+            <strong> 48 hours</strong> to confirm your purchase with the seller.
+            <br /> If you do not confirm the purchase within this timeframe, the
+            item will be automatically removed from your reserved list.
+          </li>
+        </ul>
+      </h5>
       {Object.entries(cartItems).map(([sellerId, products]) => (
         <Box key={sellerId} sx={{ margin: "2vw 7vw" }}>
           <CartSeller cartItems={products} />

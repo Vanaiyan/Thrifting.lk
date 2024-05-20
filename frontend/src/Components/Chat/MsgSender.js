@@ -9,15 +9,36 @@ export const TimeprintSender = ({ message }) => {
       sx={{ position: "absolute", bottom: "-11px", right: 2 }}
     >
       {message.timestamp
-        ? message.timestamp
-            .toDate()
-            .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        ? new Date(message.timestamp).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
         : ""}
     </Typography>
   );
 };
 
 export const MsgSender = ({ message }) => {
+  const renderMessageText = (text) => {
+    const lines = text.split("\n").map((line, index) => (
+      <React.Fragment key={index}>
+        {line.includes("**") ? (
+          <>
+            {line.split("**")[0]}
+            <strong style={{ fontSize: "14px", textDecoration: "underline" }}>
+              {line.split("**")[1]}
+            </strong>
+            {line.split("**")[2]}
+          </>
+        ) : (
+          line
+        )}
+        <br />
+      </React.Fragment>
+    ));
+    return <Typography variant="chat1">{lines}</Typography>;
+  };
+
   return (
     <Box>
       {message.imageUrl && (
@@ -52,12 +73,10 @@ export const MsgSender = ({ message }) => {
           maxWidth: { lg: "30vw", md: "40vw", sm: "50vw", xs: "60vw" },
         }}
       >
-        {message.text !== null && message.text.trim() !== "" && (
-          <Typography variant="chat1">
-            {message.text}
-            {/* Your text content goes here */}
-          </Typography>
-        )}
+        {message.text !== null &&
+          message.text.trim() !== "" &&
+          renderMessageText(message.text)}
+
         <TimeprintSender message={message} />
       </Box>
     </Box>

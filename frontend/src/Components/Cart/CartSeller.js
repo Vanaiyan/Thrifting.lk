@@ -8,42 +8,48 @@ const CartSeller = ({ cartItems }) => {
     console.log("products list", cartItems);
   }, [cartItems]);
 
+  // Check if cartItems is defined and an array before filtering
+  const filteredCartItems = Array.isArray(cartItems)
+    ? cartItems.filter((item) => !item.soldConfirmedBuyer)
+    : [];
   return (
     <Box>
-      {cartItems && cartItems.length > 0 ? (
-        <Typography>Seller: {cartItems[0].sellerName}</Typography>
+      {filteredCartItems && filteredCartItems.length > 0 ? (
+        <>
+          <Typography>Seller: {filteredCartItems[0].sellerName}</Typography>
+          <Divider sx={{ margin: "5px 0 10px 0" }} />
+          <Stack direction={"row"} spacing={2}>
+            <Grid container justifyContent={"space-between"}>
+              <Grid item lg={8}>
+                <Stack spacing={2}>
+                  {filteredCartItems.map((item) => (
+                    <CartCard
+                      key={item.productId}
+                      productId={item.productId}
+                      productName={item.name}
+                      description={item.description}
+                      discount={item.discount}
+                      price={item.price}
+                      quantity={item.quantity}
+                      seller={item.seller || ""}
+                      cartTimestamp={item.cartTimestamp}
+                      isInterested={item.isInterested}
+                      interestedTimestamp={item.interestedTimestamp}
+                    />
+                  ))}
+                </Stack>
+              </Grid>
+              <Grid item alignItems={"flex-end"}>
+                <Stack justifyContent={"flex-end"} height={"100%"}>
+                  <CartSum products={filteredCartItems} />
+                </Stack>
+              </Grid>
+            </Grid>
+          </Stack>
+        </>
       ) : (
-        <Typography>No items in cart</Typography>
+        ""
       )}
-      <Divider sx={{ margin: "5px 0 10px 0" }} />
-      <Stack direction={"row"} spacing={2}>
-        <Grid container justifyContent={"space-between"}>
-          <Grid item lg={8}>
-            <Stack spacing={2}>
-              {cartItems && cartItems.length > 0 ? (
-                cartItems.map((item) => (
-                  <CartCard
-                    key={item.productId}
-                    productId={item.productId}
-                    productName={item.name}
-                    description={item.description}
-                    discount={item.discount}
-                    price={item.price}
-                    quantity={item.quantity}
-                  />
-                ))
-              ) : (
-                <Typography>No items in cart</Typography>
-              )}
-            </Stack>
-          </Grid>
-          <Grid item alignItems={"flex-end"}>
-            <Stack justifyContent={"flex-end"} height={"100%"}>
-              <CartSum products={cartItems} />
-            </Stack>
-          </Grid>
-        </Grid>
-      </Stack>
     </Box>
   );
 };

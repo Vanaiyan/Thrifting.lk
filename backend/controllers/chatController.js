@@ -43,3 +43,24 @@ exports.getUserProfile = catchAsyncError(async (req, res, next) => {
     );
   }
 });
+
+exports.getSellerProfile = catchAsyncError(async (req, res, next) => {
+  try {
+    // console.log(" seller profile Id", req.params.sellerId);
+    const user = await User.findById(req.params.sellerId); //It wants to change as Seller  (User.findbyId => Seller.findbyId)
+    // console.log("User as Seller", user);
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    // Handle other errors (e.g., database connection error)
+    return next(
+      new ErrorHandler("An error occurred while fetching user profile", 500)
+    );
+  }
+});
