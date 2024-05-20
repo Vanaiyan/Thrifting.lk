@@ -11,7 +11,6 @@ const getAllSellers = async (req, res) => {
 };
 
 const createSeller = async (req, res) => {
-  console.log(req.body);
   try {
     const {
       firstName,
@@ -20,7 +19,6 @@ const createSeller = async (req, res) => {
       email,
       phoneNumber,
       addressField: { address, city, district, postalCode },
-
       nicName,
       nicNumber,
       frontImage,
@@ -81,7 +79,7 @@ const createSeller = async (req, res) => {
       backImage,
     });
     const createdSeller = await seller.save();
-    res.status(200).json(createdSeller);
+    res.status(200).json({ sellerId: createdSeller._id });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

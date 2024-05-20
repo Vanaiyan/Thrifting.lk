@@ -39,6 +39,16 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+
+  status:{
+    type: Boolean,
+    default:false
+  }
 });
+productSchema.query.byId = function (_id) {
+  return this.find({ _id: new RegExp(_id, "i") });
+};
+
+
 let schema = mongoose.model("Product", productSchema);
 module.exports = schema;

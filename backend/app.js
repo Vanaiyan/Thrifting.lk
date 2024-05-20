@@ -8,7 +8,7 @@ const chat = require("./routes/chat");
 const cart = require("./routes/cart");
 const wishlist = require("./routes/wishList");
 const register_S = require("./routes/register_S");
-
+const dashboard_S =require("./routes/dashboard_S");
 const cookieParser = require("cookie-parser");
 
 app.use(express.json());
@@ -23,10 +23,10 @@ app.use(
 app.use("/api", products);
 app.use("/api", auth);
 app.use("/api", chat);
+app.use('/seller',register_S);
+app.use("/api",dashboard_S);
 app.use("/api", cart);
 app.use("/api", wishlist);
-app.use("/seller", register_S);
-
 app.use(errorMiddleware);
 app.set("trust proxy", 1);
 

@@ -18,14 +18,6 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   });
 });
 
-exports.newProduct = async (req, res, next) => {
-  req.body.seller = req.user._id;
-  const product = await Product.create(req.body);
-  res.status(201).json({
-    success: true,
-    product,
-  });
-};
 
 exports.getSingleProduct = async (req, res, next) => {
   try {
@@ -91,9 +83,23 @@ exports.deleteProduct = async (req, res, next) => {
   }
 };
 
+exports.newProduct = async (req, res, next) => {
+  // req.body.seller = req.user.id;
+  req.body.seller = "662ba747e59446416eacee2d";
+
+  const product = await Product.create(req.body);
+  res.status(201).json({
+    success: true,
+    product,
+  });
+};
+
 exports.createProduct = async (req, res, next) => {
   try {
-    req.body.seller = req.user.id;
+    // req.body.user = req.user.id;
+    req.body.seller ="662ba747e59446416eacee2d";
+   
+
     const newProduct = await Product.create(req.body);
 
     res.status(201).json({
