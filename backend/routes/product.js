@@ -16,13 +16,16 @@ const {
 router
   .route("/products")
   .get(getProducts)
-  .post(isAuthenticatedUser, createProduct);
-// .get(isAuthenticatedUser, getProducts)
+  .post(createProduct);
+
+  // .get(isAuthenticatedUser, getProducts)
+  // .post(isAuthenticatedUser, createProduct);
+
 router.route("/products/new").post(authorizeRoles("admin"), newProduct);
 router
   .route("/products/:id")
   .get(getSingleProduct)
-  .put(updateProduct)
-  .delete(deleteProduct);
+  .put(updateProduct);
+  //.delete(deleteProduct);
 
 module.exports = router;

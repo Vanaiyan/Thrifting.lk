@@ -97,6 +97,9 @@ const sellerSchema = new mongoose.Schema({
 
   frontImage: imageSchema,
   backImage: imageSchema,
+
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
+
   interestedUsers: [interestedUserSchema], //To store array of interested users of this sellers product
 });
 
@@ -107,4 +110,8 @@ sellerSchema.query.byName = function (firstName) {
 sellerSchema.query.byNicNumber = function (nicNumber) {
   return this.find({ nicNumber: new RegExp("^" + nicNumber, "i") });
 };
-module.exports = mongoose.model("seller", sellerSchema);
+
+sellerSchema.query.byId = function (_id) {
+  return this.find({ _id: new RegExp(_id, "i") });
+};
+module.exports = mongoose.model("Seller", sellerSchema);

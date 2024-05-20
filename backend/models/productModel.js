@@ -37,7 +37,7 @@ const productSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now(),
   },
   // Fields for cart tracking
   inCart: {
@@ -68,7 +68,17 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  status: {
+    type: Boolean,
+    default: false,
+  },
 });
+productSchema.query.byId = function (_id) {
+  return this.find({ _id: new RegExp(_id, "i") });
+};
+
+let schema = mongoose.model("Product", productSchema);
+module.exports = schema;
 
 const Product = mongoose.model("Product", productSchema);
 module.exports = Product;
