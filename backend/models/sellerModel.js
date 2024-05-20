@@ -98,7 +98,7 @@ const sellerSchema = new mongoose.Schema({
   frontImage: imageSchema,
   backImage: imageSchema,
 
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
 
   interestedUsers: [interestedUserSchema], //To store array of interested users of this sellers product
 });

@@ -27,6 +27,7 @@ app.use(
 app.use("/api", products);
 app.use("/api", auth);
 app.use("/api", chat);
+app.use("/api", feedback);
 app.use("/seller", register_S);
 app.use("/api", dashboard_S);
 app.use("/api", cart);
