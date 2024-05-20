@@ -27,6 +27,23 @@ const imageSchema = new mongoose.Schema({
   type: String,
   data: Buffer,
 });
+//To store who interested in Products of this seller
+const interestedUserSchema = new mongoose.Schema({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+    required: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+});
 const sellerSchema = new mongoose.Schema({
   role: {
     type: String,
@@ -80,6 +97,7 @@ const sellerSchema = new mongoose.Schema({
 
   frontImage: imageSchema,
   backImage: imageSchema,
+  interestedUsers: [interestedUserSchema], //To store array of interested users of this sellers product
 });
 
 sellerSchema.query.byName = function (firstName) {

@@ -3,6 +3,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const Cart = require("../models/cartModel");
 const User = require("../models/userModel"); //It wants to change as seller model
 const Product = require("../models/productModel");
+const Seller = require("../models/sellerModel");
 
 exports.addToCart = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
@@ -217,7 +218,7 @@ exports.updateCartItemQuantity = catchAsyncError(async (req, res, next) => {
 //To add a Product is interested to a user
 exports.interestedProduct = catchAsyncError(async (req, res, next) => {
   try {
-    // const userId = req.user._id;
+    const userId = req.user._id; // Assuming the user ID is available from the request (authenticated user)
     const productId = req.params.productId;
 
     // Find the product by its ID
@@ -231,9 +232,35 @@ exports.interestedProduct = catchAsyncError(async (req, res, next) => {
     // Update the product's interested status and timestamp
     product.isInterested = true;
     product.interestedTimestamp = new Date();
-
-    // Save the updated product
     await product.save();
+
+    // Find the seller associated with the product
+    const seller = await Seller.findById(product.seller);
+    if (!seller) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Seller not found" });
+    }
+
+    // Check if the user is already in the interestedUsers array for this product
+    const existingInterest = seller.interestedUsers.find(
+      (interest) =>
+        interest.productId.equals(productId) && interest.userId.equals(userId)
+    );
+
+    if (existingInterest) {
+      // Update the timestamp if the user is already interested
+      existingInterest.timestamp = new Date();
+    } else {
+      // Add the user's interest to the seller's interestedUsers array
+      seller.interestedUsers.push({
+        productId,
+        userId,
+        timestamp: new Date(),
+      });
+    }
+
+    await seller.save();
 
     res.status(200).json({
       success: true,
