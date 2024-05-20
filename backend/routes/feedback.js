@@ -6,7 +6,6 @@ const {
 } = require("../controllers/feedbackController");
 const router = express.Router();
 
-router.route("/feedback").get(isAuthenticatedUser, getFeedbacksByProduct); //Add a product to the cart
-router.route("/feedback").post(isAuthenticatedUser, createFeedback); //Add a product to the cart
-
+router.route("/feedback").get(isAuthenticatedUser, getFeedbacksByProduct);
+router.route("/feedback").post(isAuthenticatedUser, createFeedback);
 module.exports = router;

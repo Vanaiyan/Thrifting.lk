@@ -13,11 +13,10 @@ import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 import ProductMain from "./Pages/User/ProductMain";
 import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
-import Dashboard_S from "./Pages/Seller/Dashboard_S"
+import Dashboard_S from "./Pages/Seller/Dashboard_S";
+import MyPurchasesPage from "./Pages/User/MyPurchasesPage";
 
 function App() {
-
-  
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -34,6 +33,7 @@ function App() {
           <Route path="/seller/dashboard" Component={Dashboard_S} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
+          <Route path="/mypurchase" Component={MyPurchasesPage} />
         </Routes>
       </div>
     </ThemeProvider>
