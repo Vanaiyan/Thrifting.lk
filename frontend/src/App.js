@@ -10,6 +10,7 @@ import Register_S from "./Pages/Seller/Register_S";
 import ChatPage from "./Pages/User/ChatPage";
 import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 import ProductMain from "./Pages/User/ProductMain";
+import AllProductsPage from "./Pages/Admin/AllProductsPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/seller/register" Component={Register_S} />
           <Route path="/productDetail" Component={ProductDetailPage} />
           <Route path="/product" Component={ProductMain} />
+          <Route path="/admin/allproducts" Component={AllProductsPage} />
         </Routes>
       </div>
     </ThemeProvider>
