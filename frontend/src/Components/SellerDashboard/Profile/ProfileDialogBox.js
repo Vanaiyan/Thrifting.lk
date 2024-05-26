@@ -1,9 +1,21 @@
-
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 import ProfilePage from "./Profile";
+import { useNavigate } from "react-router-dom";
 
-const ProfileDialogBox = ({open, setOpen, seller}) => {
- 
+const ProfileDialogBox = ({ open, setOpen, seller }) => {
+
+  const navigate = useNavigate();
+
+  const handleEditClick = () => {
+    setOpen(false);
+    navigate("/seller/profile/edit");
+  };
 
   return (
     <div>
@@ -13,7 +25,7 @@ const ProfileDialogBox = ({open, setOpen, seller}) => {
           <ProfilePage seller={seller} />
         </DialogContent>
         <DialogActions>
-        <Button onClick={() => setOpen(false)}>Edit</Button>
+          <Button onClick={handleEditClick}>Edit</Button>
           <Button onClick={() => setOpen(false)}>Close</Button>
         </DialogActions>
       </Dialog>

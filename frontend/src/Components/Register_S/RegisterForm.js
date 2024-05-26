@@ -195,7 +195,6 @@ const RegisterForm = () => {
         }
       } catch (error) {
         setBackErrors(error.response.data);
-        console.log("hi");
         console.log(backErrors);
         console.error("Error:", error.response.data);
       } finally {
