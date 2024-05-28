@@ -9,12 +9,13 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logout from "@mui/icons-material/Logout";
 import ProfileDialogBox from "../../SellerDashboard/Profile/ProfileDialogBox";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const NavSellerDashboard_H = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [seller, setSeller] = useState(null);
   const [open, setOpen] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -38,7 +39,11 @@ const NavSellerDashboard_H = () => {
   const handleProfileOpen = () => {
     setOpen(true);
   };
-
+  const handleAddAccount = () => {
+    handleMenuClose();
+    navigate("/seller/register");
+  };
+  const isMenuOpen = Boolean(anchorEl);
   return (
     <Grid
       container
@@ -56,8 +61,11 @@ const NavSellerDashboard_H = () => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <IconButton onClick={handleMenuOpen}>
             <Avatar />
+            <Typography sx={{ ml: 1 }}>
+              {isMenuOpen ? seller?.firstName || "Guest" : ""}
+            </Typography>
           </IconButton>
-          <Typography>{seller?.firstName || "Guest"}</Typography>
+
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -68,7 +76,7 @@ const NavSellerDashboard_H = () => {
               Profile
             </MenuItem>
             <Divider />
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={handleAddAccount}>
               <ListItemIcon>
                 <PersonAdd fontSize="small" />
               </ListItemIcon>
