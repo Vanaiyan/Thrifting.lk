@@ -15,7 +15,7 @@ import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
 import Dashboard_S from "./Pages/Seller/Dashboard_S"
 import EditProfile from "./Components/SellerDashboard/Profile/ManageSellerDetails";
-import ProfilePage from "./Components/SellerDashboard/Profile/Profile";
+import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 
 function App() {
 
@@ -35,7 +35,7 @@ function App() {
           <Route path="/product" Component={ProductMain} />
           <Route path="/seller/dashboard" Component={Dashboard_S} />
           <Route path="/seller/profile" Component={ProfilePage} />
-          <Route path="/seller/profile/edit" Component={EditProfile} />
+          <Route path="/seller/profile/edit/:sellerId" Component={EditProfile} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
         </Routes>

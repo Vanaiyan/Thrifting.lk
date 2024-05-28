@@ -10,7 +10,7 @@ router.route("/myproduct").get(Dashboard_S.getProductsBySellerId);
 router.route("/myproducts/:productId").put(Dashboard_S.changeProductStatus);
 
 router
-  .route("/profile")
+  .route("/profile/:sellerId")
   .get(Dashboard_S.getSellerProfile)
   .put(Dashboard_S.updateSellerProfile);
 

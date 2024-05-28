@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const NavSellerDashboard_H = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [anchorEl, setAnchorEl] = useState(null);
   const [seller, setSeller] = useState(null);
   const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ const NavSellerDashboard_H = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/profile");
+        const response = await axios.get("http://localhost:8000/api/profile/662ba747e59446416eacee2d");
         setSeller(response.data);
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -42,6 +43,11 @@ const NavSellerDashboard_H = () => {
   const handleAddAccount = () => {
     handleMenuClose();
     navigate("/seller/register");
+  };
+  const handleLogout = () => {
+    setIsLoggedIn(false); 
+    handleMenuClose();
+    navigate('/'); 
   };
   const isMenuOpen = Boolean(anchorEl);
   return (
@@ -82,7 +88,7 @@ const NavSellerDashboard_H = () => {
               </ListItemIcon>
               Add another account
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={handleLogout}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

@@ -37,7 +37,8 @@ const EditForm = () => {
   useEffect(() => {
     const fetchSellerDetails = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/profile");
+        const response = await axios.get(`http://localhost:8000/api/profile/662ba747e59446416eacee2d`);
+        // const response = await axios.get(`http://localhost:8000/api/profile/${seller._id}`);
         setSellerDetails(response.data);
         setLoading(false);
       } catch (error) {
@@ -82,7 +83,7 @@ const EditForm = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/profile",
+        "http://localhost:8000/api/profile/662ba6ddffd7af4f4a7fd633",
         dataToSend
       );
       console.log("Seller details updated successfully:", response.data);

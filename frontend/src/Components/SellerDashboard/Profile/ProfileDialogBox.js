@@ -5,7 +5,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import ProfilePage from "./Profile";
+import ProfilePage from "./ProfilePage";
 import { useNavigate } from "react-router-dom";
 
 const ProfileDialogBox = ({ open, setOpen, seller }) => {
@@ -14,7 +14,7 @@ const ProfileDialogBox = ({ open, setOpen, seller }) => {
 
   const handleEditClick = () => {
     setOpen(false);
-    navigate("/seller/profile/edit");
+    navigate(`/seller/profile/edit/${seller._id}`);
   };
 
   return (

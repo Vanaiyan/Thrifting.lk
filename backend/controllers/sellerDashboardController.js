@@ -4,9 +4,7 @@ const bcrypt = require("bcrypt");
 
 const getProductsBySellerId = async (req, res) => {
   try {
-    //const id = req.params.sellerId;
-    const id = "662ba6ddffd7af4f4a7fd633";
-
+    const id = req.params.sellerId;
     const seller = await Seller.findById(id);
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
@@ -20,8 +18,8 @@ const getProductsBySellerId = async (req, res) => {
 
 const getSellerProfile = async (req, res) => {
   try {
-    const id = "662ba6ddffd7af4f4a7fd633";
-    //const id = req.user.id;
+    //const id = "662ba6ddffd7af4f4a7fd633";
+    const id = req.params.sellerId;
     const seller = await Seller.findById(id);
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
@@ -34,8 +32,8 @@ const getSellerProfile = async (req, res) => {
 
 const updateSellerProfile = async (req, res) => {
   try {
-   // const id = req.user.id; 
-     const id = "662ba6ddffd7af4f4a7fd633"; 
+    // const id = req.user.id;
+    const id = "662ba6ddffd7af4f4a7fd633";
 
     // Retrieve the seller from the database
     const seller = await Seller.findById(id);
@@ -62,7 +60,6 @@ const updateSellerProfile = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 
 const changeProductStatus = async (req, res, next) => {
   try {
