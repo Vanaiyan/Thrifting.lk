@@ -12,7 +12,11 @@ const ProfilePage = ({ seller }) => {
     <Grid container justifyContent="center" style={{ maxWidth: '600px', margin: 'auto' }}>
       <Grid item xs={3}>
         <Avatar  sx={{ width: 100, height: 100 }}>{`${firstLetter_firstName}${firstLetter_lastName}`}</Avatar>
+        <Grid>
+        <Typography >{seller.nicName}</Typography>
       </Grid>
+      </Grid>
+      
       <Grid item xs={9}>
         <div style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
           <Grid container spacing={1}>

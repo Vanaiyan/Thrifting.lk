@@ -8,6 +8,7 @@ import ProductManagement from "../../SellerDashboard/ProductManagement/ProductMa
 import Dashboard from "../../SellerDashboard/Dashboard/Dashboard";
 import OrderManagement from "../../SellerDashboard/OrderManagement";
 import Chat from "../../SellerDashboard/Chat";
+import Profile_S from "../../SellerDashboard/Profile/Profile_S";
 
 const NavSellerDashboard_V = () => {
   const [selectedTab, setSelectedTab] = useState("dashboard");
@@ -27,6 +28,11 @@ const NavSellerDashboard_V = () => {
       case "chat":
         setSelectedComponent(<Chat />);
         break;
+      case "profile_S":
+        setSelectedComponent(<Profile_S />);
+        break;
+        
+
       default:
         setSelectedComponent(<Dashboard />);
     }
@@ -56,6 +62,7 @@ const NavSellerDashboard_V = () => {
           <NavListItemText onClick={() => handleTabClick("productManagement")}>Product Management</NavListItemText>
           <NavListItemText onClick={() => handleTabClick("orderManagement")}>Order Management</NavListItemText>
           <NavListItemText onClick={() => handleTabClick("chat")}>Chat</NavListItemText>
+          <NavListItemText onClick={() => handleTabClick("profile_S")}>Profile</NavListItemText>
         </NavList>
         <Divider />
       </Grid>

@@ -33,7 +33,7 @@ const getSellerProfile = async (req, res) => {
 const updateSellerProfile = async (req, res) => {
   try {
     // const id = req.user.id;
-    const id = "662ba6ddffd7af4f4a7fd633";
+    const id = "6658263ee302c74e3e3617d8";
 
     // Retrieve the seller from the database
     const seller = await Seller.findById(id);

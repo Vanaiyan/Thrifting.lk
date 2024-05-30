@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavSubTitle, NavTitle } from "../../../Styles/NavBar/nav01";
+import {  NavTitle } from "../../../Styles/NavBar/nav01";
 import { Divider, Grid, Box, Typography, Menu, MenuItem } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
@@ -8,11 +8,12 @@ import IconButton from "@mui/material/IconButton";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logout from "@mui/icons-material/Logout";
 import ProfileDialogBox from "../../SellerDashboard/Profile/ProfileDialogBox";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const NavSellerDashboard_H = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [seller, setSeller] = useState(null);
   const [open, setOpen] = useState(false);
@@ -20,7 +21,9 @@ const NavSellerDashboard_H = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/profile/662ba747e59446416eacee2d");
+        const response = await axios.get(
+          "http://localhost:8000/api/profile/6658263ee302c74e3e3617d8"
+        );
         setSeller(response.data);
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -45,9 +48,9 @@ const NavSellerDashboard_H = () => {
     navigate("/seller/register");
   };
   const handleLogout = () => {
-    setIsLoggedIn(false); 
+    setIsLoggedIn(false);
     handleMenuClose();
-    navigate('/'); 
+    navigate("/");
   };
   const isMenuOpen = Boolean(anchorEl);
   return (
@@ -65,11 +68,9 @@ const NavSellerDashboard_H = () => {
       </Grid>
       <Grid item md={6} lg={2} textAlign={"right"}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Avatar />
           <IconButton onClick={handleMenuOpen}>
-            <Avatar />
-            <Typography sx={{ ml: 1 }}>
-              {isMenuOpen ? seller?.firstName || "Guest" : ""}
-            </Typography>
+            <ArrowDropDownIcon />
           </IconButton>
 
           <Menu
@@ -77,6 +78,13 @@ const NavSellerDashboard_H = () => {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
+            <MenuItem>
+              <Avatar />
+              <Typography sx={{ ml: 1 }}>
+                {isMenuOpen ? seller?.firstName || "Guest" : ""}
+              </Typography>
+            </MenuItem>
+
             <MenuItem onClick={handleProfileOpen}>
               <PersonRoundedIcon />
               Profile

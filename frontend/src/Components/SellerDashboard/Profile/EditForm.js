@@ -37,7 +37,7 @@ const EditForm = () => {
   useEffect(() => {
     const fetchSellerDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/profile/662ba747e59446416eacee2d`);
+        const response = await axios.get(`http://localhost:8000/api/profile/6658263ee302c74e3e3617d8`);
         // const response = await axios.get(`http://localhost:8000/api/profile/${seller._id}`);
         setSellerDetails(response.data);
         setLoading(false);
