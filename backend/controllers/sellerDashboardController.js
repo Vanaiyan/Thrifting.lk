@@ -40,8 +40,7 @@ const updateSellerProfile = async (req, res) => {
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
     }
-
-    // Hash the password if provided
+    // Hash the new password if provided
     if (req.body.password) {
       req.body.password = await bcrypt.hash(req.body.password, 10);
     }
@@ -60,6 +59,7 @@ const updateSellerProfile = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 const changeProductStatus = async (req, res, next) => {
   try {

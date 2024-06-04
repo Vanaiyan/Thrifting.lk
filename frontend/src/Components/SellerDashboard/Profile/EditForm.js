@@ -6,6 +6,8 @@ import {
   MenuItem,
   Button,
   Grid,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +29,7 @@ const EditForm = () => {
     nicName: "",
     nicNumber: "",
   });
+  const [changePassword, setChangePassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -37,7 +40,9 @@ const EditForm = () => {
   useEffect(() => {
     const fetchSellerDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/profile/6658263ee302c74e3e3617d8`);
+        const response = await axios.get(
+          `http://localhost:8000/api/profile/6658263ee302c74e3e3617d8`
+        );
         // const response = await axios.get(`http://localhost:8000/api/profile/${seller._id}`);
         setSellerDetails(response.data);
         setLoading(false);
@@ -70,20 +75,26 @@ const EditForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if password and confirm password match
-    if (sellerDetails.password !== sellerDetails.confirmPassword) {
-      setErrors({
-        confirmPassword: "Password and confirm password do not match",
-      });
-      return;
-    }
-
-    // Remove confirmPassword field from the data sent to the backend
-    const { confirmPassword, ...dataToSend } = sellerDetails;
-
     try {
+      if (
+        changePassword &&
+        sellerDetails.password !== sellerDetails.confirmPassword
+      ) {
+        setErrors({
+          confirmPassword: "Password and confirm password do not match",
+        });
+        return;
+      }
+      let dataToSend = { ...sellerDetails };
+
+      if (!changePassword) {
+        const { password, confirmPassword, ...rest } = sellerDetails;
+        dataToSend = { ...rest };
+      } else {
+      }
+
       const response = await axios.put(
-        "http://localhost:8000/api/profile/662ba6ddffd7af4f4a7fd633",
+        "http://localhost:8000/api/profile/6658263ee302c74e3e3617d8",
         dataToSend
       );
       console.log("Seller details updated successfully:", response.data);
@@ -101,7 +112,6 @@ const EditForm = () => {
       <form onSubmit={handleSubmit}>
         <Grid
           xs={12}
-          
           sx={{
             justifyContent: "center",
             alignItems: "center",
@@ -136,32 +146,6 @@ const EditForm = () => {
                 onChange={handleChange}
                 error={errors.lastName !== undefined}
                 helperText={errors.lastName}
-              />
-            </Grid>
-            <Grid sx={{ display: "flex" }} gap={2}>
-              <TextField
-                label="Password"
-                type="password"
-                fullWidth
-                margin="normal"
-                required
-                name="password"
-                value={sellerDetails.password}
-                onChange={handleChange}
-                error={errors.password !== undefined}
-                helperText={errors.password}
-              />
-              <TextField
-                label="Confirm Password"
-                type="password"
-                fullWidth
-                margin="normal"
-                required
-                name="confirmPassword"
-                value={sellerDetails.confirmPassword}
-                onChange={handleChange}
-                error={errors.confirmPassword !== undefined}
-                helperText={errors.confirmPassword}
               />
             </Grid>
             <Grid sx={{ display: "flex" }} gap={2}>
@@ -201,6 +185,45 @@ const EditForm = () => {
                   maxLength: 10,
                   placeholder: "Enter phone number (e.g., 0761234567)",
                 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={changePassword}
+                    onChange={(e) => setChangePassword(e.target.checked)}
+                  />
+                }
+                label="Change Password"
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ display: "flex" }} gap={2}>
+              <TextField
+                label="Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                required
+                name="password"
+                value={sellerDetails.password}
+                onChange={handleChange}
+                error={errors.password !== undefined}
+                helperText={errors.password}
+                style={{ display: changePassword ? "block" : "none" }}
+              />
+              <TextField
+                label="Confirm Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                required
+                name="confirmPassword"
+                value={sellerDetails.confirmPassword}
+                onChange={handleChange}
+                error={errors.confirmPassword !== undefined}
+                helperText={errors.confirmPassword}
+                style={{ display: changePassword ? "block" : "none" }}
               />
             </Grid>
           </Grid>

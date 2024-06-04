@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Avatar, Grid, Typography, TextField, Button, Rating } from "@mui/material";
+import EditForm from "./EditForm";
 
 const EditProf = ({ seller }) => {
   const [editMode, setEditMode] = useState(false);
@@ -187,6 +188,8 @@ const EditProf = ({ seller }) => {
             )}
           </Grid>
         </Grid>
+
+        <EditForm />
       </div>
     </Grid>
   </Grid>
