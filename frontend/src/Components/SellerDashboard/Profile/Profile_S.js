@@ -4,6 +4,7 @@ import { Grid } from "@mui/material";
 import EditForm from "./EditForm";
 import EditProf from "./EditProf";
 
+
 const Profile_S = () => {
   const [sellerDetails, setSellerDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,6 +40,7 @@ const Profile_S = () => {
     <Grid>
       <EditProf seller={sellerDetails}  errors={error} setErrors={setError} />
       {/* <EditForm /> */}
+      
     </Grid>
   );
 };

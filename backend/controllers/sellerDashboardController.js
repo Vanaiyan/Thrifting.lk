@@ -32,34 +32,19 @@ const getSellerProfile = async (req, res) => {
 
 const updateSellerProfile = async (req, res) => {
   try {
-    // const id = req.user.id;
-    const id = "6658263ee302c74e3e3617d8";
-
-    // Retrieve the seller from the database
+    const id = req.params.sellerId;
     const seller = await Seller.findById(id);
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
     }
-    // Hash the new password if provided
-    if (req.body.password) {
-      req.body.password = await bcrypt.hash(req.body.password, 10);
-    }
-
-    // Update seller's data with the data from the request body
     Object.assign(seller, req.body);
-
-    // Save the updated seller data
     await seller.save();
-
-    // Send the updated seller data in the response
     res.json(seller);
   } catch (error) {
-    // Handle any errors
     console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 
 const changeProductStatus = async (req, res, next) => {
   try {

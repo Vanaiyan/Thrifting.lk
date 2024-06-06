@@ -8,6 +8,8 @@ import {
   Grid,
   Checkbox,
   FormControlLabel,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +34,10 @@ const EditForm = () => {
   const [changePassword, setChangePassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+const [snackbarMessage, setSnackbarMessage] = useState("");
+const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
   const navigate = useNavigate();
 
   const handleCancel = () => {
@@ -54,6 +60,19 @@ const EditForm = () => {
     fetchSellerDetails();
   }, []);
 
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+  
+  const showSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name in sellerDetails.addressField) {
@@ -90,7 +109,6 @@ const EditForm = () => {
       if (!changePassword) {
         const { password, confirmPassword, ...rest } = sellerDetails;
         dataToSend = { ...rest };
-      } else {
       }
 
       const response = await axios.put(
@@ -98,8 +116,10 @@ const EditForm = () => {
         dataToSend
       );
       console.log("Seller details updated successfully:", response.data);
+      showSnackbar("Seller details updated successfully!", "success");
     } catch (error) {
       console.error("Error updating seller details:", error);
+      showSnackbar("Error updating seller details.", "error");
     }
   };
 
@@ -306,6 +326,15 @@ const EditForm = () => {
           </Box>
         </Grid>
       </form>
+      <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleSnackbarClose}
+    >
+      <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+        {snackbarMessage}
+      </Alert>
+    </Snackbar> 
     </div>
   );
 };
