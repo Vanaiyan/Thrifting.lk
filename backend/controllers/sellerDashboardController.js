@@ -37,9 +37,58 @@ const updateSellerProfile = async (req, res) => {
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
     }
-    Object.assign(seller, req.body);
+
+    const { password, ...updatedFields } = req.body;
+    Object.assign(seller, updatedFields);
+
     await seller.save();
-    res.json(seller);
+    res.json({ message: "Profile updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const validateSellerPassword = async (req, res) => {
+  try {
+  
+    const id = req.params.sellerId;
+    const { currentPassword } = req.body;
+    const seller = await Seller.findById(id).select("+password");
+
+    if (!seller) {
+      return res.status(404).json({ message: "Seller not found" });
+    }
+    const isMatch = await bcrypt.compare(currentPassword, seller.password);
+
+    if (isMatch) {
+      res.json({ valid: true });
+    } else {
+      res.json({ valid: false });
+    }
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateSellerPassword = async (req, res) => {
+  try {
+    const id = req.params.sellerId;
+    const seller = await Seller.findById(id);
+
+    if (!seller) {
+      return res.status(404).json({ message: "Seller not found" });
+    }
+
+    if (req.body.newPassword) {
+      const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+      seller.password = hashedPassword;
+    } else {
+      return res.status(400).json({ message: "Password is required" });
+    }
+    await seller.save();
+    res.json({ message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
@@ -73,4 +122,6 @@ module.exports = {
   getSellerProfile,
   updateSellerProfile,
   changeProductStatus,
+  validateSellerPassword,
+  updateSellerPassword,
 };

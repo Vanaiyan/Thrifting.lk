@@ -6,7 +6,7 @@ const Form1 = ({ editMode, handleChange, editableSeller }) => {
     <div>
       <Grid container spacing={1}>
         <Grid item xs={12} spacing={2} gap={2}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="subtitle1" gutterBottom>
             Personal Information
           </Typography>
           <Grid xs={12} sx={{ display: "flex" ,padding:"10px"}} gap={1}>
@@ -60,7 +60,7 @@ const Form1 = ({ editMode, handleChange, editableSeller }) => {
          
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="subtitle1" gutterBottom>
             Address Information
           </Typography>
           <Grid xs={12} sx={{ display: "flex",padding:"10px" }} gap={2}>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid } from "@mui/material";
-import EditForm from "./EditForm";
-import EditProf from "./EditProf";
+import { Grid } from "@mui/material"
+import EditProfile from "./EditProfile";
 
 
 const Profile_S = () => {
@@ -38,9 +37,7 @@ const Profile_S = () => {
 
   return (
     <Grid>
-      <EditProf seller={sellerDetails}  errors={error} setErrors={setError} />
-      {/* <EditForm /> */}
-      
+      <EditProfile seller={sellerDetails}  errors={error} setErrors={setError} />    
     </Grid>
   );
 };
