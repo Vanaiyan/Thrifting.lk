@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Avatar, Grid, Button, Rating, Snackbar, Alert } from "@mui/material";
-import Form1 from "./Form1";
-import axios from "axios";
+ import EditDetailsForm from "./EditDetailsForm";
+//import EditDetailsForm from "../../Data/EditDetailsForm";
 import ChangePasswordForm from "./ChangePasswordForm";
+import axios from "axios";
 
 const EditProfile = ({ seller }) => {
   const [editMode, setEditMode] = useState(false);
@@ -35,7 +36,6 @@ const EditProfile = ({ seller }) => {
       [name]: name in prev.addressField ? prev.addressField[name] : value,
     }));
   };
-  
 
   const handleChangePassword = () => {
     setChangePassword(true);
@@ -67,7 +67,12 @@ const EditProfile = ({ seller }) => {
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" style={{ margin: "auto" }}>
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      style={{ margin: "auto" }}
+    >
       <Grid item xs={12} sm={8} md={10}>
         <div
           style={{
@@ -77,7 +82,13 @@ const EditProfile = ({ seller }) => {
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <Grid container justifyContent="center" alignItems="center" direction="column" paddingBottom="50px">
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            direction="column"
+            paddingBottom="50px"
+          >
             <Avatar sx={{ width: 100, height: 100 }}>
               {`${firstLetter_firstName}${firstLetter_lastName}`}
             </Avatar>
@@ -103,7 +114,7 @@ const EditProfile = ({ seller }) => {
           </Grid>
           {changeEditInfo && (
             <>
-              <Form1
+              <EditDetailsForm
                 editMode={editMode}
                 handleChange={handleChange}
                 editableSeller={editableSeller}
@@ -143,9 +154,7 @@ const EditProfile = ({ seller }) => {
               </Grid>
             </>
           )}
-          {changePassword && (
-            <ChangePasswordForm seller={seller} />
-          )}
+          {changePassword && <ChangePasswordForm seller={seller} />}
         </div>
       </Grid>
       <Snackbar
@@ -153,7 +162,11 @@ const EditProfile = ({ seller }) => {
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>

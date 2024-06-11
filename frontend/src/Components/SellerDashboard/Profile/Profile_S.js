@@ -3,8 +3,7 @@ import axios from "axios";
 import { Grid } from "@mui/material"
 import EditProfile from "./EditProfile";
 
-
-const Profile_S = () => {
+const Profile_S = ({sellerId}) => {
   const [sellerDetails, setSellerDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,10 +11,7 @@ const Profile_S = () => {
   useEffect(() => {
     const fetchSellerDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/profile/6658263ee302c74e3e3617d8`
-        );
-        // const response = await axios.get(`http://localhost:8000/api/profile/${seller._id}`);
+        const response = await axios.get(`http://localhost:8000/api/profile/${sellerId}`);
         setSellerDetails(response.data);
         setLoading(false);
       } catch (error) {

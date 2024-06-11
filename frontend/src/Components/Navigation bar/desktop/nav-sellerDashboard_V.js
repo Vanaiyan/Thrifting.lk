@@ -10,31 +10,31 @@ import OrderManagement from "../../SellerDashboard/OrderManagement";
 import Chat from "../../SellerDashboard/Chat";
 import Profile_S from "../../SellerDashboard/Profile/Profile_S";
 
-const NavSellerDashboard_V = () => {
+const NavSellerDashboard_V = ({sellerId}) => {
   const [selectedTab, setSelectedTab] = useState("dashboard");
-  const [selectedComponent, setSelectedComponent] = useState(<Dashboard />);
+  const [selectedComponent, setSelectedComponent] = useState(<Dashboard sellerId={sellerId}/>);
 
   useEffect(() => {
     switch (selectedTab) {
       case "dashboard":
-        setSelectedComponent(<Dashboard />);
+        setSelectedComponent(<Dashboard sellerId={sellerId} />);
         break;
       case "productManagement":
-        setSelectedComponent(<ProductManagement />);
+        setSelectedComponent(<ProductManagement sellerId={sellerId} />);
         break;
       case "orderManagement":
-        setSelectedComponent(<OrderManagement />);
+        setSelectedComponent(<OrderManagement sellerId={sellerId} />);
         break;
       case "chat":
-        setSelectedComponent(<Chat />);
+        setSelectedComponent(<Chat sellerId={sellerId} />);
         break;
       case "profile_S":
-        setSelectedComponent(<Profile_S />);
+        setSelectedComponent(<Profile_S sellerId={sellerId} />);
         break;
         
 
       default:
-        setSelectedComponent(<Dashboard />);
+        setSelectedComponent(<Dashboard  sellerId={sellerId} />);
     }
   }, [selectedTab]);
 
