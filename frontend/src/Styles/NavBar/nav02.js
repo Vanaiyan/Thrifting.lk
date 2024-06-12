@@ -16,10 +16,12 @@ export const NavListItemText = styled(Button)({
   minWidth:'250px',
     borderRadius: "10px",
     padding: "5px 10px",
-    color: "#000000",
+    color: "#ffffff",
     "&:hover": {
+      color:Colors.primary,
       background: Colors.dovegrey,
       borderRadius: "5px",
+     
     },
   });
 

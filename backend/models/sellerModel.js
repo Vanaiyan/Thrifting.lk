@@ -98,6 +98,13 @@ const sellerSchema = new mongoose.Schema({
   frontImage: imageSchema,
   backImage: imageSchema,
 
+  rating: {
+    type: Number,
+    min: 1,
+    max: 10,
+    // default :0
+  },
+
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
 
   interestedUsers: [interestedUserSchema], //To store array of interested users of this sellers product
