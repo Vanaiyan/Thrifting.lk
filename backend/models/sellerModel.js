@@ -27,6 +27,23 @@ const imageSchema = new mongoose.Schema({
   type: String,
   data: Buffer,
 });
+//To store who interested in Products of this seller
+const interestedUserSchema = new mongoose.Schema({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+    required: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+});
 const sellerSchema = new mongoose.Schema({
   role: {
     type: String,
@@ -80,6 +97,17 @@ const sellerSchema = new mongoose.Schema({
 
   frontImage: imageSchema,
   backImage: imageSchema,
+
+  rating: {
+    type: Number,
+    min: 1,
+    max: 10,
+    // default :0
+  },
+
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+
+  interestedUsers: [interestedUserSchema], //To store array of interested users of this sellers product
 });
 
 sellerSchema.query.byName = function (firstName) {
@@ -89,4 +117,8 @@ sellerSchema.query.byName = function (firstName) {
 sellerSchema.query.byNicNumber = function (nicNumber) {
   return this.find({ nicNumber: new RegExp("^" + nicNumber, "i") });
 };
-module.exports = mongoose.model("seller", sellerSchema);
+
+sellerSchema.query.byId = function (_id) {
+  return this.find({ _id: new RegExp(_id, "i") });
+};
+module.exports = mongoose.model("Seller", sellerSchema);

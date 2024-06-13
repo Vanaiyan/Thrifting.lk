@@ -1,18 +1,25 @@
 // ProductDetailPage.js
-import React from 'react';
-import NavBar from '../../Components/Navigation bar/navigation';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import ProductImagesBox from '../../Components/ProductdetailPage/ProductImagesBox';
-import ProductDetailBox from '../../Components/ProductdetailPage/ProductDetailBox';
-import ProductDescriptionBox from '../../Components/ProductdetailPage/ProductDescriptionBox';
-import ProductSellerDetailBox from '../../Components/ProductdetailPage/ProductSellerDetailBox';
+import React from "react";
+import NavBar from "../../Components/Navigation bar/navigation";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import ProductImagesBox from "../../Components/ProductdetailPage/ProductImagesBox";
+import ProductDetailBox from "../../Components/ProductdetailPage/ProductDetailBox";
+import ProductDescriptionBox from "../../Components/ProductdetailPage/ProductDescriptionBox";
+import ProductSellerDetailBox from "../../Components/ProductdetailPage/ProductSellerDetailBox";
 
 const ProductDetailPage = () => {
   return (
     <div>
       <NavBar />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '20px'}}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: "20px",
+        }}
+      >
         <Container>
           <Box
             id="One"
@@ -23,7 +30,11 @@ const ProductDetailPage = () => {
             padding={4}
             borderRadius={1}
             height={1080}
-            sx={{ bgcolor: '##FFFFFF', border: '1px solid gray', boxSizing: 'border-box' }}
+            sx={{
+              bgcolor: "##FFFFFF",
+              border: "1px solid gray",
+              boxSizing: "border-box",
+            }}
           >
             <Box>
               <ProductImagesBox />
@@ -38,7 +49,6 @@ const ProductDetailPage = () => {
             <Box>
               <ProductSellerDetailBox />
             </Box>
-
           </Box>
         </Container>
       </div>

@@ -6,13 +6,11 @@ import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Typography from "@mui/material/Typography";
+import WishlistIconButton from "../WishList/WishListIcon";
+import { Box } from "@mui/material";
+import AddToCartButton from "../Cart/AddtoCartBtn";
 
-export default function ProductCardsm({
-  title,
-  price,
-  imageSrc,
-  onAddToCartClick,
-}) {
+export default function ProductCardsm({ id, title, price, imageSrc }) {
   return (
     <Card
       sx={{
@@ -26,7 +24,7 @@ export default function ProductCardsm({
         transition: "box-shadow 0.2s ease-in",
         boxShadow: " 0px 5px 10px rgba(0, 0, 0, 0.1)",
         "&:hover": {
-          boxShadow: " 0px 10px 30px rgba(0, 0, 0, 0.3)",
+          boxShadow: " 0px 10px 25px rgba(0, 0, 0, 0.3)",
         },
       }}
     >
@@ -42,22 +40,20 @@ export default function ProductCardsm({
         <Typography
           fontSize="14px"
           color="text.secondary"
-          sx={{ position: "absolute", top: "220px" }}
+          sx={{ position: "absolute", top: "210px" }}
         >
           Price: {price}
         </Typography>
       </CardContent>
 
-      <CardActions sx={{ display: "flex", alignItems: "flex-end", margin: 0 }}>
-        <IconButton
-          color="primary"
-          aria-label="add to cart"
-          sx={{ position: "absolute", bottom: "10px" }}
-          onClick={onAddToCartClick}
-        >
-          <AddShoppingCartIcon />
-        </IconButton>
+      <CardActions
+        sx={{ display: "flex", alignItems: "flex-end", marginTop: "15px" }}
+      >
+        <AddToCartButton productId={id} />
       </CardActions>
+      <Box sx={{ position: "absolute", top: 0, right: 0 }}>
+        <WishlistIconButton productId={id} />
+      </Box>
     </Card>
   );
 }

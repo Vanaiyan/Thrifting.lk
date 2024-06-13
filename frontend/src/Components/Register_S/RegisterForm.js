@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  MenuItem,
+  Snackbar,
+  Input,
+  InputLabel,
+  Button,
+  TextField,
+  Typography,
+  Grid,
+  Alert,
+} from "@mui/material";
+import districts from "../Data/Districts";
 import axios from "axios";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { Box, MenuItem, Snackbar, Input, InputLabel } from "@mui/material";
-import { Alert } from "@mui/material";
 
 const RegisterForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -29,6 +37,7 @@ const RegisterForm = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  const navigate = useNavigate();
   const handleCloseAlert = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -119,22 +128,6 @@ const RegisterForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const clearForm = () => {
-    setFirstName("");
-    setLastName("");
-    setPassword("");
-    setEmail("");
-    setPhoneNumber("");
-    setAddress("");
-    setCity("");
-    setDistrict("");
-    setPostalCode("");
-    setNicName("");
-    setNicNumber("");
-    setFrontImage(null);
-    setBackImage(null);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -173,26 +166,21 @@ const RegisterForm = () => {
           }
         );
 
-        const data = response.data;
         const dataStatus = response.status;
-        console.log(data);
         if (dataStatus === 200) {
-          console.log("Form submitted successfully!");
           setSuccessMessage("Form submitted successfully!");
           setTimeout(() => {
-            clearForm();
-            setSuccessMessage("");
-          }, 5000);
+            navigate("/seller/dashboard"); //            navigate("/seller/login");
+          }, 3000);
         } else {
           console.log("Form validation failed. Please check the errors.");
         }
       } catch (error) {
         setBackErrors(error.response.data);
-        console.log("hi");
         console.log(backErrors);
         console.error("Error:", error.response.data);
       } finally {
-        setSubmitting(false); // Reset submitting state
+        setSubmitting(false);
       }
     } else {
       console.log(
@@ -401,20 +389,11 @@ const RegisterForm = () => {
                 sx={{ fontSize: "14px", marginBottom: "10px" }}
                 select
               >
-                <MenuItem value="AMPARA">Ampara</MenuItem>
-                <MenuItem value="ANURADHAPURA">Anuradhapura</MenuItem>
-                <MenuItem value="COLOMBO">Colombo</MenuItem>
-                <MenuItem value="GALLE">Galle</MenuItem>
-                <MenuItem value="GAMPAHA">Gampaha</MenuItem>
-                <MenuItem value="HAMBANTOTA">Hambantota</MenuItem>
-                <MenuItem value="JAFFNA">Jaffna</MenuItem>
-                <MenuItem value="KALUTARA">Kalutara</MenuItem>
-                <MenuItem value="KANDY">Kandy</MenuItem>
-                <MenuItem value="KEGALLE">Kegalle</MenuItem>
-                <MenuItem value="KILINOCHCHI">Kilinochchi</MenuItem>
-                <MenuItem value="MANNAR">Mannar</MenuItem>
-                {/* <MenuItem value=""></MenuItem> */}
-                <MenuItem value="TRINCOMALEE">Trincomalee</MenuItem>
+                {districts.map((district) => (
+                  <MenuItem key={district} value={district}>
+                    {district}
+                  </MenuItem>
+                ))}
               </TextField>
 
               <TextField

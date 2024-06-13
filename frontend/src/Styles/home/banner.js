@@ -19,6 +19,7 @@ export const BannerContainer = styled(Box)(({ theme }) => ({
     margin: "10px 7vw",
   },
 }));
+
 export const TextContainer = styled(Box)({
   padding: 0,
   margin: 0,
