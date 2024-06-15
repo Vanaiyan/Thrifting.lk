@@ -56,6 +56,26 @@ const changeProductStatus = async (req, res, next) => {
   }
 };
 
+
+// //Function To get All Sellers
+// exports.getAllSellersToAdmin = async (req, res, next) => {
+//   try {
+//     // Fetch all sellers from the database
+//     const sellers = await Seller.find();
+
+//     res.status(200).json({
+//       success: true,
+//       sellers: sellers,
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Server Error",
+//     });
+//   }
+// };
+
+
 module.exports = {
   getProductsBySellerId,
   getSellerProfile,

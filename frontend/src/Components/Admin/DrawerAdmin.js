@@ -9,9 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import MovieIcon from "@mui/icons-material/Movie";
-import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
+import StoreIcon from '@mui/icons-material/Store';
+import PeopleIcon from '@mui/icons-material/People';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import ReportIcon from '@mui/icons-material/Report';
 import BookIcon from "@mui/icons-material/Book";
 // import logo from "../../Assets/logoPT.png";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp"; // Import logout icon
@@ -52,18 +54,11 @@ const DrawerAdmin = () => {
       <NavTitle sx={{ color: "#ff5003",m:"15px" }}>Thrifting.lk</NavTitle>
       <List >
         {[
-          {
-            text: "Dashboard",
-            icon: <DashboardIcon />,
-            path: "/admin/dashboard",
-          },
-          {
-            text: "All Products",
-            icon: <LocalMoviesIcon />,
-            path: "/admin/allproducts",
-          },
-          { text: "Orders", icon: <MovieIcon />, path: "/admin/orders" },
-          { text: "Users", icon: <BookIcon />, path: "/admin/users" },
+          { text: "All Products", icon: <StoreIcon />,path: "/admin/allproducts", },
+          { text: "Sellers", icon: <PeopleIcon />, path: "/admin/Sellers" },
+          { text: "Order list", icon: <ListAltIcon />, path: "/admin/OrderList" },
+          { text: "Seller approval", icon: <VerifiedUserIcon />, path: "/admin/Seller approval" },
+          { text: "Report feedback", icon: <ReportIcon />, path: "/admin/Report feedback" },
         ].map((item, index) => (
           <ListItem
             key={index}

@@ -15,6 +15,9 @@ import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
 import Dashboard_S from "./Pages/Seller/Dashboard_S"
 import AllProductsPage from "./Pages/Admin/AllProductsPage";
+import AllSellersPage from "./Pages/Admin/Seller";
+import OrderList from "./Pages/Admin/OrderList";
+
 
 function App() {
 
@@ -36,6 +39,8 @@ function App() {
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/admin/allproducts" Component={AllProductsPage} />
+          <Route path="/admin/Sellers" Component={AllSellersPage} />
+          <Route path="/admin/OrderList" Component={OrderList} />
         </Routes>
       </div>
     </ThemeProvider>
