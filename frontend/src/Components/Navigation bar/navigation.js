@@ -1,11 +1,18 @@
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@emotion/react";
+import { useSelector } from "react-redux"; // Import useSelector
 import { NavDesktop } from "./desktop/nav_desktop";
+import { NavDesktopAuthorized } from "./desktop/nav_DeskAuthorized"; // Assuming this is the correct path
 import { NavMobile } from "./mobile/nav_mobile";
 
 export default function NavBar() {
   const theme = useTheme();
-
   const matches = useMediaQuery(theme.breakpoints.down("md"));
-  return <>{matches ? <NavMobile /> : <NavDesktop />}</>;
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated); // Access the auth state
+
+  if (matches) {
+    return <NavMobile />;
+  } else {
+    return isAuthenticated ? <NavDesktopAuthorized /> : <NavDesktop />;
+  }
 }

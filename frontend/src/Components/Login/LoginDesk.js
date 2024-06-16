@@ -18,7 +18,8 @@ import loginImage from "./images/img-login.png";
 import NavLogin from "../Navigation bar/nav-login";
 import { loginUser } from "../../Actions/userAction";
 import { useSnackbar } from "../../Actions/snackbar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const LoginDesk = () => {
   const { snackbarOpen, successMessage, handleSnackbarClose, showSnackbar } =
@@ -26,25 +27,29 @@ const LoginDesk = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [checked, setChecked] = useState(false);
+  const dispatch =useDispatch();
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await loginUser(email, password);
+      const response = await dispatch(loginUser(email, password));
 
       if (response.data.success) {
         console.log("Success:", response.data);
 
         showSnackbar("Login successful!");
+
+        // Redirect to home page after a short delay
+        setTimeout(() => {
+          navigate("/");
+        }, 1000); // 1 seconds delay to show the Snackbar message
       } else {
         showSnackbar(response.data.message);
       }
     } catch (error) {
+      console.error(error);
       showSnackbar("An error occurred. Please try again.");
     }
   };
@@ -118,16 +123,8 @@ const LoginDesk = () => {
                   fullWidth
                   margin="normal"
                   required
-                  sx={{ fontSize: "14px", marginBottom: "10px" }}
+                  sx={{ fontSize: "14px", marginBottom: "20px" }}
                 />
-                <Typography variant="subtitle2" sx={{ marginBottom: "20px" }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={checked} onChange={handleChange} />
-                    }
-                  />
-                  I agree with Privacy Policy and Terms of Use
-                </Typography>
 
                 <Button
                   type="submit"

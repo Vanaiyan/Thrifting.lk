@@ -4,13 +4,13 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Box, Paper, Alert, Snackbar, Hidden } from "@mui/material";
+import { Box, Paper, Alert, Snackbar, Hidden, Checkbox, FormControlLabel } from "@mui/material";
 import theme from "../../Styles/Theme";
 import signupImage from "./images/img-signup.png";
 import NavLogin from "../Navigation bar/nav-login";
 import { useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const SignUpDesk = () => {
   const [firstName, setFirstName] = useState("");
@@ -18,9 +18,17 @@ const SignUpDesk = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // New state for Snackbar
-  const [successMessage, setSuccessMessage] = useState(""); // New state for success message
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [validationErrors, setValidationErrors] = useState({});
+  const [checked, setChecked] = useState(false);
+
+  const handleChangeterm = (event) => {
+    setChecked(event.target.checked);
+  };
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -30,8 +38,85 @@ const SignUpDesk = () => {
     setSnackbarOpen(false);
   };
 
+  const validateField = (name, value) => {
+    const errors = { ...validationErrors };
+
+    switch (name) {
+      case "firstName":
+        errors.firstName = value.trim() ? "" : "First Name is required";
+        break;
+      case "lastName":
+        errors.lastName = value.trim() ? "" : "Last Name is required";
+        break;
+      case "email":
+        if (!value.trim()) {
+          errors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(value)) {
+          errors.email = "Email is invalid";
+        } else {
+          errors.email = "";
+        }
+        break;
+      case "password":
+        if (!value) {
+          errors.password = "Password is required";
+        } else if (value.length < 8) {
+          errors.password = "Password must be at least 8 characters long";
+        } else if (!/[a-zA-Z]/.test(value) || !/\d/.test(value)) {
+          errors.password = "Password must contain at least one letter and one number";
+        } else {
+          errors.password = "";
+        }
+        break;
+      case "confirmPassword":
+        if (!value) {
+          errors.confirmPassword = "Confirm Password is required";
+        } else if (value !== password) {
+          errors.confirmPassword = "Passwords do not match";
+        } else {
+          errors.confirmPassword = "";
+        }
+        break;
+      default:
+        break;
+    }
+
+    setValidationErrors(errors);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "firstName":
+        setFirstName(value);
+        break;
+      case "lastName":
+        setLastName(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      case "confirmPassword":
+        setConfirmPassword(value);
+        break;
+      default:
+        break;
+    }
+    validateField(name, value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Check if the user has agreed to the terms
+    if (!checked) {
+      setErrorMessage("Please agree to the Privacy Policy and Terms of Use");
+      return;
+    }
+    if (Object.values(validationErrors).some((error) => error)) return;
+
     try {
       const response = await axios.post(
         "http://localhost:8000/api/register",
@@ -51,14 +136,19 @@ const SignUpDesk = () => {
       const data = response.data;
       if (data.success) {
         console.log("Success:", data);
-        setSuccessMessage("Account Created Sucessfully!"); // Set success message
-        setSnackbarOpen(true); // Open the Snackbar
+        setSuccessMessage("Account Created Successfully!");
+        setSnackbarOpen(true);
+
+        // Redirect to home page after a short delay
+        setTimeout(() => {
+          navigate("/");
+        }, 2000); // 2 seconds delay to show the Snackbar message
       } else {
         setErrorMessage(data.message);
-        // Handle error, e.g., display an error message to the user
       }
     } catch (error) {
       console.error("Error:", error.response.data);
+      setErrorMessage(error.response.data.message || "An error occurred");
     }
   };
 
@@ -96,7 +186,7 @@ const SignUpDesk = () => {
               }}
             >
               <Typography
-                variant="title1"
+                variant="h5"
                 bgColor="primary"
                 sx={{ fontWeight: 700, color: "#344054" }}
               >
@@ -115,27 +205,36 @@ const SignUpDesk = () => {
                   fullWidth
                   margin="normal"
                   required
+                  name="firstName"
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={handleChange}
                   sx={{ fontSize: "14px", marginBottom: "10px" }}
+                  error={!!validationErrors.firstName}
+                  helperText={validationErrors.firstName}
                 />
                 <TextField
                   label="Last Name"
                   fullWidth
                   margin="normal"
                   required
+                  name="lastName"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={handleChange}
                   sx={{ fontSize: "14px", marginBottom: "10px" }}
+                  error={!!validationErrors.lastName}
+                  helperText={validationErrors.lastName}
                 />
                 <TextField
                   label="Email"
                   fullWidth
                   margin="normal"
                   required
+                  name="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChange}
                   sx={{ fontSize: "14px", marginBottom: "10px" }}
+                  error={!!validationErrors.email}
+                  helperText={validationErrors.email}
                 />
                 <TextField
                   label="Password"
@@ -143,9 +242,12 @@ const SignUpDesk = () => {
                   fullWidth
                   margin="normal"
                   required
+                  name="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleChange}
                   sx={{ fontSize: "14px", marginBottom: "10px" }}
+                  error={!!validationErrors.password}
+                  helperText={validationErrors.password}
                 />
                 <TextField
                   label="Confirm Password"
@@ -153,11 +255,21 @@ const SignUpDesk = () => {
                   fullWidth
                   margin="normal"
                   required
+                  name="confirmPassword"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  sx={{ fontSize: "14px", marginBottom: "10px" }}
+                  onChange={handleChange}
+                  sx={{ fontSize: "14px", marginBottom: "25px" }}
+                  error={!!validationErrors.confirmPassword}
+                  helperText={validationErrors.confirmPassword}
                 />
-                {/* ... Your other form elements */}
+                <Typography variant="subtitle2" sx={{ marginBottom: "20px" }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={checked} onChange={handleChangeterm} />
+                    }
+                  />
+                  I agree with Privacy Policy and Terms of Use
+                </Typography>
                 <Button
                   type="submit"
                   variant="contained"
@@ -172,9 +284,14 @@ const SignUpDesk = () => {
                   Create Account
                 </Button>
               </form>
+              {errorMessage && (
+                <Alert severity="error" sx={{ marginTop: 2 }}>
+                  {errorMessage}
+                </Alert>
+              )}
               <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={6000} // Adjust the duration as needed
+                autoHideDuration={6000}
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: "center", horizontal: "left" }}
               >

@@ -32,7 +32,6 @@ app.use("/seller", register_S);
 app.use("/api", dashboard_S);
 app.use("/api", cart);
 app.use("/api", wishlist);
-app.use("/seller", register_S);
 
 app.use(errorMiddleware);
 app.set("trust proxy", 1);

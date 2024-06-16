@@ -1,4 +1,5 @@
 import "./app.css";
+import { useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./Styles/Theme";
 import SignUp from "./Pages/User/SignUpMain";
@@ -15,11 +16,28 @@ import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
 import Dashboard_S from "./Pages/Seller/Dashboard_S"
 import EditProfile from "./Components/SellerDashboard/Profile/ManageSellerDetails";
+import { getUserAction } from "./Actions/userAction"; // Ensure this is correctly imported
+import { useDispatch } from 'react-redux';
+
 //import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 
 function App() {
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {        // Dispatch action with user data
+        dispatch(getUserAction());
+      } catch (error) {
+        // console.error("Error fetching user data:", error);
+        // Handle error (e.g., dispatch failure action)
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
   
+
   return (
     <ThemeProvider theme={theme}>
       <div>
