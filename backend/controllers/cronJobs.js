@@ -1,5 +1,7 @@
 const cron = require("node-cron");
 const Product = require("../models/productModel");
+const Feedback = require("../models/feedbackModel");
+const Seller = require("../models/sellerModel");
 const Cart = require("../models/cartModel"); // Assuming you have a cart model
 require("dotenv").config();
 
@@ -97,6 +99,58 @@ const updateInterestedProducts = async () => {
   }
 };
 
+// Calculate average ratings for sellers
+const calculateSellerRatings = async () => {
+  try {
+    // Aggregate to calculate average rating per seller
+    const result = await Feedback.aggregate([
+      {
+        $group: {
+          _id: "$sellerId",
+          averageRating: { $avg: "$rating" },
+          count: { $sum: 1 }, // Count of feedbacks for debugging purposes
+        },
+      },
+    ]);
+
+    // Update Correct Seller collection with average ratings
+    await Promise.all(
+      result.map(async (sellerRating) => {
+        const { _id, averageRating } = sellerRating;
+        try {
+          const seller = await Seller.findByIdAndUpdate(
+            _id,
+            { $set: { rating: averageRating } }, // Update 'rating' field
+            { new: true }
+          );
+          if (!seller) {
+            console.error(`Seller with id ${_id} not found.`);
+            return;
+          }
+          console.log(
+            `Updated seller ${seller._id} with average rating ${averageRating}`
+          );
+        } catch (error) {
+          console.error(
+            `Error updating seller ${_id} with average rating:`,
+            error
+          );
+        }
+      })
+    );
+
+    console.log("Average ratings updated successfully.");
+  } catch (error) {
+    console.error("Error calculating seller ratings:", error);
+  }
+};
+
+// Schedule the script to run every Sunday at midnight
+cron.schedule("0 0 * * 0", async () => {
+  console.log("Running script to calculate and update seller ratings...");
+  await calculateSellerRatings();
+});
+
 // Schedule the task to run every minute for testing
 cron.schedule("0 * * * *", () => {
   console.log("Running task to clear expired cart items");
@@ -112,6 +166,7 @@ cron.schedule("0 * * * *", () => {
 module.exports = {
   removeExpiredCartItems,
   updateInterestedProducts,
+  calculateSellerRatings,
 };
 
 //cron.schedule
