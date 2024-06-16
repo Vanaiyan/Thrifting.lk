@@ -1,7 +1,10 @@
 const Feedback = require("../models/feedbackModel");
+const Product = require("../models/productModel");
+const Seller = require("../models/sellerModel");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
-
+const nodemailer = require("nodemailer");
+const sendEmail = require("../utils/email");
 // Get all feedbacks for a specific product
 exports.getFeedbacksByProduct = catchAsyncError(async (req, res, next) => {
   const { productId } = req.params;
@@ -21,11 +24,12 @@ exports.getFeedbacksByProduct = catchAsyncError(async (req, res, next) => {
 });
 
 // Post a new feedback
+
 exports.createFeedback = catchAsyncError(async (req, res, next) => {
   const { productId, sellerId, rating, review, issueCategory } = req.body;
-  const userId = req.user.id;
-
-  // Create the feedback object without rating initially
+  const userId = req.user._id;
+  console.log(productId, sellerId, rating, review, issueCategory);
+  // Create the feedback object
   let feedbackData = {
     userId,
     productId,
@@ -35,13 +39,32 @@ exports.createFeedback = catchAsyncError(async (req, res, next) => {
     issueCategory,
   };
 
-  // Add rating only if it is not null or undefined
-  //   if (rating !== null && rating !== undefined) {
-  //     feedbackData.rating = rating;
-  //   }
-
   try {
+    // Fetch product information
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return next(new ErrorHandler("Product not found", 404));
+    }
+
     const feedback = await Feedback.create(feedbackData);
+    // Check if issueCategory is "no_response" and product.isInterested is true
+    if (issueCategory === "no_response" && product.isInterested) {
+      // Fetch seller information
+      const seller = await Seller.findById(sellerId);
+      if (!seller) {
+        return next(new ErrorHandler("Seller not found", 404));
+      }
+      // Prepare email options
+      const emailOptions = {
+        email: seller.email,
+        subject: "User Feedback: No Response",
+        message: `Dear ${seller.firstName},\n\nA user has reported that they have not received a response regarding the product "${product.name}". Please attend to this issue as soon as possible.\n\nThank you.`,
+      };
+
+      // Send the email
+      await sendEmail(emailOptions);
+    }
 
     res.status(201).json({
       success: true,

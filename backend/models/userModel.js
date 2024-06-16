@@ -28,6 +28,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     defalult: "User",
   },
+  // Products user interacted with, limited to 10
+  interactedProducts: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
+    maxlength: 5, // Limiting the array length to 5
+  },
   resetPasswordToken: String,
   resetPasswordTokenExpire: Date,
   createdAt: {

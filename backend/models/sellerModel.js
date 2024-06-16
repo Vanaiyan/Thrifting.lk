@@ -97,6 +97,11 @@ const sellerSchema = new mongoose.Schema({
 
   frontImage: imageSchema,
   backImage: imageSchema,
+  rating: {
+    type: Number,
+    min: 1,
+    max: 10,
+  },
 
   rating: {
     type: Number,
