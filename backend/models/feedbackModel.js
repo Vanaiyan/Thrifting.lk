@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Seller = require("./sellerModel");
 
 const feedbackSchema = new mongoose.Schema({
   userId: {

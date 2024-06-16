@@ -13,8 +13,10 @@ import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 import ProductMain from "./Pages/User/ProductMain";
 import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
-import Dashboard_S from "./Pages/Seller/Dashboard_S";
 import MyPurchasesPage from "./Pages/User/MyPurchasesPage";
+import Dashboard_S from "./Pages/Seller/Dashboard_S"
+import EditProfile from "./Components/SellerDashboard/Profile/ManageSellerDetails";
+//import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route path="/productDetail" Component={ProductDetailPage} />
           <Route path="/product" Component={ProductMain} />
           <Route path="/seller/dashboard" Component={Dashboard_S} />
+          {/* <Route path="/seller/profile" Component={ProfilePage} /> */}
+          <Route path="/seller/profile/edit/:sellerId" Component={EditProfile} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/mypurchase" Component={MyPurchasesPage} />
