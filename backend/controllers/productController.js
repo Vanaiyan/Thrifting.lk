@@ -11,6 +11,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   if (req.user && req.user._id) {
     userId = req.user._id; // Get the current user ID
   }
+  
   // Build the base query
   let baseQuery = Product.find({
     $or: [
