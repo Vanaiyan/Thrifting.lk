@@ -10,6 +10,7 @@ const feedback = require("./routes/feedback");
 const wishlist = require("./routes/wishList");
 const register_S = require("./routes/register_S");
 const dashboard_S = require("./routes/dashboard_S");
+const admin = require("./routes/admin");
 const cookieParser = require("cookie-parser");
 const orderRoutes = require("./routes/order"); // Adjust the import path
 
@@ -34,6 +35,7 @@ app.use("/api", dashboard_S);
 app.use("/api", cart);
 app.use("/api", wishlist);
 app.use("/seller", register_S);
+app.use("/api", admin);
 app.use("/api", orderRoutes);
 
 app.use(errorMiddleware);

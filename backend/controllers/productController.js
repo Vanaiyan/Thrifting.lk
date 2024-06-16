@@ -127,6 +127,7 @@ exports.createProduct = async (req, res, next) => {
     });
   }
 };
+
 exports.getRecommendations = async (req, res) => {
   console.log("Recommendation Process starting");
 
