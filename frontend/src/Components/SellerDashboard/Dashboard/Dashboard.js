@@ -1,8 +1,10 @@
 import React from 'react'
 
-const Dashboard = () => {
+const Dashboard = ({sellerId}) => {
   return (
-    <div>Dashboard</div>
+    <div>Dashboard
+     {sellerId} 
+    </div>
   )
 }
 

@@ -24,7 +24,6 @@ const createSeller = async (req, res) => {
       frontImage,
       backImage,
     } = req.body;
-    console.log(req.body);
     const hashedPassword = await bcrypt.hash(password, 10);
 
     if (
