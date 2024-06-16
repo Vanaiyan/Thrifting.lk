@@ -110,6 +110,8 @@ const changeProductStatus = async (req, res, next) => {
     product.status = !product.status;
     await product.save();
 
+    // If the product is sold, create a new 
+    
     // If the product is sold, create a new order
     if (product.status) {
       // const sellerId = req.seller._id;
