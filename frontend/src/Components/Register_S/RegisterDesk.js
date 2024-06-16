@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { Box, Paper } from "@mui/material";
 import theme from "../../Styles/Theme";
 import { NavSeller } from "../Navigation bar/desktop/nav-seller";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "./RegisterForm2";
 
 const RegisterDesk = () => {
   return (
@@ -54,6 +54,7 @@ const RegisterDesk = () => {
               </Typography>
               <form>
                 <Grid container spacing={2}>
+                  {/* <RegisterForm /> */}
                   <RegisterForm />
                 </Grid>
               </form>

@@ -4,7 +4,7 @@ import Product from "./Product";
 import axios from "axios";
 import addimg from "../../../Assets/Images/sellerDashboard/add.png";
 
-const ProductManagement = () => {
+const ProductManagement = ({sellerId}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +12,7 @@ const ProductManagement = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/myproducts/6658263ee302c74e3e3617d8"
+          `http://localhost:8000/api/myproducts/${sellerId}`
         );
         const availableProducts = response.data.filter(
           (product) => !product.status

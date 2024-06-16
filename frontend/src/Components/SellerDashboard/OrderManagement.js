@@ -8,17 +8,16 @@ import {
   TableCell,
   Button,
 } from "@mui/material";
-import axios from "axios"; // Assuming you use axios for HTTP requests
+import axios from "axios"; 
 
-const OrderManagement = () => {
+const OrderManagement = ({sellerId}) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // Fetch products from your API endpoint
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/myproducts/662ba6ddffd7af4f4a7fd633"
+          `http://localhost:8000/api/myproducts/${sellerId}`
         );
         setProducts(response.data);
       } catch (error) {

@@ -2,6 +2,22 @@ const Seller = require("../models/sellerModel");
 const Product = require("../models/productModel");
 const bcrypt = require("bcrypt");
 
+const authenticateSeller = async (req, res) => {
+  try {
+    const id = req.params.sellerId;
+    const seller = await Seller.findById(id);
+    if (!seller) {
+      return res.status(404).json({ message: "Seller not found" });
+    }
+    seller.authenticated = true;
+    await seller.save();
+
+    res.json({ message: "Seller authenticated successfully", seller });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getProductsBySellerId = async (req, res) => {
   try {
     const id = req.params.sellerId;
@@ -51,7 +67,6 @@ const updateSellerProfile = async (req, res) => {
 
 const validateSellerPassword = async (req, res) => {
   try {
-  
     const id = req.params.sellerId;
     const { currentPassword } = req.body;
     const seller = await Seller.findById(id).select("+password");
@@ -66,7 +81,6 @@ const validateSellerPassword = async (req, res) => {
     } else {
       res.json({ valid: false });
     }
-    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -118,6 +132,7 @@ const changeProductStatus = async (req, res, next) => {
 };
 
 module.exports = {
+  authenticateSeller,
   getProductsBySellerId,
   getSellerProfile,
   updateSellerProfile,

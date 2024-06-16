@@ -7,6 +7,8 @@ const Seller = require('../controllers/registerController');
 router.route('/')
     .get(Seller.getAllSellers)
 router.route('/')
-    .post(Seller.createSeller)
+    .post(Seller.createSeller);
+
+
 
 module.exports =router;

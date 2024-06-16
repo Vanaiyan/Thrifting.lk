@@ -58,7 +58,7 @@ export const Steps = () => {
         </Box>
       </Grid>
       <Grid item xs={12} md={6}>
-        <img src={img1} alt="" style={{ width: "100%", height: "600px" }} />
+        <img src={img1} alt="" style={{ width: "100%", height: "500px", borderRadius:"30px", border:"2px solid black" }} />
       </Grid>
     </Grid>
   );
