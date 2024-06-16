@@ -8,7 +8,6 @@ export const loginUser = async (email, password) => {
         email,
         password,
       },
-
       {
         headers: {
           "Content-Type": "application/json",

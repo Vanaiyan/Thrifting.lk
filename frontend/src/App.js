@@ -13,8 +13,8 @@ import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 import ProductMain from "./Pages/User/ProductMain";
 import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
-import Dashboard_S from "./Pages/Seller/Dashboard_S";
 import MyPurchasesPage from "./Pages/User/MyPurchasesPage";
+import Dashboard_S from "./Pages/Seller/Dashboard_S"
 import EditProfile from "./Components/SellerDashboard/Profile/ManageSellerDetails";
 //import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 

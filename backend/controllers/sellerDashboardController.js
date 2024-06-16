@@ -112,6 +112,7 @@ const changeProductStatus = async (req, res, next) => {
 
     // If the product is sold, create a new 
     
+    // If the product is sold, create a new order
     if (product.status) {
       // const sellerId = req.seller._id;
       const sellerId = "6648fcb3d57b2383f46d43ff";
