@@ -17,6 +17,7 @@ import Dashboard_S from "./Pages/Seller/Dashboard_S"
 import AllProductsPage from "./Pages/Admin/AllProductsPage";
 import AllSellersPage from "./Pages/Admin/Seller";
 import OrderList from "./Pages/Admin/OrderList";
+import SellerApproval from "./Pages/Admin/SellerApproval";
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
           <Route path="/admin/allproducts" Component={AllProductsPage} />
           <Route path="/admin/Sellers" Component={AllSellersPage} />
           <Route path="/admin/OrderList" Component={OrderList} />
+          <Route path="admin/SellerApproval" Component={SellerApproval}/>
         </Routes>
       </div>
     </ThemeProvider>
