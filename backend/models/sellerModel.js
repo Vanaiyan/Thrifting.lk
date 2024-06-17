@@ -101,15 +101,9 @@ const sellerSchema = new mongoose.Schema({
   backImage: imageSchema,
   rating: {
     type: Number,
-    min: 1,
+    min: 0,
     max: 10,
-  },
-
-  rating: {
-    type: Number,
-    min: 1,
-    max: 10,
-    // default :0
+    default: 0,
   },
 
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],

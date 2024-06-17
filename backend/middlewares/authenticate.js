@@ -7,12 +7,14 @@ const Seller = require("../models/sellerModel");
 
 exports.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const { token } = req.cookies;
-
+  console.log("Token : ", token);
   if (!token) {
     return next(new ErrorHandler("Login First to Access", 401));
   }
 
   try {
+    console.log("check 1");
+    console.log("jwt secret", process.env.JWT_SECRET);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const { id, role } = decoded;
     console.log("data of user", id, role);

@@ -12,7 +12,7 @@ const ProductManagement = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/myproducts/6658263ee302c74e3e3617d8"
+          "http://localhost:8000/api/myproducts/6648fcb3d57b2383f46d43ff"
         );
         const availableProducts = response.data.filter(
           (product) => !product.status

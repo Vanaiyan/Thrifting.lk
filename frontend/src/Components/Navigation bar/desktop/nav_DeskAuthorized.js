@@ -1,5 +1,4 @@
-// NavDesktop.js
-import React from "react";
+import React, { useState } from "react";
 import {
   NavContainer,
   NavList,
@@ -10,14 +9,41 @@ import {
   ButtonContainer,
   SignUpButton,
 } from "../../../Styles/NavBar/nav01";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import { Divider, Grid, Avatar, IconButton } from "@mui/material";
+import { Divider, Grid, IconButton, Menu, MenuItem } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../../Actions/userAction"; // Adjust the path as needed
 
 export const NavDesktopAuthorized = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser());
+      handleMenuClose();
+    } catch (error) {
+      console.error("Logout Error:", error);
+    }
+  };
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
   return (
     <Grid
       container
@@ -84,17 +110,60 @@ export const NavDesktopAuthorized = () => {
             width: "40px",
             height: "40px",
           }}
+          onClick={() => handleNavigate("/wishlist")}
         >
           <FavoriteBorder sx={{ fontSize: "24px" }} />
         </IconButton>
 
-        <IconButton sx={{ color: "black", width: "40px", height: "40px" }}>
+        <IconButton
+          sx={{ color: "black", width: "40px", height: "40px" }}
+          onClick={() => handleNavigate("/cart")}
+        >
           <ShoppingCartOutlinedIcon sx={{ fontSize: "24px" }} />
         </IconButton>
 
-        <IconButton sx={{ color: "black", width: "40px", height: "40px" }}>
+        <IconButton
+          sx={{ color: "black", width: "40px", height: "40px" }}
+          onClick={handleMenuOpen}
+        >
           <AccountCircleOutlinedIcon sx={{ width: "26px", height: "26px" }} />
         </IconButton>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <MenuItem sx={{ paddingY: 0, paddingX: 5 }} onClick={handleLogout}>
+            My Profile
+          </MenuItem>
+          <Divider />
+          <MenuItem
+            sx={{ paddingY: 0, paddingX: 5 }}
+            onClick={() => {
+              handleNavigate("/orders");
+              handleMenuClose();
+            }}
+          >
+            My Orders
+          </MenuItem>
+          <Divider />
+          <MenuItem sx={{ paddingY: 0, paddingX: 5 }} onClick={handleMenuClose}>
+            Settings
+          </MenuItem>
+          <Divider />
+          <MenuItem sx={{ paddingY: 0, paddingX: 5 }} onClick={handleLogout}>
+            Logout
+          </MenuItem>
+        </Menu>
       </Grid>
     </Grid>
   );

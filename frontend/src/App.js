@@ -70,8 +70,8 @@ function App() {
           <Route path="/admin/Sellers" Component={AllSellersPage} />
           <Route path="/admin/OrderList" Component={OrderList} />
           <Route path="admin/SellerApproval" Component={SellerApproval} />
-          <Route path="/mypurchase" Component={MyPurchasesPage} />
           <Route path="/seller/login" Component={SellerLoginPage} />
+          <Route path="/orders" Component={MyPurchasesPage} />
         </Routes>
       </div>
     </ThemeProvider>

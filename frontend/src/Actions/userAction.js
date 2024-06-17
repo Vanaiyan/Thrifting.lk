@@ -1,5 +1,10 @@
 import axios from "axios";
-import { authStart, authSuccess, authFailure } from "../Reducers/authSlice";
+import {
+  authStart,
+  authSuccess,
+  authFailure,
+  logout,
+} from "../Reducers/authSlice";
 
 export const loginUser = (email, password) => {
   return async (dispatch) => {
@@ -17,7 +22,6 @@ export const loginUser = (email, password) => {
           withCredentials: true, // Ensure cookies are sent with the request
         }
       );
-
       const data = response;
       const token = response.data.token;
       const user = response.data.user;
