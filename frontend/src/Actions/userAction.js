@@ -48,8 +48,9 @@ export const getUserAction = (userData) => {
       const response = await axios.get("http://localhost:8000/api/user", {
         withCredentials: true, // Ensure cookies are sent with request
       });
-
-      const user = response.data.user;
+      //console.log(response.data);
+      const user = response.data;
+      // console.log("Logged in user : ", user);
       dispatch(authSuccess({ user }));
     } catch (error) {
       // console.error("Error fetching user data:", error);

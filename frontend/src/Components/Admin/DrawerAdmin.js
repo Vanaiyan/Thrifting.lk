@@ -8,23 +8,26 @@ import {
   ListItemText,
 } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
-import StoreIcon from '@mui/icons-material/Store';
-import PeopleIcon from '@mui/icons-material/People';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import ReportIcon from '@mui/icons-material/Report';
+import StoreIcon from "@mui/icons-material/Store";
+import PeopleIcon from "@mui/icons-material/People";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import ReportIcon from "@mui/icons-material/Report";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp"; // Import logout icon
 import { useNavigate } from "react-router-dom";
 import { NavTitle } from "../../Styles/NavBar/nav01";
+import { logoutUser } from "../../Actions/userAction";
+import { useDispatch } from "react-redux";
 
 const DrawerAdmin = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
     localStorage.removeItem("isAdminAuthenticated");
     localStorage.removeItem("userRole");
-
+    dispatch(logoutUser());
     navigate("/admin/login");
   };
 
@@ -52,11 +55,27 @@ const DrawerAdmin = () => {
       <NavTitle sx={{ color: "#ff5003", m: "15px" }}>Thrifting.lk</NavTitle>
       <List>
         {[
-          { text: "All Products", icon: <StoreIcon />, path: "/admin/allproducts" },
+          {
+            text: "All Products",
+            icon: <StoreIcon />,
+            path: "/admin/allproducts",
+          },
           { text: "Sellers", icon: <PeopleIcon />, path: "/admin/Sellers" },
-          { text: "Order List", icon: <ListAltIcon />, path: "/admin/OrderList" },
-          { text: "Seller Approval", icon: <VerifiedUserIcon />, path: "/admin/SellerApproval" },
-          { text: "Report Feedback", icon: <ReportIcon />, path: "/admin/Report feedback" },
+          {
+            text: "Order List",
+            icon: <ListAltIcon />,
+            path: "/admin/OrderList",
+          },
+          {
+            text: "Seller Approval",
+            icon: <VerifiedUserIcon />,
+            path: "/admin/SellerApproval",
+          },
+          {
+            text: "Report Feedback",
+            icon: <ReportIcon />,
+            path: "/admin/Report feedback",
+          },
         ].map((item, index) => (
           <ListItem
             key={index}
@@ -66,10 +85,16 @@ const DrawerAdmin = () => {
               textDecoration: "none",
               display: "flex",
               alignItems: "center",
-              color: location.pathname === item.path ? '#ff5003' : 'inherit',
+              color: location.pathname === item.path ? "#ff5003" : "inherit",
             }}
           >
-            <ListItemIcon style={{ color: location.pathname === item.path ? '#ff5003' : 'inherit' }}>{item.icon}</ListItemIcon>
+            <ListItemIcon
+              style={{
+                color: location.pathname === item.path ? "#ff5003" : "inherit",
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItem>
         ))}

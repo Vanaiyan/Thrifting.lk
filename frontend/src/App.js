@@ -25,6 +25,7 @@ import SellerLoginPage from "./Pages/Seller/loginSellerPage";
 import EditProfile from "./Components/SellerDashboard/Profile/ManageSellerDetails";
 import { getUserAction } from "./Actions/userAction"; // Ensure this is correctly imported
 import { useDispatch } from "react-redux";
+import AdminLoginPage from "./Pages/Admin/AdminLogin";
 
 //import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 
@@ -70,6 +71,7 @@ function App() {
           <Route path="/admin/Sellers" Component={AllSellersPage} />
           <Route path="/admin/OrderList" Component={OrderList} />
           <Route path="admin/SellerApproval" Component={SellerApproval} />
+          <Route path="admin/login" Component={AdminLoginPage} />
           <Route path="/seller/login" Component={SellerLoginPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
         </Routes>
