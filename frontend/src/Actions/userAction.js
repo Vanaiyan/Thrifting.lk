@@ -57,3 +57,20 @@ export const getUserAction = (userData) => {
     }
   };
 };
+
+export const logoutUser = () => {
+  return async (dispatch) => {
+    try {
+      // Make API call to fetch user data
+      const response = await axios.get("http://localhost:8000/api/logout", {
+        withCredentials: true, // Ensure cookies are sent with request
+      });
+
+      document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      dispatch(logout());
+    } catch (error) {
+      // console.error("Error fetching user data:", error);
+      dispatch(authFailure(error.message)); // Dispatch failure action if login fails
+    }
+  };
+};
