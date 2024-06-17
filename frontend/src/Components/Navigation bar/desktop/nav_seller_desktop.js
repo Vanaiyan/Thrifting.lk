@@ -1,7 +1,6 @@
 // NavDesktop.js
 import React from "react";
 import {
-  NavContainer,
   NavList,
   NavTitle,
   NavListItemText,
@@ -10,14 +9,11 @@ import {
   ButtonContainer,
   SignUpButton,
 } from "../../../Styles/NavBar/nav01";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import { Divider, Grid, Avatar, IconButton } from "@mui/material";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import { Divider, Grid } from "@mui/material";
 
-export const NavDesktopAuthorized = () => {
+export const NavSellerDesktop = () => {
   return (
     <Grid
       container
@@ -74,27 +70,16 @@ export const NavDesktopAuthorized = () => {
         sx={{
           display: "flex",
           justifyContent: "flex-end",
-          alignItems: "center",
-          gap: 1,
         }}
       >
-        <IconButton
-          sx={{
-            color: "black",
-            width: "40px",
-            height: "40px",
-          }}
-        >
-          <FavoriteBorder sx={{ fontSize: "24px" }} />
-        </IconButton>
-
-        <IconButton sx={{ color: "black", width: "40px", height: "40px" }}>
-          <ShoppingCartOutlinedIcon sx={{ fontSize: "24px" }} />
-        </IconButton>
-
-        <IconButton sx={{ color: "black", width: "40px", height: "40px" }}>
-          <AccountCircleOutlinedIcon sx={{ width: "26px", height: "26px" }} />
-        </IconButton>
+        <ButtonContainer>
+          <NavLink to="/seller/login" exact activeClassName="active">
+            <NavListItemText>Log In</NavListItemText>
+          </NavLink>
+          <NavLink to="/signup" exact activeClassName="active">
+            <SignUpButton> SignUp</SignUpButton>
+          </NavLink>
+        </ButtonContainer>
       </Grid>
     </Grid>
   );

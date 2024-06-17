@@ -16,7 +16,7 @@ import { NavLink } from "react-router-dom";
 export const NavLoginDesktop = () => {
   return (
     <Grid container spacing={4} alignItems="center" sx={{ padding: "0 7vw" }}>
-      <Grid item md={3} lg={3}>
+      <Grid item md={3} lg={3} marginY={2}>
         <NavTitle sx={{ color: "#ffff" }}>Thrifting.lk</NavTitle>
         <Divider orientation="vertical" flexItem />
       </Grid>
@@ -30,31 +30,7 @@ export const NavLoginDesktop = () => {
           justifyContent: "flex-start",
           alignItems: "flex-end",
         }}
-      >
-        <NavList type="row" gap="10px">
-          <NavLink to="/" exact activeClassName="active">
-            <NavListItemText>HOME</NavListItemText>
-          </NavLink>
-          <NavListItemText>SELL</NavListItemText>
-          <NavListItemText>CATEGORIES</NavListItemText>
-          <NavListItemText>ABOUT</NavListItemText>
-        </NavList>
-      </Grid>
-
-      <Grid
-        item
-        md={4}
-        lg={5}
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        <SearchContainer>
-          <SearchIcon />
-          <SearchInput placeholder="Search" />
-        </SearchContainer>
-      </Grid>
+      ></Grid>
     </Grid>
   );
 };
