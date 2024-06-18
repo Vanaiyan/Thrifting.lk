@@ -3,10 +3,16 @@ import { Grid, Box, Button, CircularProgress } from "@mui/material";
 import Product from "./Product";
 import axios from "axios";
 import addimg from "../../../Assets/Images/sellerDashboard/add.png";
+import { useNavigate } from "react-router-dom";
 
 const ProductManagement = ({sellerId}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate =useNavigate();
+
+  const handleAddProduct =()=>{
+    navigate(`/seller/dashboard/addProduct`);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,7 +99,7 @@ const ProductManagement = ({sellerId}) => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => console.log("Add product clicked")}
+          onClick={handleAddProduct}
         >
           Add Product
         </Button>

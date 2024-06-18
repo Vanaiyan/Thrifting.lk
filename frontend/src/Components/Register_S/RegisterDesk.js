@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { Box, Paper } from "@mui/material";
 import theme from "../../Styles/Theme";
 import { NavSeller } from "../Navigation bar/desktop/nav-seller";
-import RegisterForm from "./RegisterForm2";
+import RegisterForm from "./RegisterForm";
 
 const RegisterDesk = () => {
   return (

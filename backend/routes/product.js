@@ -17,6 +17,11 @@ router
   .route("/products")
   .get(getProducts)
   .post(createProduct);
+  
+  
+router
+.route("/products/:sellerId")
+.post(createProduct);
 
   // .get(isAuthenticatedUser, getProducts)
   // .post(isAuthenticatedUser, createProduct);

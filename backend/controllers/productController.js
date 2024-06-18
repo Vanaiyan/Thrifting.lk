@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const Seller = require('../models/sellerModel');
 const ErrorHandler = require("../utils/errorHandler");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
@@ -30,7 +31,6 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
     products,
   });
 });
-
 
 exports.getSingleProduct = async (req, res, next) => {
   try {
@@ -97,8 +97,7 @@ exports.deleteProduct = async (req, res, next) => {
 };
 
 exports.newProduct = async (req, res, next) => {
-  // req.body.seller = req.user.id;
-  req.body.seller = "662ba747e59446416eacee2d";
+   req.body.user = req.user.id;
 
   const product = await Product.create(req.body);
   res.status(201).json({
@@ -109,17 +108,34 @@ exports.newProduct = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    // req.body.user = req.user.id;
-    req.body.seller ="662ba747e59446416eacee2d";
-   
-
+    const seller = await Seller.findById(req.params.sellerId);
+    if (!seller) {
+      return res.status(404).json({
+        success: false,
+        error: 'Seller not found',
+      });
+    }
+    req.body.seller = req.params.sellerId;
     const newProduct = await Product.create(req.body);
+
+    console.log("Product created successfully"); 
 
     res.status(201).json({
       success: true,
       product: newProduct,
     });
   } catch (err) {
+    console.error("Error creating product:", err);
+
+    if (err.name === "ValidationError") {
+      const errors = Object.values(err.errors).map((error) => error.message);
+      console.log("error is :",err);
+      return res.status(400).json({
+        success: false,
+        error: errors.join(", "),
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Server Error",

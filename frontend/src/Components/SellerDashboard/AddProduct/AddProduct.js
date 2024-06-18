@@ -1,0 +1,196 @@
+import React, { useState } from "react";
+import { Grid, Button, Box, Snackbar } from "@mui/material";
+import { Alert } from "@mui/material";
+import axios from "axios";
+import Form1 from "./Form1";
+import Form2 from "./Form2";
+import Form3 from "./Form3";
+
+const AddProduct = () => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [gender, setGender] = useState("");
+  const [category, setCategory] = useState([]);
+  const [pictures, setPictures] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [step, setStep] = useState(1);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  const validateStep1 = () => {
+    let errors = {};
+    if (!name) errors.name = "ProductName is required";
+    if (!description) {
+      errors.description = "Description is required";
+    } else if (description.length < 100 || description.length > 500) {
+      errors.description =
+        "Description must be between 100 and 500 characters";
+    }
+    if (!price || isNaN(price) || price <= 0)
+      errors.price =
+        "Valid price is required and must be greater than zero";
+    if (!gender) errors.gender = "Gender is required";
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateStep2 = () => {
+    let errors = {};
+    if (category.length === 0)
+      errors.category = "At least one category must be selected";
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateStep3 = () => {
+    let errors = {};
+    if (pictures.length === 0)
+      errors.pictures = "At least one picture must be uploaded";
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleNext = () => {
+    let valid = true;
+    if (step === 1) valid = validateStep1();
+    if (step === 2) valid = validateStep2();
+    if (valid) setStep((prevStep) => prevStep + 1);
+  };
+
+  const handlePrev = () => {
+    setStep((prevStep) => prevStep - 1);
+  };
+
+  const handleSubmit = async () => {
+    if (!validateStep3()) return;
+
+    const productData = {
+      name,
+      description,
+      price,
+      gender,
+      category,
+      pictures,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/products/6658263ee302c74e3e3617d9",
+        productData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Product successfully submitted:", response.data);
+      setSnackbarSeverity("success");
+      setSnackbarMessage("Product successfully submitted");
+      setSnackbarOpen(true);
+      // Optionally reset form or navigate to another page
+    } catch (error) {
+      console.error("Error submitting product data:", error);
+      if (error.response && error.response.status === 404) {
+        // Seller not found error
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Seller not found");
+        setSnackbarOpen(true);
+      } else {
+        // Other errors
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Failed to submit product data");
+        setSnackbarOpen(true);
+        setErrors({ submit: "Failed to submit product data" });
+      }
+    }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  return (
+    <Box sx={{ padding: 4 }}>
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item xs={12} sm={8} md={6}>
+          {step === 1 && (
+            <Form1
+              name={name}
+              setName={setName}
+              description={description}
+              setDescription={setDescription}
+              price={price}
+              setPrice={setPrice}
+              gender={gender}
+              setGender={setGender}
+              errors={errors}
+            />
+          )}
+          {step === 2 && (
+            <Form2
+              category={category}
+              setCategory={setCategory}
+              errors={errors}
+            />
+          )}
+          {step === 3 && (
+            <Form3
+              pictures={pictures}
+              setPictures={setPictures}
+              errors={errors}
+            />
+          )}
+          <Grid
+            container
+            spacing={2}
+            justifyContent="space-between"
+            sx={{ marginTop: 2 }}
+          >
+            {step > 1 && (
+              <Grid item>
+                <Button variant="contained" onClick={handlePrev}>
+                  Previous
+                </Button>
+              </Grid>
+            )}
+            {step < 3 && (
+              <Grid item>
+                <Button variant="contained" onClick={handleNext}>
+                  Next
+                </Button>
+              </Grid>
+            )}
+            {step === 3 && (
+              <Grid item>
+                <Button variant="contained" onClick={handleSubmit}>
+                  Submit
+                </Button>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
+};
+
+export default AddProduct;
