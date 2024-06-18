@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Grid, Button, Box, Snackbar } from "@mui/material";
 import { Alert } from "@mui/material";
 import axios from "axios";
@@ -18,6 +19,7 @@ const AddProduct = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const navigate=useNavigate();
 
   const validateStep1 = () => {
     let errors = {};
@@ -77,7 +79,7 @@ const AddProduct = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/products/6658263ee302c74e3e3617d9",
+        "http://localhost:8000/api/products/6658263ee302c74e3e3617d8",
         productData,
         {
           headers: {
@@ -86,11 +88,14 @@ const AddProduct = () => {
         }
       );
 
-      console.log("Product successfully submitted:", response.data);
+      console.log("Product successfully submitted:");
       setSnackbarSeverity("success");
       setSnackbarMessage("Product successfully submitted");
       setSnackbarOpen(true);
-      // Optionally reset form or navigate to another page
+      setTimeout(() => {
+        navigate("/seller/dashboard"); //       
+      }, 3000);
+     
     } catch (error) {
       console.error("Error submitting product data:", error);
       if (error.response && error.response.status === 404) {
