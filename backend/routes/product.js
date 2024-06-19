@@ -17,7 +17,7 @@ const {
 } = require("../middlewares/authenticate");
 
 // router.route("/products").get(getProducts).post(createProduct);
-router.route("/products").get(isAuthenticatedUser, getProducts);
+router.route("/products").get(getProducts);
 // .post(isAuthenticatedUser, createProduct);
 
 router
@@ -32,6 +32,6 @@ router
 router
   .route("/users/interact")
   .post(isAuthenticatedUser, pushInteractedProduct);
-router.route("/recommendations").get(isAuthenticatedUser, getRecommendations);
+router.route("/recommendations").post(getRecommendations);
 
 module.exports = router;

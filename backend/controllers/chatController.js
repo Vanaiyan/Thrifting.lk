@@ -1,17 +1,27 @@
 const catchAsyncError = require("../middlewares/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const User = require("../models/userModel");
+const Seller = require("../models/sellerModel");
 const APIFeatures = require("../utils/apiFeatures");
 
 exports.getUsers = catchAsyncError(async (req, res, next) => {
   let query;
+  console.log(req.user.role);
 
-  if (req.query) {
-    query = new APIFeatures(User.find(), req.query).searchuser().query;
-  } else {
-    query = User.find();
+  if (req.user.role == "User") {
+    if (req.query) {
+      query = new APIFeatures(Seller.find(), req.query).searchuser().query;
+    } else {
+      query = Seller.find();
+    }
   }
-
+  if (req.user.role == "Seller") {
+    if (req.query) {
+      query = new APIFeatures(User.find(), req.query).searchuser().query;
+    } else {
+      query = User.find();
+    }
+  }
   const users = await query;
 
   if (!users) {
@@ -47,7 +57,7 @@ exports.getUserProfile = catchAsyncError(async (req, res, next) => {
 exports.getSellerProfile = catchAsyncError(async (req, res, next) => {
   try {
     // console.log(" seller profile Id", req.params.sellerId);
-    const user = await User.findById(req.params.sellerId); //It wants to change as Seller  (User.findbyId => Seller.findbyId)
+    const user = await Seller.findById(req.params.sellerId); //It wants to change as Seller  (User.findbyId => Seller.findbyId)
     // console.log("User as Seller", user);
     if (!user) {
       return next(new ErrorHandler("User not found", 404));

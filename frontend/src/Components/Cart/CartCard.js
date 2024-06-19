@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Stack,
-  IconButton,
-  Typography,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Box, Stack, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Colors } from "../../Styles/Theme";
 import { useDispatch } from "react-redux";
-import { removeItem, updateCartItemQuantity } from "../../Actions/cartActions";
+import { removeItem } from "../../Actions/cartActions";
 import BuyNowBtn from "./BuyNowBtn";
 import ChatWithSellerButton from "./ChatwithSellerbtn";
 import ReportIssueButton from "./ReportIssueBtn";
@@ -23,7 +16,6 @@ const CartCard = ({
   productId,
   productName,
   price,
-  quantity,
   description,
   cartTimestamp,
   interestedTimestamp,
@@ -32,17 +24,10 @@ const CartCard = ({
 }) => {
   const expirationHours = 24; // 24 hours in milliseconds
   const interestedExpirationHours = 48; // 48 hours in milliseconds
-  const [selectedQuantity, setSelectedQuantity] = useState(quantity);
-  const [remainingTime, setRemainingTime] = useState("");
+  const [remainingTime, setRemainingTime] = useState(null); // Initialize as null
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openInterestedDialog, setOpenInterestedDialog] = useState(false);
   const dispatch = useDispatch();
-
-  const handleQuantityChange = (event) => {
-    const newQuantity = event.target.value;
-    setSelectedQuantity(newQuantity);
-    dispatch(updateCartItemQuantity(productId, newQuantity));
-  };
 
   const clickDelete = () => {
     if (isInterested) {
@@ -74,6 +59,10 @@ const CartCard = ({
       const timeNow = Date.now();
       const timeDifference =
         expiration * 60 * 60 * 1000 - (timeNow - timestamp);
+
+      if (timeDifference <= 0) {
+        return null; // Return null if timeDifference is 0 or negative
+      }
 
       const hoursRemaining = Math.floor(timeDifference / (1000 * 60 * 60));
       const minutesRemaining = Math.floor(
@@ -155,21 +144,8 @@ const CartCard = ({
           <Typography variant="subtitle2">{price}</Typography>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="subtitle2" sx={{ color: Colors.InPholder }}>
-              Quantity:{remainingTime}
+              Remaining Time: {remainingTime}
             </Typography>
-            <Select
-              size="small"
-              value={selectedQuantity}
-              onChange={handleQuantityChange}
-              variant="outlined"
-              sx={{ fontSize: "0.8rem", minWidth: "3rem" }} // Adjust font size and box size here
-            >
-              {[...Array(10).keys()].map((quantity) => (
-                <MenuItem key={quantity + 1} value={quantity + 1}>
-                  {quantity + 1}
-                </MenuItem>
-              ))}
-            </Select>
           </Stack>
           <Stack
             direction="row"
@@ -205,7 +181,9 @@ const CartCard = ({
               />
             )}
           </Stack>
-          <RemainingTimeWarning remainingTime={remainingTime} />
+          {remainingTime && (
+            <RemainingTimeWarning remainingTime={remainingTime} />
+          )}
         </Stack>
       </Stack>
     </Box>

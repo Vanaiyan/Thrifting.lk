@@ -36,10 +36,6 @@ export const pushInteractedProduct = (productId) => async () => {
     // Log success message
     console.log("Successfully pushed interacted product:", response.data);
 
-    // Optionally, dispatch actions based on the response
-    // e.g., dispatch some success action if needed
-
-    // Return response data if successful
     return response.data;
   } catch (error) {
     // Handle and log error
@@ -49,13 +45,18 @@ export const pushInteractedProduct = (productId) => async () => {
 };
 
 // Thunk action to get recommendations
-export const getRecommendations = () => async (dispatch) => {
+export const getRecommendations = (user) => async (dispatch) => {
   dispatch(fetchProductsStart());
   try {
-    const response = await axios.get(`${BASE_URL}/recommendations`, {
-      withCredentials: true, // Ensure credentials are sent if using cookies for authentication
-    });
-    console.log(response.data);
+    // console.log("User from action rec : ", user);
+    const response = await axios.post(
+      `${BASE_URL}/recommendations`,
+      { user },
+      {
+        withCredentials: true, // Ensure credentials are sent if using cookies for authentication
+      }
+    );
+    // console.log(response.data);
     dispatch(fetchProductsSuccess(response.data));
   } catch (error) {
     console.error("Error fetching recommendations:", error);

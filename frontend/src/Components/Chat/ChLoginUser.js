@@ -4,8 +4,8 @@ import { Colors } from "../../Styles/Theme";
 import { Avatar, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 const ChLoginUser = () => {
-  const { loginUser } = useSelector((state) => state.user);
-  if (!loginUser) {
+  const { user } = useSelector((state) => state.auth);
+  if (!user) {
     return null; // or handle the case when loginUser is null
   }
   return (
@@ -34,10 +34,10 @@ const ChLoginUser = () => {
         />
         <Box>
           <Typography fontSize={14} fontWeight={600} color={Colors.org1}>
-            {loginUser.firstName}
+            {user.firstName}
           </Typography>
           <Typography fontSize={12} color={Colors.orgchatsub}>
-            {loginUser.lastName}{" "}
+            {user.lastName}{" "}
           </Typography>
         </Box>
       </Grid>

@@ -53,18 +53,21 @@ const PrevArrow = (props) => {
 const ProductRow = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
+    console.log(user);
+    console.log("Rec user : = ", user ? user._id : "");
     const fetchRecommendations = async () => {
       try {
-        await dispatch(getRecommendations());
+        await dispatch(getRecommendations(user ? user._id : ""));
       } catch (error) {
         console.error("Error fetching recommendations:", error);
       }
     };
 
     fetchRecommendations();
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   const settings = {
     infinite: false,

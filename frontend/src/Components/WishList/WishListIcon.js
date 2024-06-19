@@ -2,41 +2,55 @@ import React, { useState, useEffect } from "react";
 import { IconButton } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { addToWishlist } from "../../Actions/wishListActions";
+import { addToWishlist, getWishlistItems } from "../../Actions/wishListActions";
 import { useSelector } from "react-redux";
-import { getWishlistItems } from "../../Actions/wishListActions";
+import LoginPromptModal from "../Home/loginPromptModal";
 
 const WishlistIconButton = ({ productId }) => {
   const wishlistItems = useSelector(
     (state) => state.wishlist.wishlistItems.products
   );
-  const [isWishlist, setIsWishlist] = useState(false); // Initialize isWishlist as false
+  const authenticated = useSelector((state) => state.auth.isAuthenticated);
+  const [isWishlist, setIsWishlist] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     // Check if the product is in the wishlist when wishlistItems or productId change
     const isInWishlist =
       wishlistItems && wishlistItems.some((item) => item._id === productId);
-    setIsWishlist(isInWishlist); // Update isWishlist state based on the result
-  }, [wishlistItems, productId]); // Run the effect whenever wishlistItems or productId changes
+    setIsWishlist(isInWishlist);
+  }, [wishlistItems, productId]);
 
   const handleWishlistClick = async () => {
+    if (!authenticated) {
+      setModalOpen(true);
+      return;
+    }
+
     try {
       const response = await addToWishlist(productId);
-      console.log(response); // Handle the response as needed
-      setIsWishlist(!isWishlist); // Update isWishlist state after adding to wishlist
+      console.log(response);
+      setIsWishlist(!isWishlist);
     } catch (error) {
-      console.error(error.message); // Handle errors
+      console.error(error.message);
     }
   };
 
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   return (
-    <IconButton
-      color={isWishlist ? "primary" : "default"}
-      aria-label={isWishlist ? "remove from wishlist" : "add to wishlist"}
-      onClick={handleWishlistClick}
-    >
-      {isWishlist ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-    </IconButton>
+    <>
+      <IconButton
+        color={isWishlist ? "primary" : "default"}
+        aria-label={isWishlist ? "remove from wishlist" : "add to wishlist"}
+        onClick={handleWishlistClick}
+      >
+        {isWishlist ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+      </IconButton>
+      <LoginPromptModal open={modalOpen} onClose={handleCloseModal} />
+    </>
   );
 };
 
