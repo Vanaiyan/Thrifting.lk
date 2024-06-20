@@ -19,7 +19,7 @@ const AddProduct = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const validateStep1 = () => {
     let errors = {};
@@ -27,12 +27,10 @@ const AddProduct = () => {
     if (!description) {
       errors.description = "Description is required";
     } else if (description.length < 100 || description.length > 500) {
-      errors.description =
-        "Description must be between 100 and 500 characters";
+      errors.description = "Description must be between 100 and 500 characters";
     }
     if (!price || isNaN(price) || price <= 0)
-      errors.price =
-        "Valid price is required and must be greater than zero";
+      errors.price = "Valid price is required and must be greater than zero";
     if (!gender) errors.gender = "Gender is required";
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -64,6 +62,9 @@ const AddProduct = () => {
   const handlePrev = () => {
     setStep((prevStep) => prevStep - 1);
   };
+  const handleBack = () => {
+    navigate('/seller/dashboard');
+  };
 
   const handleSubmit = async () => {
     if (!validateStep3()) return;
@@ -78,7 +79,7 @@ const AddProduct = () => {
     };
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:8000/api/products/6658263ee302c74e3e3617d8",
         productData,
         {
@@ -93,18 +94,15 @@ const AddProduct = () => {
       setSnackbarMessage("Product successfully submitted");
       setSnackbarOpen(true);
       setTimeout(() => {
-        navigate("/seller/dashboard"); //       
+        navigate("/seller/dashboard"); //
       }, 3000);
-     
     } catch (error) {
       console.error("Error submitting product data:", error);
       if (error.response && error.response.status === 404) {
-        // Seller not found error
         setSnackbarSeverity("error");
         setSnackbarMessage("Seller not found");
         setSnackbarOpen(true);
       } else {
-        // Other errors
         setSnackbarSeverity("error");
         setSnackbarMessage("Failed to submit product data");
         setSnackbarOpen(true);
@@ -157,6 +155,13 @@ const AddProduct = () => {
             justifyContent="space-between"
             sx={{ marginTop: 2 }}
           >
+            {step === 1 && (
+              <Grid item>
+                <Button variant="contained" onClick={handleBack}>
+                  Back
+                </Button>
+              </Grid>
+            )}
             {step > 1 && (
               <Grid item>
                 <Button variant="contained" onClick={handlePrev}>

@@ -24,6 +24,16 @@ const productSchema = new mongoose.Schema({
       message: "Price cannot be a negative value"
     }
   },
+  discount: {
+    type: Number,
+    default: 0.0,
+    validate: {
+      validator: function(value) {
+        return value >= 0;
+      },
+      message: "Price cannot be a negative value"
+    }
+  },
   gender: {
     type: String,
     required: [true, "Please specify the gender"],

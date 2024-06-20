@@ -26,13 +26,10 @@ const OrderManagement = ({sellerId}) => {
     };
 
     fetchProducts();
-  }, []);
+  }, [sellerId]);
 
   const handleProductStatus = async (productId) => {
     try {
-      console.log("productId");
-
-      console.log(productId);
       await axios.put(`http://localhost:8000/api/myproducts/${productId}`);
       setProducts(
         products.map((product) =>
@@ -62,7 +59,7 @@ const OrderManagement = ({sellerId}) => {
               {products.map((product) => (
                 <TableRow key={product._id}>
                   <TableCell>{product.name}</TableCell>
-                  <TableCell>{product.price}</TableCell>
+                  <TableCell>{product.price - product.discount}</TableCell>
 
                   <TableCell>
                     {!product.status ? (

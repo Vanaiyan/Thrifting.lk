@@ -56,7 +56,7 @@ const Form1 = ({
             }
             sx={{ fontSize: "14px", marginBottom: "10px" }}
             multiline
-            rows={6} // Increase the number of rows for more height
+            rows={6}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

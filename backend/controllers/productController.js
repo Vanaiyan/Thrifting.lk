@@ -1,5 +1,5 @@
 const Product = require("../models/productModel");
-const Seller = require('../models/sellerModel');
+const Seller = require("../models/sellerModel");
 const ErrorHandler = require("../utils/errorHandler");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
@@ -55,18 +55,29 @@ exports.getSingleProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body);
+    const product = await Product.findById(req.params.id);
 
     if (!product) {
-      return next(new ErrorHandler("Product not found", 400));
+      return next(new ErrorHandler("Product not found", 404));
     }
+    const { discount } = req.body;
+
+    if (discount >= product.price) {
+      return res.status(400).json({
+        success: false,
+        message: "Discount cannot be greater than or equal to the price",
+      });
+    }
+    await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     res.status(200).json({
       success: true,
-      product,
+      message:"Successful"
     });
   } catch (err) {
-    // Handle errors if any occurred during the process
     res.status(500).json({
       success: false,
       message: "Server Error",
@@ -77,16 +88,12 @@ exports.updateProduct = async (req, res, next) => {
 exports.deleteProduct = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id);
-
     if (!product) {
       return next(new ErrorHandler("Product not found", 400));
     }
-
     await product.deleteOne();
-
     res.status(200).json({
       success: true,
-      product,
     });
   } catch (err) {
     res.status(500).json({
@@ -97,7 +104,7 @@ exports.deleteProduct = async (req, res, next) => {
 };
 
 exports.newProduct = async (req, res, next) => {
-   req.body.user = req.user.id;
+  req.body.user = req.user.id;
 
   const product = await Product.create(req.body);
   res.status(201).json({
@@ -112,13 +119,13 @@ exports.createProduct = async (req, res, next) => {
     if (!seller) {
       return res.status(404).json({
         success: false,
-        error: 'Seller not found',
+        error: "Seller not found",
       });
     }
     req.body.seller = req.params.sellerId;
     const newProduct = await Product.create(req.body);
 
-    console.log("Product created successfully"); 
+    console.log("Product created successfully");
 
     res.status(201).json({
       success: true,
@@ -129,7 +136,7 @@ exports.createProduct = async (req, res, next) => {
 
     if (err.name === "ValidationError") {
       const errors = Object.values(err.errors).map((error) => error.message);
-      console.log("error is :",err);
+      console.log("error is :", err);
       return res.status(400).json({
         success: false,
         error: errors.join(", "),
