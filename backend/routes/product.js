@@ -6,7 +6,10 @@ const {
   updateProduct,
   deleteProduct,
   createProduct,
+  getRecommendations,
+  pushInteractedProduct,
 } = require("../controllers/productController");
+
 const router = express.Router();
 const {
   isAuthenticatedUser,
@@ -17,14 +20,9 @@ router
   .route("/products")
   .get(getProducts);
 
-  
 router
-.route("/products/:sellerId")
-.post(createProduct);
-
-
-  // .get(isAuthenticatedUser, getProducts)
-  // .post(isAuthenticatedUser, createProduct);
+  .route("/products/:sellerId")
+  .post(createProduct);
 
 router.route("/products/new").post(authorizeRoles("admin"), newProduct);
 
@@ -33,5 +31,14 @@ router
   .get(getSingleProduct)
   .put(updateProduct)
   .delete(deleteProduct);
+
+router
+  .route("/products/new")
+  .post(authorizeRoles("admin"), newProduct);
+  
+router
+  .route("/users/interact")
+  .post(isAuthenticatedUser, pushInteractedProduct);
+router.route("/recommendations").get(isAuthenticatedUser, getRecommendations);
 
 module.exports = router;

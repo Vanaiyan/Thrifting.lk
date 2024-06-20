@@ -1,4 +1,5 @@
 import "./app.css";
+import { useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./Styles/Theme";
 import SignUp from "./Pages/User/SignUpMain";
@@ -13,13 +14,33 @@ import ProductDetailPage from "./Pages/Product/ProductDetailPage";
 import ProductMain from "./Pages/User/ProductMain";
 import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
-import Dashboard_S from "./Pages/Seller/Dashboard_S"
-//import ManageSellerDetails from "./Components/SellerDashboard/Profile/ManageSellerDetails";
+import MyPurchasesPage from "./Pages/User/MyPurchasesPage";
+import Dashboard_S from "./Pages/Seller/Dashboard_S";
+import AllProductsPage from "./Pages/Admin/AllProductsPage";
+import AllSellersPage from "./Pages/Admin/Seller";
+import OrderList from "./Pages/Admin/OrderList";
+import SellerApproval from "./Pages/Admin/SellerApproval";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
+import { getUserAction } from "./Actions/userAction";
+import { useDispatch } from "react-redux";
 
 function App() {
+  const dispatch = useDispatch();
 
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Dispatch action with user data
+        dispatch(getUserAction());
+      } catch (error) {
+        // console.error("Error fetching user data:", error);
+        // Handle error (e.g., dispatch failure action)
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -34,10 +55,15 @@ function App() {
           <Route path="/productDetail" Component={ProductDetailPage} />
           <Route path="/product" Component={ProductMain} />
           <Route path="/seller/dashboard" Component={Dashboard_S} />
+         
           <Route path="/seller/dashboard/addProduct" Component={AddProduct} />
-          {/* <Route path="/seller/profile/edit/:sellerId" Component={ManageSellerDetails} /> */}
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
+          <Route path="/admin/allproducts" Component={AllProductsPage} />
+          <Route path="/admin/Sellers" Component={AllSellersPage} />
+          <Route path="/admin/OrderList" Component={OrderList} />
+          <Route path="admin/SellerApproval" Component={SellerApproval} />
+          <Route path="/mypurchase" Component={MyPurchasesPage} />
         </Routes>
       </div>
     </ThemeProvider>

@@ -28,6 +28,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "User",
   },
+  // Products user interacted with, limited to 10
+  interactedProducts: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
+    maxlength: 5, // Limiting the array length to 5
+  },
   resetPasswordToken: String,
   resetPasswordTokenExpire: Date,
   createdAt: {
@@ -45,7 +55,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_TIME,
+    expiresIn: '10s',
   });
 };
 
