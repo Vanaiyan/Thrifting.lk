@@ -15,25 +15,22 @@ import ProductMain from "./Pages/User/ProductMain";
 import WishlistPage from "./Pages/User/WishListPage";
 import { SellerPage } from "./Pages/Seller/SellerPage";
 import MyPurchasesPage from "./Pages/User/MyPurchasesPage";
-import Dashboard_S from "./Pages/Seller/Dashboard_S"
+import Dashboard_S from "./Pages/Seller/Dashboard_S";
 import AllProductsPage from "./Pages/Admin/AllProductsPage";
 import AllSellersPage from "./Pages/Admin/Seller";
 import OrderList from "./Pages/Admin/OrderList";
 import SellerApproval from "./Pages/Admin/SellerApproval";
-
-
-import EditProfile from "./Components/SellerDashboard/Profile/ManageSellerDetails";
-import { getUserAction } from "./Actions/userAction"; // Ensure this is correctly imported
-import { useDispatch } from 'react-redux';
-
-//import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
+import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
+import { getUserAction } from "./Actions/userAction";
+import { useDispatch } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      try {        // Dispatch action with user data
+      try {
+        // Dispatch action with user data
         dispatch(getUserAction());
       } catch (error) {
         // console.error("Error fetching user data:", error);
@@ -43,7 +40,7 @@ function App() {
 
     fetchData();
   }, [dispatch]);
-  
+
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -58,14 +55,14 @@ function App() {
           <Route path="/productDetail" Component={ProductDetailPage} />
           <Route path="/product" Component={ProductMain} />
           <Route path="/seller/dashboard" Component={Dashboard_S} />
-          {/* <Route path="/seller/profile" Component={ProfilePage} /> */}
-          <Route path="/seller/profile/edit/:sellerId" Component={EditProfile} />
+         
+          <Route path="/seller/dashboard/addProduct" Component={AddProduct} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/admin/allproducts" Component={AllProductsPage} />
           <Route path="/admin/Sellers" Component={AllSellersPage} />
           <Route path="/admin/OrderList" Component={OrderList} />
-          <Route path="admin/SellerApproval" Component={SellerApproval}/>
+          <Route path="admin/SellerApproval" Component={SellerApproval} />
           <Route path="/mypurchase" Component={MyPurchasesPage} />
         </Routes>
       </div>

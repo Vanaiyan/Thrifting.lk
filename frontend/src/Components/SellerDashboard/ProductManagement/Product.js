@@ -1,68 +1,285 @@
 import React, { useState } from "react";
 import {
-  Grid,
+  Card,
+  CardMedia,
+  CardContent,
   Typography,
+  IconButton,
   Button,
+  TextField,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
-import { StyledGrid } from "../../../Styles/SellerPage/ProductManageStyle";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import axios from "axios";
+import { BlurOverlay } from "./../../../Styles/SellerPage/ProductManageStyle";
 
-const Product = ({ id, title, price, imageSrc, description }) => {
-  const [openDialog, setOpenDialog] = useState(false);
+const Product = ({ id, name, price, imageSrcs, description, discount, setProducts, setSnackbar }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editName, setEditName] = useState(name);
+  const [editDescription, setEditDescription] = useState(description);
+  const [editDiscount, setEditDiscount] = useState(discount);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteReason, setDeleteReason] = useState("");
 
-  const handleEdit = () => {
-    console.log(`Edit product ${id}`);
+  const handlePrev = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? imageSrcs.length - 1 : prevIndex - 1
+    );
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleNext = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === imageSrcs.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
+  const toggleDescription = () => {
+    setShowFullDescription((prevShow) => !prevShow);
+  };
+
+  const handleEditProduct = () => {
+    setEditMode(true);
+  };
+
+  const handleSave = async () => {
+    if (editDiscount >= price) {
+      setSnackbar({
+        open: true,
+        message: "Discount cannot be greater than or equal to the price",
+        severity: "error"
+      });
+      return;
+    }
+
+    try {
+      const updatedProduct = {
+        name: editName,
+        description: editDescription,
+        discount: editDiscount,
+      };
+  
+      // Send the updated product details in the request body
+      const response = await axios.put(`http://localhost:8000/api/products/${id}`, updatedProduct);
+  
+      // Update products state
+      setProducts(prevProducts =>
+        prevProducts.map(product =>
+          product._id === id ? { ...product, ...updatedProduct } : product
+        )
+      );
+
+      // Log success message and response
+      console.log("Product updated successfully");
+      console.log(response.data.product);
+      setSnackbar({
+        open: true,
+        message: "Product updated successfully",
+        severity: "success"
+      });
+      setEditMode(false);
+    } catch (error) {
+      console.error("Error updating product:", error.response ? error.response.data : error.message);
+      setSnackbar({
+        open: true,
+        message: "Error updating product",
+        severity: "error"
+      });
+    }
+  };
+
+  const handleCancel = () => {
+    setEditName(name);
+    setEditDescription(description);
+    setEditDiscount(discount);
+    setEditMode(false);
+  };
+
+  const handleDelete = () => {
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async() => {
+    setDeleteDialogOpen(false);
+    try {
+      await axios.delete(`http://localhost:8000/api/products/${id}`);
+      setProducts(prevProducts => prevProducts.filter(product => product._id !== id));
+      setSnackbar({
+        open: true,
+        message: "Product deleted successfully",
+        severity: "success"
+      });
+      console.log(`Deleting product with id ${id} for reason: ${deleteReason}`);
+    } catch (error) {
+      console.error("Error deleting product:", error.response ? error.response.data : error.message);
+      setSnackbar({
+        open: true,
+        message: "Error deleting product",
+        severity: "error"
+      });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setDeleteReason("");
+  };
   return (
     <>
-      <StyledGrid container justifyContent="center" alignItems="center">
-        <Grid>
-          <img
-            src={imageSrc}
-            alt={title}
-            style={{ width: "250px", height: "250px", borderRadius: "10px" }}
-          />
-        </Grid>
-
-        <Grid>
-          <Typography variant="h6">{title}</Typography>
-          <Typography variant="body1">{`$${price}`}</Typography>
-
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setOpenDialog(true)}
+      {editMode && <BlurOverlay />}
+      <Card
+        style={{
+          position: "relative",
+          zIndex: editMode ? 3 : 1,
+          width: editMode ? "400px" : "240px",
+        }}
+      >
+        <div style={{ position: "relative", borderRadius: "20px" }}>
+          <IconButton
+            onClick={handlePrev}
+            style={{
+              position: "absolute",
+              left: "0",
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 1,
+            }}
           >
-            View More
-          </Button>
-        </Grid>
-      </StyledGrid>
+            <ArrowBackIosIcon />
+          </IconButton>
+          <div style={{ padding: "10px" }}>
+            <CardMedia
+              component="img"
+              height="200px"
+              width="200px"
+              image={imageSrcs[currentImageIndex]}
+              alt={`Product image ${currentImageIndex + 1}`}
+              sx={{ borderRadius: "20px" }}
+            />
+          </div>
+          <IconButton
+            onClick={handleNext}
+            style={{
+              position: "absolute",
+              right: "0",
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 1,
+            }}
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </div>
+        <CardContent className={editMode ? "blur" : ""}>
+          {editMode ? (
+            <>
+              <TextField
+                label="Name"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Price"
+                value={price}
+                InputProps={{
+                  readOnly: true,
+                }}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Description"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                fullWidth
+                multiline
+                rows={4}
+                margin="normal"
+              />
+              <TextField
+                label="Discount"
+                value={editDiscount}
+                onChange={(e) => setEditDiscount(e.target.value)}
+                fullWidth
+                margin="normal"
+              />
+              <Button size="small" onClick={handleSave}>
+                Save
+              </Button>
+              <Button size="small" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <>
+              <Typography variant="h5">{editName}</Typography>
+              <Typography variant="body2" color="textSecondary">
+                {showFullDescription
+                  ? description
+                  : `${description.substring(0, 50)}...`}
+              </Typography>
+              <Button size="small" onClick={toggleDescription}>
+                {showFullDescription ? "See Less" : "See More"}
+              </Button>
 
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>{title}</DialogTitle>
+              {showFullDescription ? (
+                <>
+                  <Typography variant="h6">LKR {price}</Typography>
+                  {discount ? (
+                    <Typography variant="body2" color="error">
+                      Discount: LKR {discount}
+                    </Typography>
+                  ) : null}
+                </>
+              ) : (
+                <Typography variant="h6">LKR {price - discount}</Typography>
+              )}
+            </>
+          )}
+          {!editMode && (
+            <>
+              <Button size="small" onClick={handleEditProduct}>
+                Edit
+              </Button>
+              <Button size="small" onClick={handleDelete}>
+                Delete
+              </Button>
+            </>
+          )}
+        </CardContent>
+      </Card>
+
+      <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
-          <img
-            src={imageSrc}
-            alt={title}
-            style={{ width: "300px", height: "300px" }}
+          <DialogContentText>
+            Are you sure you want to delete this product? Please provide a
+            reason for deletion.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Reason for deletion"
+            type="text"
+            fullWidth
+            value={deleteReason}
+            onChange={(e) => setDeleteReason(e.target.value)}
           />
-          <Typography variant="body1">{description}</Typography>
-          <Typography variant="body1">{`$${price}`}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleEdit} color="primary">
-            Edit
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
           </Button>
-          <Button onClick={handleCloseDialog} color="secondary">
-            Close
+          <Button onClick={handleDeleteConfirm} color="primary">
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>

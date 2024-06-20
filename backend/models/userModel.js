@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    defalult: "User",
+    default: "User",
   },
   // Products user interacted with, limited to 10
   interactedProducts: {
