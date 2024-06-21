@@ -9,12 +9,17 @@ import Logout from "@mui/icons-material/Logout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../../Actions/userAction";
+import { useDispatch } from "react-redux";
 
 const NavSellerDashboard_H = ({ sellerId }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [seller, setSeller] = useState(null);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -45,6 +50,7 @@ const NavSellerDashboard_H = ({ sellerId }) => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     handleMenuClose();
+    dispatch(logoutUser());
     navigate("/");
   };
   const isMenuOpen = Boolean(anchorEl);

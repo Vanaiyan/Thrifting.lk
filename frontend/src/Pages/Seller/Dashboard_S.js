@@ -4,7 +4,7 @@ import NavDashboard_H from "../../Components/Navigation bar/desktop/nav-sellerDa
 import { Grid } from "@mui/material";
 
 const Dashboard_S = () => {
-  const sellerId = "6658263ee302c74e3e3617d8";
+  const sellerId = "6648fcb3d57b2383f46d43ff";
   return (
     <Grid container>
       <Grid item xs={12} paddingBottom={3}>
@@ -12,7 +12,7 @@ const Dashboard_S = () => {
       </Grid>
 
       <Grid item xs={12} paddingBottom={3}>
-        <NavDashboard_V  sellerId={sellerId} />
+        <NavDashboard_V sellerId={sellerId} />
       </Grid>
     </Grid>
   );

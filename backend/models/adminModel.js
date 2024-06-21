@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const userSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: [true, "Please enter firstname"],
@@ -26,17 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: "User",
-  },
-  // Products user interacted with, limited to 10
-  interactedProducts: {
-    type: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
-    maxlength: 5, // Limiting the array length to 5
+    default: "Admin",
   },
   resetPasswordToken: String,
   resetPasswordTokenExpire: Date,
@@ -46,26 +36,25 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre("save", async function (next) {
+adminSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-userSchema.methods.getJwtToken = function () {
+adminSchema.methods.getJwtToken = function () {
   console.log("Expire Time : ", process.env.JWT_EXPIRES_TIME);
   return jwt.sign({ id: this.id, role: this.role }, process.env.JWT_SECRET, {
-    // expiresIn: "59s",
     expiresIn: process.env.JWT_EXPIRES_TIME,
   });
 };
 
-userSchema.methods.isValidPassword = async function (enteredPassword) {
+adminSchema.methods.isValidPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.methods.resetPassword = function () {
+adminSchema.methods.resetPassword = function () {
   const token = crypto.randomBytes(20).toString("hex");
 
   this.resetPasswordToken = crypto
@@ -78,7 +67,7 @@ userSchema.methods.resetPassword = function () {
   return token;
 };
 
-userSchema.methods.getResetToken = function () {
+adminSchema.methods.getResetToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
 
   this.resetPasswordToken = crypto
@@ -91,6 +80,4 @@ userSchema.methods.getResetToken = function () {
   return resetToken;
 };
 
-let user = mongoose.model("user", userSchema);
-
-module.exports = user;
+module.exports = mongoose.model("Admin", adminSchema);

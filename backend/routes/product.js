@@ -33,10 +33,6 @@ router
   .delete(deleteProduct);
 
 router
-  .route("/products/new")
-  .post(authorizeRoles("admin"), newProduct);
-  
-router
   .route("/users/interact")
   .post(isAuthenticatedUser, pushInteractedProduct);
 router.route("/recommendations").get(isAuthenticatedUser, getRecommendations);

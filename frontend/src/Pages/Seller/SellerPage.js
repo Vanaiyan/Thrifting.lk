@@ -3,11 +3,12 @@ import Banner from "../../Components/SellerPage/Banner";
 import { Box, Typography } from "@mui/material";
 import { List } from "../../Components/SellerPage/Reasonlist";
 import { Steps } from "../../Components/SellerPage/Steps";
+import { NavSellerDesktop } from "../../Components/Navigation bar/desktop/nav_seller_desktop";
 
 export const SellerPage = () => {
   return (
     <Box sx={{}}>
-      <NavBar />
+      <NavSellerDesktop />
       <Banner />
       <br />
       <Typography
