@@ -7,39 +7,59 @@ const productSchema = new mongoose.Schema({
     trim: true,
     maxlength: [100, "Product name cannot exceed 100 characters"],
   },
+  description: {
+    type: String,
+    required: [true, "Please enter the Product description"],
+    maxlength: [500, "Product description cannot exceed 500 characters"],
+    minlength: [100, "Product description cannot be below 100 characters"],
+  },
   price: {
     type: Number,
+    required: [true, "Please enter the Product price"],
     default: 0.0,
-  },
-  images: [
-    {
-      image: {
-        type: String,
-        required: true,
+    validate: {
+      validator: function(value) {
+        return value >= 0;
       },
-    },
-  ],
+      message: "Price cannot be a negative value"
+    }
+  },
   discount: {
     type: Number,
     default: 0.0,
+    validate: {
+      validator: function(value) {
+        return value >= 0;
+      },
+      message: "Price cannot be a negative value"
+    }
+  },
+  gender: {
+    type: String,
+    required: [true, "Please specify the gender"],
+    enum: ['men', 'women', 'unisex'], 
   },
   category: {
-    type: String,
-    required: [true, "Please Enter product Category"],
+    type: [String],
+    required: [true, "Please enter product category"],
   },
-  description: {
-    type: String,
-  },
+  pictures: [
+    {
+      image: {
+        type: String,
+        required: [true, "Please upload an image"],
+      },
+    },
+  ],
   seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Seller",
-    required: [true, "Please Enter Seller"],
+    required: [true, "Please enter Seller"],
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
-  // Fields for cart tracking
   inCart: {
     type: Boolean,
     default: false,
@@ -49,17 +69,14 @@ const productSchema = new mongoose.Schema({
     ref: "User",
     default: null,
   },
-  //Time whn product added to cart
   cartTimestamp: {
     type: Date,
     default: null,
   },
-  //If any user Interested to buy this
   isInterested: {
     type: Boolean,
     default: false,
   },
-  //When user Click Buy now Button
   interestedTimestamp: {
     type: Date,
     default: null,
@@ -73,12 +90,10 @@ const productSchema = new mongoose.Schema({
     default: false,
   },
 });
+
 productSchema.query.byId = function (_id) {
   return this.find({ _id: new RegExp(_id, "i") });
 };
-
-let schema = mongoose.model("Product", productSchema);
-module.exports = schema;
 
 const Product = mongoose.model("Product", productSchema);
 module.exports = Product;

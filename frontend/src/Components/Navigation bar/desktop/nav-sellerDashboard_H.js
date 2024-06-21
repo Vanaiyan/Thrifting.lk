@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { NavTitle } from "../../../Styles/NavBar/nav01";
 import { Divider, Grid, Box, Typography, Menu, MenuItem } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import PersonAdd from "@mui/icons-material/PersonAdd";
@@ -44,9 +43,6 @@ const NavSellerDashboard_H = ({ sellerId }) => {
     setAnchorEl(null);
   };
 
-  const handleProfileOpen = () => {
-    // navigate("/profile");
-  };
   const handleAddAccount = () => {
     handleMenuClose();
     navigate("/seller/register");
@@ -88,11 +84,6 @@ const NavSellerDashboard_H = ({ sellerId }) => {
               <Typography sx={{ ml: 1 }}>
                 {isMenuOpen ? seller?.firstName || "Guest" : ""}
               </Typography>
-            </MenuItem>
-
-            <MenuItem onClick={handleProfileOpen}>
-              <PersonRoundedIcon />
-              Profile
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleAddAccount}>

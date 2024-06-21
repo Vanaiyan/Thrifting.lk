@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Avatar, Grid, Button, Rating, Snackbar, Alert } from "@mui/material";
- import EditDetailsForm from "./EditDetailsForm";
-//import EditDetailsForm from "../../Data/EditDetailsForm";
+import EditDetailsForm from "./EditDetailsForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import axios from "axios";
 
