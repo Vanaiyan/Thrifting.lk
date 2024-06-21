@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 
 const ProductImagesBox = ({ images }) => {
-  const [activeImg, setActiveImage] = useState(images[0].image);
+  const [activeImg, setActiveImage] = useState(
+    images && images.length > 0 ? images[0].image : ""
+  );
+
+  if (!images || images.length === 0) {
+    return null; // Return null or a placeholder component if images are not available
+  }
 
   return (
     <Box
@@ -38,24 +44,23 @@ const ProductImagesBox = ({ images }) => {
         alignItems="center"
         width="100%"
       >
-        {images &&
-          images.map((img, index) => (
-            <img
-              key={index}
-              src={img.image}
-              alt={`img-${index}`}
-              style={{
-                width: "80px",
-                height: "80px",
-                objectFit: "cover",
-                marginRight: "10px",
-                cursor: "pointer",
-              }}
-              onClick={() => setActiveImage(img.image)}
-              onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
-              onMouseLeave={(e) => (e.target.style.opacity = "1")}
-            />
-          ))}
+        {images.map((img, index) => (
+          <img
+            key={index}
+            src={img.image}
+            alt={`img-${index}`}
+            style={{
+              width: "80px",
+              height: "80px",
+              objectFit: "cover",
+              marginRight: "10px",
+              cursor: "pointer",
+            }}
+            onClick={() => setActiveImage(img.image)}
+            onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
+            onMouseLeave={(e) => (e.target.style.opacity = "1")}
+          />
+        ))}
       </Box>
     </Box>
   );

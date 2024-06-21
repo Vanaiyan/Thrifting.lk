@@ -24,6 +24,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../Actions/userAction"; // Adjust the path as needed
+import SearchItem from "../../Home/SearchItem";
 
 export const NavDesktopAuthorized = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -82,7 +83,9 @@ export const NavDesktopAuthorized = () => {
           <NavLink to="/seller" exact activeClassName="active">
             <NavListItemText>SELL</NavListItemText>
           </NavLink>
-          <NavListItemText>CATEGORIES</NavListItemText>
+          <NavLink to="/product" exact activeClassName="active">
+            <NavListItemText>CATEGORIES</NavListItemText>
+          </NavLink>
           <NavListItemText>ABOUT</NavListItemText>
         </NavList>
       </Grid>
@@ -96,10 +99,7 @@ export const NavDesktopAuthorized = () => {
           justifyContent: "flex-end",
         }}
       >
-        <SearchContainer>
-          <SearchIcon />
-          <SearchInput placeholder="Search" />
-        </SearchContainer>
+        <SearchItem />
       </Grid>
 
       <Grid

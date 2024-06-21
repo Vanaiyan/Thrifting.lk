@@ -9,9 +9,11 @@ import {
   ButtonContainer,
   SignUpButton,
 } from "../../../Styles/NavBar/nav01";
-import {NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { Divider, Grid } from "@mui/material";
+import Search from "@mui/icons-material/Search";
+import SearchItem from "../../Home/SearchItem";
 
 export const NavDesktop = () => {
   return (
@@ -43,7 +45,9 @@ export const NavDesktop = () => {
           <NavLink to="/seller" exact activeClassName="active">
             <NavListItemText>SELL</NavListItemText>
           </NavLink>
-          <NavListItemText>CATEGORIES</NavListItemText>
+          <NavLink to="/product" exact activeClassName="active">
+            <NavListItemText>CATEGORIES</NavListItemText>
+          </NavLink>
           <NavListItemText>ABOUT</NavListItemText>
         </NavList>
       </Grid>
@@ -57,10 +61,7 @@ export const NavDesktop = () => {
           justifyContent: "flex-end",
         }}
       >
-        <SearchContainer>
-          <SearchIcon />
-          <SearchInput placeholder="Search" />
-        </SearchContainer>
+        <SearchItem />
       </Grid>
 
       <Grid

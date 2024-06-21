@@ -28,7 +28,11 @@ const AddToCartButton = ({ productId }) => {
       <IconButton
         color="primary"
         aria-label="add to cart"
-        sx={{ position: "absolute", bottom: "10px" }}
+        sx={{
+          position: "absolute",
+          bottom: "10px",
+          padding: "5px",
+        }}
         onClick={handleAddToCartClick}
       >
         <AddShoppingCartIcon />

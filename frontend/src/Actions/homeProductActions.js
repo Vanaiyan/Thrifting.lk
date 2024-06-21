@@ -86,3 +86,58 @@ export const fetchProductDetails = async (productId) => {
     throw error;
   }
 };
+
+export const fetchProductsAll = async () => {
+  try {
+    const response = await axios.get("http://localhost:8000/api/products");
+    return response.data.products;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};
+
+export const fetchProductsByCategory = async (category) => {
+  try {
+    const response = await axios.get("http://localhost:8000/api/products", {
+      params: { category },
+    });
+    return response.data.products;
+  } catch (error) {
+    console.error(`Error fetching products for category ${category}:`, error);
+    throw error;
+  }
+};
+
+export const fetchProductsByFilter = async (minPrice, maxPrice) => {
+  try {
+    let url = "http://localhost:8000/api/products";
+
+    if (minPrice && maxPrice) {
+      url += `?price[gt]=${minPrice}&price[lt]=${maxPrice}`;
+    } else if (minPrice) {
+      url += `?price[gt]=${minPrice}`;
+    } else if (maxPrice) {
+      url += `?price[lt]=${maxPrice}`;
+    }
+
+    const response = await axios.get(url);
+    return response.data.products;
+  } catch (error) {
+    console.error("Error fetching products by filter:", error);
+    throw error;
+  }
+};
+
+export const fetchProductsByKeyword = async (keyword) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8000/api/products?keyword=${keyword}`
+    );
+    console.log("PRODUCT SEARCH : ", response.data.products);
+    return response.data.products;
+  } catch (error) {
+    console.error(`Error fetching products for keyword ${keyword}:`, error);
+    throw error;
+  }
+};
