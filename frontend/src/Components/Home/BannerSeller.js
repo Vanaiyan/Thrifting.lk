@@ -1,16 +1,22 @@
 import { Box, Hidden, Typography } from "@mui/material";
-import theme from "../../Styles/Theme";
 import { SignUpButton } from "../../Styles/NavBar/nav01";
 import imglist from "../../Assets/Images/home/sellIt.jpg";
-import imgsell from "../../Assets/Images/home/shipIt.png";
 import imgpaid from "../../Assets/Images/home/getPaid.png";
+import imgcustomer from "../../Assets/Images/home/customer.png";
+import { useNavigate } from "react-router-dom";
 
 export const BannerSeller = () => {
+
+  const navigate = useNavigate();
+  const handleSignupButton =()=>{
+    navigate('/seller/register');
+  }
+
   return (
     <div>
       <Box
         sx={{
-          backgroundColor: "#242325",
+          backgroundColor: "#242325",        
           display: "flex",
           justifyContent: "space-around",
           borderRadius: { lg: "45px", md: "30px", sm: "0", xs: "0" },
@@ -35,7 +41,7 @@ export const BannerSeller = () => {
           >
             Showcase and sell your goods today.
           </Typography>
-          <SignUpButton sx={{ marginTop: "20px", maxHeight: "50px" }}>
+          <SignUpButton sx={{ marginTop: "20px", maxHeight: "50px" }} onClick={handleSignupButton}>
             Register as Seller
           </SignUpButton>
         </Box>
@@ -57,58 +63,57 @@ export const BannerSeller = () => {
               <Box
                 sx={{
                   backgroundColor: "white",
-                  height: "300px",
+                  height: "250px",
                   width: "200px",
                   borderRadius: "30px",
                 }}
               >
-                <img src={imglist} width={"200px"} />
+                <img src={imglist} width={"200px"} height={"200px"} />
                 <Typography
                   variant="subtitle1"
                   sx={{ textAlign: "center", fontWeight: "600" }}
                 >
-                  List it
-                </Typography>
-                <Typography variant="subtitle2" sx={{ textAlign: "center" }}>
-                  Take a few photos. Add a description. Set your price
+                  List Product
                 </Typography>
               </Box>
               <Box
                 sx={{
                   backgroundColor: "white",
-                  height: "300px",
+                  height: "250px",
                   width: "200px",
                   borderRadius: "30px",
                 }}
               >
-                <img src={imgpaid} width={"200px"} />
+                <img src={imgpaid} width={"200px"} height={"200px"} />
                 <Typography
                   variant="subtitle1"
                   sx={{ textAlign: "center", fontWeight: "600" }}
                 >
-                  List it
-                </Typography>
-                <Typography variant="subtitle2" sx={{ textAlign: "center" }}>
-                  Take a few photos. Add a description. Set your price
+                  Set Price and Details
                 </Typography>
               </Box>
               <Box
                 sx={{
                   backgroundColor: "white",
-                  height: "300px",
+                  height: "250px",
                   width: "200px",
                   borderRadius: "30px",
                 }}
               >
-                <img src={imgsell} width={"200px"} />
+                <img
+                  src={imgcustomer}
+                  width={"200px"}
+                  height={"200px"}
+                  style={{
+                    borderTopLeftRadius: "30px",
+                    borderTopRightRadius: "30px"
+                  }}
+                />
                 <Typography
                   variant="subtitle1"
                   sx={{ textAlign: "center", fontWeight: "600" }}
                 >
-                  List it
-                </Typography>
-                <Typography variant="subtitle2" sx={{ textAlign: "center" }}>
-                  Take a few photos. Add a description. Set your price
+                  Connect with Buyer
                 </Typography>
               </Box>
             </Box>

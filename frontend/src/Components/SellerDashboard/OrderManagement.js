@@ -8,17 +8,16 @@ import {
   TableCell,
   Button,
 } from "@mui/material";
-import axios from "axios"; // Assuming you use axios for HTTP requests
+import axios from "axios"; 
 
-const OrderManagement = () => {
+const OrderManagement = ({sellerId}) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // Fetch products from your API endpoint
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/myproducts/6648fcb3d57b2383f46d43ff"
+          `http://localhost:8000/api/myproducts/${sellerId}`
         );
         setProducts(response.data);
       } catch (error) {
@@ -27,13 +26,10 @@ const OrderManagement = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [sellerId]);
 
   const handleProductStatus = async (productId) => {
     try {
-      console.log("productId");
-
-      console.log(productId);
       await axios.put(`http://localhost:8000/api/myproducts/${productId}`);
       setProducts(
         products.map((product) =>
@@ -63,7 +59,7 @@ const OrderManagement = () => {
               {products.map((product) => (
                 <TableRow key={product._id}>
                   <TableCell>{product.name}</TableCell>
-                  <TableCell>{product.price}</TableCell>
+                  <TableCell>{product.price - product.discount}</TableCell>
 
                   <TableCell>
                     {!product.status ? (

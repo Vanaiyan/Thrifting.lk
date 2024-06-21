@@ -11,7 +11,6 @@ import {
 import districts from '../../Data/Districts'
 
 const EditDetailsForm = ({ editMode, handleChange, editableSeller }) => {
-  // const districts = ["Jaffna", "Kandy", "District 3"];
 
   return (
     <div>

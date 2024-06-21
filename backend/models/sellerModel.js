@@ -103,7 +103,11 @@ const sellerSchema = new mongoose.Schema({
     type: Number,
     min: 0,
     max: 10,
-    default: 0,
+    default :0
+  },
+  authenticated: {
+    type: Boolean,
+    default:false,
   },
 
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
