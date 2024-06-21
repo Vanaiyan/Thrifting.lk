@@ -9,16 +9,17 @@ const {
   getRecommendations,
   pushInteractedProduct,
 } = require("../controllers/productController");
-
 const router = express.Router();
 const {
   isAuthenticatedUser,
   authorizeRoles,
 } = require("../middlewares/authenticate");
+const { getSingleSeller } = require("../controllers/sellerAuthController");
 
 router.route("/products").get(getProducts);
 
 router.route("/products/:sellerId").post(createProduct);
+router.route("/seller/:id").get(getSingleSeller);
 
 router.route("/products/new").post(authorizeRoles("admin"), newProduct);
 

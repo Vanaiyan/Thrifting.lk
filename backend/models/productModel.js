@@ -10,34 +10,34 @@ const productSchema = new mongoose.Schema({
   description: {
     type: String,
     required: [true, "Please enter the Product description"],
-    maxlength: [500, "Product description cannot exceed 500 characters"],
-    minlength: [100, "Product description cannot be below 100 characters"],
+    maxlength: [800, "Product description cannot exceed 500 characters"],
+    minlength: [400, "Product description cannot be below 100 characters"],
   },
   price: {
     type: Number,
     required: [true, "Please enter the Product price"],
     default: 0.0,
     validate: {
-      validator: function(value) {
+      validator: function (value) {
         return value >= 0;
       },
-      message: "Price cannot be a negative value"
-    }
+      message: "Price cannot be a negative value",
+    },
   },
   discount: {
     type: Number,
     default: 0.0,
     validate: {
-      validator: function(value) {
+      validator: function (value) {
         return value >= 0;
       },
-      message: "Price cannot be a negative value"
-    }
+      message: "Price cannot be a negative value",
+    },
   },
   gender: {
     type: String,
     required: [true, "Please specify the gender"],
-    enum: ['men', 'women', 'unisex'], 
+    enum: ["men", "women", "unisex"],
   },
   category: {
     type: [String],
@@ -47,7 +47,7 @@ const productSchema = new mongoose.Schema({
     {
       image: {
         type: String,
-        required: [true, "Please upload an image"],
+        required: true,
       },
     },
   ],

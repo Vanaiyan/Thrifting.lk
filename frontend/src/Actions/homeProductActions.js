@@ -20,6 +20,19 @@ export const fetchProducts = () => async (dispatch) => {
   }
 };
 
+export const fetchSellerDetails = async (sellerId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/seller/${sellerId}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch seller details");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching seller details:", error.message);
+    throw error;
+  }
+};
 // Thunk action to push productId to interactedProducts in user document
 export const pushInteractedProduct = (productId) => async () => {
   try {
@@ -61,5 +74,15 @@ export const getRecommendations = (user) => async (dispatch) => {
   } catch (error) {
     console.error("Error fetching recommendations:", error);
     dispatch(fetchProductsFailure(error.message));
+  }
+};
+
+export const fetchProductDetails = async (productId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/products/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching product details:", error);
+    throw error;
   }
 };

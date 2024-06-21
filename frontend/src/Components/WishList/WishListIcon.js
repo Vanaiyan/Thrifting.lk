@@ -46,6 +46,7 @@ const WishlistIconButton = ({ productId }) => {
         color={isWishlist ? "primary" : "default"}
         aria-label={isWishlist ? "remove from wishlist" : "add to wishlist"}
         onClick={handleWishlistClick}
+        sx={{ bgcolor: "rgba(255, 255, 255, 0.4)" }}
       >
         {isWishlist ? <FavoriteIcon /> : <FavoriteBorderIcon />}
       </IconButton>

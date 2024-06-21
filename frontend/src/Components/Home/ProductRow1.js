@@ -137,7 +137,7 @@ const ProductRow = () => {
             id={product._id}
             title={product.name}
             price={product.price}
-            imageSrc={product.imageSrc}
+            imageSrc={product.pictures ? product.pictures[0].image : ""}
           />
         ))}
       </Slider>

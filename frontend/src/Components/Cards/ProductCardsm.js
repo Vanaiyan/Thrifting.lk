@@ -43,7 +43,7 @@ export default function ProductCardsm({ id, title, price, imageSrc }) {
         borderRadius: "15px",
         margin: "30px 0px",
         display: "block",
-        padding: "10px 0",
+        padding: "0",
         transition: "box-shadow 0.2s ease-in",
         boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.1)",
         "&:hover": {
@@ -52,12 +52,12 @@ export default function ProductCardsm({ id, title, price, imageSrc }) {
       }}
       onClick={handleCardNavigation} // Call pushInteractedProduct on card click
     >
-      <CardMedia sx={{ height: 140 }} image={imageSrc} title={title} />
+      <CardMedia sx={{ height: 170 }} image={imageSrc} title={title} />
       <CardContent>
         <Typography
           fontSize="14px"
           component="div"
-          sx={{ fontWeight: 600, position: "absolute", top: "150px" }}
+          sx={{ fontWeight: 600, position: "absolute", top: "170px" }}
         >
           {title}
         </Typography>
