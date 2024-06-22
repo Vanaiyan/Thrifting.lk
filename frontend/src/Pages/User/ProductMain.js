@@ -36,6 +36,14 @@ const ProductMain = () => {
     }
   }, [searchKeyword]);
 
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchCategoryProducts(selectedCategory);
+    } else {
+      fetchAllProducts();
+    }
+  }, [selectedCategory]);
+
   const fetchAllProducts = async () => {
     try {
       const products = await fetchProductsAll();
@@ -73,6 +81,7 @@ const ProductMain = () => {
     setSelectedCategory("");
     setMinPrice(minPrice);
     setMaxPrice(maxPrice);
+    fetchFilteredProducts(minPrice, maxPrice); // Trigger filtered products fetching
   };
 
   return (
@@ -113,9 +122,7 @@ const ProductMain = () => {
               product.pictures && product.pictures.length > 0
                 ? product.pictures[0].image
                 : ""
-            } // onAddToCartClick={() => {
-            //   // console.log(`Product ${product.name} added to cart`);
-            // }}
+            }
           />
         ))}
       </Box>
