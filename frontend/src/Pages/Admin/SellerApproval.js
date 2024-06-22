@@ -4,7 +4,8 @@ import { Box, Grid, Typography } from '@mui/material';
 import DrawerAdmin from '../../Components/Admin/DrawerAdmin';
 import AppBarAdmin from '../../Components/Admin/AppBarAdmin';
 import SellerApprovalCard from '../../Components/Admin/SellerApprovalCard';
-import { getAllSellers } from '../../Actions/adminActions';
+import { getSellers } from '../../Actions/adminActions';
+import Breadcrumb from '../../Components/Admin/Breadcrumbs';
 
 const SellerApproval = () => {
   const [sellers, setSellers] = useState([]);
@@ -12,7 +13,7 @@ const SellerApproval = () => {
   useEffect(() => {
     const fetchSellers = async () => {
       try {
-        const sellersData = await getAllSellers();
+        const sellersData = await getSellers();
         setSellers(sellersData);
       } catch (error) {
         console.error('Error fetching sellers:', error);
@@ -27,10 +28,10 @@ const SellerApproval = () => {
       <DrawerAdmin />
       <Box sx={{ flexGrow: 1 }}>
         <AppBarAdmin />
+        <Box sx={{p: "15px"}}>
+        <Breadcrumb/>
+        </Box>
         <Grid container spacing={2} sx={{ p: '15px' }}>
-          <Grid item xs={12}>
-            <Typography variant="h4" gutterBottom>Seller Approval</Typography>
-          </Grid>
           {sellers.map(seller => (
             <Grid item key={seller.id} xs={12} sm={4} md={3}>
               <SellerApprovalCard seller={seller} />

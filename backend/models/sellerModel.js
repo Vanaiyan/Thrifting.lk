@@ -40,6 +40,7 @@ const interestedUserSchema = new mongoose.Schema({
     required: true,
   },
   timestamp: {
+    
     type: Date,
     default: Date.now,
   },
@@ -97,17 +98,16 @@ const sellerSchema = new mongoose.Schema({
 
   frontImage: imageSchema,
   backImage: imageSchema,
-  rating: {
-    type: Number,
-    min: 1,
-    max: 10,
-  },
 
   rating: {
     type: Number,
-    min: 1,
+    min: 0,
     max: 10,
-    // default :0
+    default :0
+  },
+  authenticated: {
+    type: Boolean,
+    default:false,
   },
 
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
