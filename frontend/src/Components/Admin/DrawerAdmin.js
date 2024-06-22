@@ -60,7 +60,7 @@ const DrawerAdmin = () => {
           { text: "Dashboard", icon: <DashboardIcon />, path:"/admin/Dashboard"},
           { text: "All Products", icon: <StoreIcon />, path: "/admin/AllProducts" },
           { text: "Sellers", icon: <PeopleIcon />, path: "/admin/Sellers" },
-          { text: "Users", icon: <PeopleIcon />, path: "/admin/Buyers" },
+          { text: "Buyers", icon: <PeopleIcon />, path: "/admin/Buyers" },
           { text: "Order List", icon: <ListAltIcon />, path: "/admin/OrderList" },
           { text: "Seller Approval", icon: <VerifiedUserIcon />, path: "/admin/SellerApproval" },
           { text: "Report Feedback", icon: <ReportIcon />, path: "/admin/ReportFeedback" },

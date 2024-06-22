@@ -51,7 +51,7 @@ exports.getCounts = async (req, res) => {
   try {
     const totalProducts = await Product.countDocuments({ status: false });
     const totalSellers = await Seller.countDocuments({ authenticated: true });
-    const totalBuyers = await user.countDocuments();
+    const totalBuyers = await User.countDocuments();
     const totalOrders = await Order.countDocuments();
 
     // Function to format counts to K or M (e.g., 1000 -> 1K, 1000000 -> 1M)
@@ -172,6 +172,16 @@ exports.deleteProducts = async (req, res, next) => {
       success: true,
       message: "Product deleted successfully",
       product,
+    });  
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+
 //Function To get All Sellers
 exports.getAllSellersToAdmin = async (req, res, next) => {
   try {
@@ -357,7 +367,7 @@ exports.searchSellers = async (req, res) => {
 exports.getUsersToAdmin = async (req, res, next) => {
   try {
     // Fetch all users from the database 
-    const users = await user.find();
+    const users = await User.find();
 
     res.status(200).json({
       success: true,
@@ -599,4 +609,3 @@ exports.getOrderCountLastSixMonths = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
