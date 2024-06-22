@@ -4,8 +4,6 @@ import {
   getCartSuccess,
   getCartFailure,
   removeFromCart,
-  updateCartItemQuantitySuccess,
-  updateCartItemQuantityFailure,
 } from "../Reducers/cartSlice";
 import { updatesoldConfirmedSellerReducer } from "../Reducers/cartSlice";
 import axios from "axios";
@@ -20,9 +18,10 @@ export const addToCart = (item) => async (dispatch) => {
     );
 
     // Dispatch action to update state upon success
-    dispatch(addToCartSuccess(response.data));
+    dispatch(addToCartSuccess(item));
   } catch (error) {
     // Dispatch action to handle failure
+    console.error(error);
     dispatch(addToCartFailure(error.response.data.message));
   }
 };
@@ -33,7 +32,7 @@ export const getCartProducts = () => async (dispatch) => {
     const response = await axios.get("http://localhost:8000/api/getcart", {
       withCredentials: true,
     });
-    console.log("get cart : ", response.data.productsBySeller);
+    // console.log("get cart : ", response.data.productsBySeller);
 
     // Dispatch action to update state upon success
     dispatch(getCartSuccess(response.data.productsBySeller));
@@ -52,7 +51,7 @@ export const removeItem = (productId) => async (dispatch) => {
         withCredentials: true,
       }
     );
-    console.log("res", response);
+    // console.log("res", response);
     // Dispatch action to update state upon success
     dispatch(removeFromCart(productId));
   } catch (error) {
@@ -61,30 +60,9 @@ export const removeItem = (productId) => async (dispatch) => {
   }
 };
 
-export const updateCartItemQuantity =
-  (productId, newQuantity) => async (dispatch) => {
-    try {
-      await axios.put(
-        `http://localhost:8000/api/cart/${productId}`,
-        {
-          productId,
-          quantity: newQuantity,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("Quantity updated successfully", productId, newQuantity);
-      dispatch(updateCartItemQuantitySuccess({ productId, newQuantity }));
-    } catch (error) {
-      console.error("Error updating quantity:", error);
-      dispatch(updateCartItemQuantityFailure(error.message));
-    }
-  };
-
 export const showIntersted = (productId) => async () => {
   try {
-    console.log("Reached show interested in Actions");
+    // console.log("Reached show interested in Actions");
     await axios.put(
       `http://localhost:8000/api/cart/interested/${productId}`,
       {},
@@ -98,13 +76,13 @@ export const showIntersted = (productId) => async () => {
 
 export const showNotInterested = (productId) => async () => {
   try {
-    console.log("Reached show interested in Actions");
+    // console.log("Reached show interested in Actions");
     await axios.put(
       `http://localhost:8000/api/cart/notinterested/${productId}`,
       {},
       { withCredentials: true }
     );
-    console.log("interst in product Removed successfully", productId);
+    // console.log("interst in product Removed successfully", productId);
   } catch (error) {
     console.error("Error updating interst in product:", error);
   }
@@ -112,7 +90,7 @@ export const showNotInterested = (productId) => async () => {
 
 export const soldConfirmBySellerAction = (productId) => async (dispatch) => {
   try {
-    console.log("Reached show interested in Actions");
+    // console.log("Reached show interested in Actions");
 
     const response = await axios.put(
       `http://localhost:8000/api/cart/soldBuyer/${productId}`,
@@ -120,7 +98,7 @@ export const soldConfirmBySellerAction = (productId) => async (dispatch) => {
       { withCredentials: true }
     );
 
-    console.log("product sold updated By buyer successfully", productId);
+    // console.log("product sold updated By buyer successfully", productId);
     const data = response.data;
 
     // Dispatch the reducer to update the store

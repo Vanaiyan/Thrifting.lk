@@ -70,7 +70,7 @@ export const MsgReceiver = ({ message }) => {
         }}
       >
         {message.text !== null &&
-          message.text.trim() !== "" &&
+          message.text.trim() !== " " &&
           renderMessageText(message.text)}
         <TimeprintReceier
           message={message}

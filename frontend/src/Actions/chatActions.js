@@ -45,16 +45,18 @@ export const getUserProfile = async () => {
 
 export const getSellerProfileAction = async (sellerId) => {
   try {
-    console.log(sellerId);
-    const response = await axios.get(
-      `http://localhost:8000/api/seller-profile/${sellerId}`,
-      {
-        withCredentials: true,
-      }
-    );
+    if (sellerId) {
+      // console.log(sellerId);
+      const response = await axios.get(
+        `http://localhost:8000/api/seller-profile/${sellerId}`,
+        {
+          withCredentials: true,
+        }
+      );
 
-    const data = response.data;
-    return data;
+      const data = response.data;
+      return data;
+    }
   } catch (error) {
     console.error("Error:", error);
     throw error;

@@ -21,13 +21,12 @@ import AllSellersPage from "./Pages/Admin/Seller";
 import OrderList from "./Pages/Admin/OrderList";
 import SellerApproval from "./Pages/Admin/SellerApproval";
 import SellerLoginPage from "./Pages/Seller/loginSellerPage";
-import EditProfile from "./Components/SellerDashboard/Profile/ManageSellerDetails";
+import EditProfile from "./Components/SellerDashboard/Profile/EditProfile";
 import { getUserAction } from "./Actions/userAction"; // Ensure this is correctly imported
 import { useDispatch } from "react-redux";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 //import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
-
 
 function App() {
   const dispatch = useDispatch();
@@ -57,7 +56,10 @@ function App() {
           <Route path="/chat/:chatId" Component={ChatPage} />
           <Route path="/seller" Component={SellerPage} />
           <Route path="/seller/register" Component={Register_S} />
-          <Route path="/productDetail" Component={ProductDetailPage} />
+          <Route
+            path="/productDetail/:productId"
+            Component={ProductDetailPage}
+          />
           <Route path="/product" Component={ProductMain} />
           <Route path="/seller/dashboard" Component={Dashboard_S} />
           {/* <Route path="/seller/profile" Component={ProfilePage} /> */}
@@ -75,7 +77,6 @@ function App() {
           <Route path="admin/login" Component={AdminLoginPage} />
           <Route path="/seller/login" Component={SellerLoginPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
-
         </Routes>
       </div>
     </ThemeProvider>

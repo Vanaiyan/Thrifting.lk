@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Typography,
@@ -7,18 +7,38 @@ import {
   Card,
   CardMedia,
   CardActions,
+  LinearProgress,
 } from "@mui/material";
+import { uploadImageToFirebase } from "../../../Actions/sellerAction"; // Import the action
 
-const Form3 = ({ pictures, setPictures, errors = {} }) => {
-  const handleFileChange = (event) => {
+const Form3 = ({ pictures, setPictures, errors = {}, setErrors }) => {
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const handleFileChange = async (event) => {
     const files = Array.from(event.target.files);
-    setPictures((prev) => [
-      ...prev,
-      ...files.map((file) => ({
-        image: URL.createObjectURL(file),
-        file,
-      })),
-    ]);
+
+    if (pictures.length + files.length > 5) {
+      alert("You can only upload up to 5 pictures.");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const uploadedPictures = await Promise.all(
+        files.map(async (file) => {
+          const imageUrl = await uploadImageToFirebase(file, setProgress);
+          return { image: imageUrl, file };
+        })
+      );
+      setPictures((prev) => [...prev, ...uploadedPictures]);
+      setErrors((prevErrors) => ({ ...prevErrors, pictures: null }));
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    } finally {
+      setUploading(false);
+      setProgress(0);
+    }
   };
 
   const handleRemovePicture = (index) => {
@@ -28,11 +48,15 @@ const Form3 = ({ pictures, setPictures, errors = {} }) => {
   return (
     <Paper elevation={3} sx={{ padding: 4 }}>
       <Typography variant="h5" gutterBottom>
-        Add pictures of your item
+        Add Five(5) pictures of your item
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Button variant="contained" component="label">
+          <Button
+            variant="contained"
+            component="label"
+            disabled={uploading || pictures.length >= 5}
+          >
             Upload Files
             <input
               type="file"
@@ -42,11 +66,12 @@ const Form3 = ({ pictures, setPictures, errors = {} }) => {
               onChange={handleFileChange}
             />
           </Button>
-
+          {uploading && (
+            <LinearProgress variant="determinate" value={progress} />
+          )}
           {errors.pictures && (
             <Typography color="error">{errors.pictures}</Typography>
           )}
-
           <Grid container spacing={1} style={{ marginTop: "10px" }}>
             {pictures.map((picture, index) => (
               <Grid item key={index}>

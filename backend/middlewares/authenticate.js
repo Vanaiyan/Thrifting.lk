@@ -7,17 +7,15 @@ const Admin = require("../models/adminModel");
 
 exports.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const { token } = req.cookies;
-  console.log("Token : ", token);
+  // console.log("Token : ", token);
   if (!token) {
     return next(new ErrorHandler("Login First to Access", 401));
   }
 
   try {
-    console.log("check 1");
-    console.log("jwt secret", process.env.JWT_SECRET);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const { id, role } = decoded;
-    console.log("data of user", id, role);
+    // console.log("data of user", id, role);
     let user;
 
     if (role === "User") {
@@ -34,7 +32,7 @@ exports.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
 
     req.user = user;
     req.user.role = role; // Attach role to req.user
-    console.log(req.user);
+    // console.log(req.user);
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {

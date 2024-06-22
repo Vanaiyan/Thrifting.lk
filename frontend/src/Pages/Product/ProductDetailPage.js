@@ -1,5 +1,5 @@
-// ProductDetailPage.js
-import React from "react";
+// src/Pages/ProductDetailPage.js
+import React, { useEffect, useState } from "react";
 import NavBar from "../../Components/Navigation bar/navigation";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -7,8 +7,38 @@ import ProductImagesBox from "../../Components/ProductdetailPage/ProductImagesBo
 import ProductDetailBox from "../../Components/ProductdetailPage/ProductDetailBox";
 import ProductDescriptionBox from "../../Components/ProductdetailPage/ProductDescriptionBox";
 import ProductSellerDetailBox from "../../Components/ProductdetailPage/ProductSellerDetailBox";
+import { fetchProductDetails } from "../../Actions/homeProductActions";
+import { useParams } from "react-router-dom";
 
 const ProductDetailPage = () => {
+  const { productId } = useParams(); // Get productId from URL params
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadProductDetails = async () => {
+      try {
+        const data = await fetchProductDetails(productId);
+        setProduct(data.product);
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to fetch product details.");
+        setLoading(false);
+      }
+    };
+
+    loadProductDetails();
+  }, [productId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <div>
       <NavBar />
@@ -37,17 +67,17 @@ const ProductDetailPage = () => {
             }}
           >
             <Box>
-              <ProductImagesBox />
+              <ProductImagesBox images={product.pictures} />
             </Box>
             <Box>
-              <ProductDetailBox />
+              <ProductDetailBox product={product} />
             </Box>
 
             <Box>
-              <ProductDescriptionBox />
+              <ProductDescriptionBox description={product.description} />
             </Box>
             <Box>
-              <ProductSellerDetailBox />
+              <ProductSellerDetailBox sellerId={product.seller} />
             </Box>
           </Box>
         </Container>

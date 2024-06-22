@@ -63,10 +63,9 @@ exports.getAllProductsToAdmin = async (req, res, next) => {
 //Function To get All Sellers
 exports.getAllSellersToAdmin = async (req, res, next) => {
   try {
-    console.log("mnkmn");
     // Fetch all sellers from the database
     const sellers = await Seller.find();
-    console.log(sellers);
+    // console.log(sellers);
     res.status(200).json({
       success: true,
       sellers: sellers,
@@ -129,7 +128,7 @@ exports.getAllOrders = async (req, res, next) => {
     );
 
     // Check the filtered orders
-    console.log("Filtered valid orders:", validOrders);
+    // console.log("Filtered valid orders:", validOrders);
 
     // Transform the valid orders
     const transformedOrders = validOrders.map((order) => ({
@@ -150,7 +149,7 @@ exports.getAllOrders = async (req, res, next) => {
       orders: transformedOrders,
     });
   } catch (err) {
-    console.error("Error fetching orders:", err.message); // Log the error message
+    // console.error("Error fetching orders:", err.message); // Log the error message
     res.status(500).json({
       success: false,
       message: "Server Error",

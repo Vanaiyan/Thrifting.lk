@@ -145,7 +145,7 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
 
 exports.getUserInfo = (req, res) => {
   try {
-    console.log("Requested User", req.user);
+    // console.log("Requested User", req.user);
     // Return the user information from req.user
     res.status(200).json(req.user);
   } catch (error) {
