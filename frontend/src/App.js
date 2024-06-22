@@ -18,8 +18,11 @@ import MyPurchasesPage from "./Pages/User/MyPurchasesPage";
 import Dashboard_S from "./Pages/Seller/Dashboard_S";
 import AllProductsPage from "./Pages/Admin/AllProductsPage";
 import AllSellersPage from "./Pages/Admin/Seller";
+import AllUsersPage from "./Pages/Admin/Buyers";
 import OrderList from "./Pages/Admin/OrderList";
 import SellerApproval from "./Pages/Admin/SellerApproval";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import FeedbackReport from "./Pages/Admin/ReportFeedback";
 import SellerLoginPage from "./Pages/Seller/loginSellerPage";
 import EditProfile from "./Components/SellerDashboard/Profile/EditProfile";
 import { getUserAction } from "./Actions/userAction"; // Ensure this is correctly imported
@@ -70,10 +73,13 @@ function App() {
           <Route path="/seller/dashboard/addProduct" Component={AddProduct} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
-          <Route path="/admin/allproducts" Component={AllProductsPage} />
+          <Route path="/admin/AllProducts" Component={AllProductsPage} />
           <Route path="/admin/Sellers" Component={AllSellersPage} />
+          <Route path="/admin/Buyers" Component={AllUsersPage} />
           <Route path="/admin/OrderList" Component={OrderList} />
-          <Route path="admin/SellerApproval" Component={SellerApproval} />
+          <Route path="admin/SellerApproval" Component={SellerApproval}/>
+          <Route path="/admin/Dashboard" Component={AdminDashboard} />
+          <Route path="/admin/ReportFeedback" Component={FeedbackReport} />
           <Route path="admin/login" Component={AdminLoginPage} />
           <Route path="/seller/login" Component={SellerLoginPage} />
           <Route path="/orders" Component={MyPurchasesPage} />

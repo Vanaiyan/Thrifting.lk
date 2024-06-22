@@ -42,6 +42,7 @@ const interestedUserSchema = new mongoose.Schema({
     required: true,
   },
   timestamp: {
+    
     type: Date,
     default: Date.now,
   },
