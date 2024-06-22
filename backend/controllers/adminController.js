@@ -4,13 +4,14 @@ const ErrorHandler = require("../utils/errorHandler");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 const Order = require("../models/orderModel");
-const user = require("../models/userModel");
 const Feedback = require("../models/feedbackModel");
 const nodemailer = require('nodemailer'); // Import nodemailer for sending emails
 const User = require("../models/userModel");
 const Admin = require("../models/adminModel");
 const sendToken = require("../utils/jwt");
 const sendEmail = require("../utils/email");
+
+
 
 exports.registerAdmin = catchAsyncError(async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
@@ -44,6 +45,10 @@ exports.loginAdmin = catchAsyncError(async (req, res, next) => {
   sendToken(user, 201, res);
 });
 
+
+
+
+
 // All function to Admin Dashboard page
 
 //Function to get Products, Sellers, Buyers and Orders Counts
@@ -51,7 +56,7 @@ exports.getCounts = async (req, res) => {
   try {
     const totalProducts = await Product.countDocuments({ status: false });
     const totalSellers = await Seller.countDocuments({ authenticated: true });
-    const totalBuyers = await user.countDocuments();
+    const totalBuyers = await User.countDocuments();
     const totalOrders = await Order.countDocuments();
 
     // Function to format counts to K or M (e.g., 1000 -> 1K, 1000000 -> 1M)
@@ -96,6 +101,7 @@ exports.getBestSeller = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 
@@ -172,16 +178,7 @@ exports.deleteProducts = async (req, res, next) => {
       success: true,
       message: "Product deleted successfully",
       product,
-//Function To get All Sellers
-exports.getAllSellersToAdmin = async (req, res, next) => {
-  try {
-    // Fetch all sellers from the database
-    const sellers = await Seller.find();
-    // console.log(sellers);
-    res.status(200).json({
-      success: true,
-      sellers: sellers,
-    });
+    });  
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -189,6 +186,8 @@ exports.getAllSellersToAdmin = async (req, res, next) => {
     });
   }
 };
+
+
 
 //Function to search product
 exports.searchProducts = async (req, res) => {
@@ -214,6 +213,12 @@ exports.searchProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+
+
+
+//All function to Sellers page
 
 // Function To get Approved Sellers
 exports.getApprovedSellersToAdmin = async (req, res, next) => {
@@ -274,7 +279,6 @@ exports.warnSeller = async (req, res, next) => {
 
 
 
-
 // Function to delete seller
 
 exports.deleteSeller = async (req, res, next) => {
@@ -319,6 +323,8 @@ exports.deleteSeller = async (req, res, next) => {
   }
 };
 
+
+
 //Function to search seller
 exports.searchSellers = async (req, res) => {
   try {
@@ -353,11 +359,17 @@ exports.searchSellers = async (req, res) => {
   }
 };
 
+
+
+
+//All function to Users page
+
+
 // Function To get users
 exports.getUsersToAdmin = async (req, res, next) => {
   try {
     // Fetch all users from the database 
-    const users = await user.find();
+    const users = await User.find();
 
     res.status(200).json({
       success: true,
@@ -371,6 +383,13 @@ exports.getUsersToAdmin = async (req, res, next) => {
   }
 };
 
+
+
+
+
+//All funtion to Order List page
+
+// Function to get all orders to admin
 exports.getAllOrders = async (req, res, next) => {
   try {
     // Fetch all orders from the database and populate the references
@@ -424,6 +443,13 @@ exports.getAllOrders = async (req, res, next) => {
     });
   }
 };
+
+
+
+
+//All function to Seller Approval page
+
+
 // Function To get Sellers to Approval
 exports.getSellersToAdmin = async (req, res, next) => {
   try {
@@ -599,4 +625,3 @@ exports.getOrderCountLastSixMonths = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
