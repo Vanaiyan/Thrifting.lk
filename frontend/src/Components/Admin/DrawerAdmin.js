@@ -14,18 +14,22 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import ReportIcon from '@mui/icons-material/Report';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+
 import ExitToAppIcon from "@mui/icons-material/ExitToApp"; // Import logout icon
 import { useNavigate } from "react-router-dom";
 import { NavTitle } from "../../Styles/NavBar/nav01";
+import { logoutUser } from "../../Actions/userAction";
+import { useDispatch } from "react-redux";
 
 const DrawerAdmin = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
     localStorage.removeItem("isAdminAuthenticated");
     localStorage.removeItem("userRole");
-
+    dispatch(logoutUser());
     navigate("/admin/login");
   };
 
@@ -60,6 +64,7 @@ const DrawerAdmin = () => {
           { text: "Order List", icon: <ListAltIcon />, path: "/admin/OrderList" },
           { text: "Seller Approval", icon: <VerifiedUserIcon />, path: "/admin/SellerApproval" },
           { text: "Report Feedback", icon: <ReportIcon />, path: "/admin/ReportFeedback" },
+
         ].map((item, index) => (
           <ListItem
             key={index}
@@ -69,10 +74,16 @@ const DrawerAdmin = () => {
               textDecoration: "none",
               display: "flex",
               alignItems: "center",
-              color: location.pathname === item.path ? '#ff5003' : 'inherit',
+              color: location.pathname === item.path ? "#ff5003" : "inherit",
             }}
           >
-            <ListItemIcon style={{ color: location.pathname === item.path ? '#ff5003' : 'inherit' }}>{item.icon}</ListItemIcon>
+            <ListItemIcon
+              style={{
+                color: location.pathname === item.path ? "#ff5003" : "inherit",
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItem>
         ))}

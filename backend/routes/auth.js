@@ -14,6 +14,7 @@ const {
   isAuthenticatedUser,
   authorizeRoles,
 } = require("../middlewares/authenticate");
+const { loginSeller } = require("../controllers/sellerAuthController");
 const router = express.Router();
 
 router.route("/register").post(registerUser);
@@ -22,9 +23,11 @@ router.route("/logout").get(logoutUser);
 router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").post(resetPassword);
 router.route("/password/change").put(isAuthenticatedUser, changePassword);
-router.route("/user").get(isAuthenticatedUser,getUserInfo);
+router.route("/user").get(isAuthenticatedUser, getUserInfo);
 
 // router.route("/myprofile").get(isAuthenticatedUser, getUserProfile);
 router.route("/update").put(isAuthenticatedUser, updateProfile);
+
+router.route("/seller/login").post(loginSeller);
 
 module.exports = router;

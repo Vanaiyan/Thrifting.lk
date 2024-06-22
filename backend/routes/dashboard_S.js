@@ -4,6 +4,10 @@ const router = express.Router();
 const path = require("path");
 const Dashboard_S = require("../controllers/sellerDashboardController");
 
+router
+  .route("/seller/authenticate/:sellerId")
+  .patch(Dashboard_S.authenticateSeller);
+
 router.route("/myproducts/:sellerId").get(Dashboard_S.getProductsBySellerId);
 
 router

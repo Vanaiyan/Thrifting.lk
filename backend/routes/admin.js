@@ -13,16 +13,18 @@ const { getAllProductsToAdmin,
     searchSellers,
     searchProducts,
     getIssueSeller,
-    getUsersToAdmin, 
+    getUsersToAdmin,   
+    registerAdmin,
+    loginAdmin,
    } = require("../controllers/adminController");
 
 // Admin Dashboard
 router.route("/admin/count").get(getCounts);
 router.get('/order-count-last-six-months', getOrderCountLastSixMonths);
 router.route("/admin/bestsellers").get(getBestSeller);
-
-
 //Admin All Products
+router.route("/admin/register").post(registerAdmin);
+router.route("/admin/login").post(loginAdmin);
 router.route("/admin/products").get(getAllProductsToAdmin);
 router.route("/admin/product/:id").delete(deleteProducts);
 router.route("/admin/product/search").get(searchProducts);
@@ -38,7 +40,6 @@ router.route("/admin/seller/search").get(searchSellers);
 // ADmin User
 router.route("/admin/users").get(getUsersToAdmin);
 
-
 // Admin Orders List
 router.route("/admin/orders").get(getAllOrders);
 
@@ -50,6 +51,4 @@ router.route("/admin/rejectSeller/:id").delete(rejectSeller);
 // Admin Report Feedback
 router.route("/admin/issueseller").get(getIssueSeller);
 
-
 module.exports = router;
-

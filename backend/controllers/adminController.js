@@ -7,8 +7,42 @@ const Order = require("../models/orderModel");
 const user = require("../models/userModel");
 const Feedback = require("../models/feedbackModel");
 const nodemailer = require('nodemailer'); // Import nodemailer for sending emails
+const User = require("../models/userModel");
+const Admin = require("../models/adminModel");
+const sendToken = require("../utils/jwt");
 const sendEmail = require("../utils/email");
 
+exports.registerAdmin = catchAsyncError(async (req, res, next) => {
+  const { firstName, lastName, email, password } = req.body;
+  const user = await Admin.create({
+    firstName,
+    lastName,
+    email,
+    password,
+  });
+
+  sendToken(user, 201, res);
+});
+
+exports.loginAdmin = catchAsyncError(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(new ErrorHandler("Please enter email & Password"));
+  }
+
+  const user = await Admin.findOne({ email }).select("+password");
+
+  if (!user) {
+    return next(new ErrorHandler("Invalid Seller username or password"));
+  }
+
+  if (!(await user.isValidPassword(password))) {
+    return next(new ErrorHandler("Invalid Seller email or password"));
+  }
+
+  sendToken(user, 201, res);
+});
 
 // All function to Admin Dashboard page
 
@@ -80,6 +114,7 @@ exports.getAllProductsToAdmin = async (req, res, next) => {
       select: 'firstName lastName'
     });
 
+
     res.status(200).json({
       success: true,
       products: products,
@@ -91,7 +126,6 @@ exports.getAllProductsToAdmin = async (req, res, next) => {
     });
   }
 };
-
 
 // Function to Delete product
 exports.deleteProducts = async (req, res, next) => {
@@ -138,6 +172,15 @@ exports.deleteProducts = async (req, res, next) => {
       success: true,
       message: "Product deleted successfully",
       product,
+//Function To get All Sellers
+exports.getAllSellersToAdmin = async (req, res, next) => {
+  try {
+    // Fetch all sellers from the database
+    const sellers = await Seller.find();
+    // console.log(sellers);
+    res.status(200).json({
+      success: true,
+      sellers: sellers,
     });
   } catch (err) {
     res.status(500).json({
@@ -171,12 +214,6 @@ exports.searchProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-
-
-
-
-// All function to Seller page
 
 // Function To get Approved Sellers
 exports.getApprovedSellersToAdmin = async (req, res, next) => {
@@ -239,6 +276,7 @@ exports.warnSeller = async (req, res, next) => {
 
 
 // Function to delete seller
+
 exports.deleteSeller = async (req, res, next) => {
   try {
     const seller = await Seller.findById(req.params.id);
@@ -281,7 +319,6 @@ exports.deleteSeller = async (req, res, next) => {
   }
 };
 
-
 //Function to search seller
 exports.searchSellers = async (req, res) => {
   try {
@@ -316,11 +353,6 @@ exports.searchSellers = async (req, res) => {
   }
 };
 
-
-
-
-// All function to User page
-
 // Function To get users
 exports.getUsersToAdmin = async (req, res, next) => {
   try {
@@ -339,30 +371,21 @@ exports.getUsersToAdmin = async (req, res, next) => {
   }
 };
 
-
-
-
-
-
-
-//All function to Order List page
-
-//Function to get all orderlist 
 exports.getAllOrders = async (req, res, next) => {
   try {
     // Fetch all orders from the database and populate the references
     const orders = await Order.find()
       .populate({
-        path: 'productId',
-        select: 'name price' // Assuming Product model has a 'name' field
+        path: "productId",
+        select: "name price", // Assuming Product model has a 'name' field
       })
       .populate({
-        path: 'sellerId',
-        select: 'firstName lastName avatar' // Assuming Seller model has a 'firstName' field
+        path: "sellerId",
+        select: "firstName lastName avatar", // Assuming Seller model has a 'firstName' field
       })
       .populate({
-        path: 'userId',
-        select: 'firstName lastName avatar' // Assuming User model has a 'firstName' field
+        path: "userId",
+        select: "firstName lastName avatar", // Assuming User model has a 'firstName' field
       });
 
     // Filter out orders where productId or userId is null
@@ -372,10 +395,10 @@ exports.getAllOrders = async (req, res, next) => {
     );
 
     // Check the filtered orders
-    console.log("Filtered valid orders:", validOrders);
+    // console.log("Filtered valid orders:", validOrders);
 
     // Transform the valid orders
-    const transformedOrders = validOrders.map(order => ({
+    const transformedOrders = validOrders.map((order) => ({
       id: order._id,
       productName: order.productId ? order.productId.name : 'Unknown',
       sellerName: order.sellerId ? `${order.sellerId.firstName} ${order.sellerId.lastName}` : 'Unknown',
@@ -384,6 +407,7 @@ exports.getAllOrders = async (req, res, next) => {
       amount: order.productId ? `$ ${order.productId.price}` : 'Unknown', 
       userAvatar: order.userId.avatar, 
       sellerAvatar: order.sellerId ? order.sellerId.avatar : null,
+
       // orderId: order._id, // Uncomment if orderId is needed
       // status: order.status, // Uncomment if status is needed
     }));
@@ -393,20 +417,13 @@ exports.getAllOrders = async (req, res, next) => {
       orders: transformedOrders,
     });
   } catch (err) {
-    console.error("Error fetching orders:", err.message); // Log the error message
+    // console.error("Error fetching orders:", err.message); // Log the error message
     res.status(500).json({
       success: false,
       message: "Server Error",
     });
   }
 };
-
-
-
-
-
-//All function to Seller Approval page
-
 // Function To get Sellers to Approval
 exports.getSellersToAdmin = async (req, res, next) => {
   try {
@@ -582,3 +599,4 @@ exports.getOrderCountLastSixMonths = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+

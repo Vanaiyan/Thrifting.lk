@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const Seller = require("../models/sellerModel");
 const User = require("../models/userModel");
 const ErrorHandler = require("../utils/errorHandler");
 const APIFeatures = require("../utils/apiFeatures");
@@ -11,7 +12,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   if (req.user && req.user._id) {
     userId = req.user._id; // Get the current user ID
   }
-  
+
   // Build the base query
   let baseQuery = Product.find({
     $or: [
@@ -57,18 +58,29 @@ exports.getSingleProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body);
+    const product = await Product.findById(req.params.id);
 
     if (!product) {
-      return next(new ErrorHandler("Product not found", 400));
+      return next(new ErrorHandler("Product not found", 404));
     }
+    const { discount } = req.body;
+
+    if (discount >= product.price) {
+      return res.status(400).json({
+        success: false,
+        message: "Discount cannot be greater than or equal to the price",
+      });
+    }
+    await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     res.status(200).json({
       success: true,
-      product,
+      message: "Successful",
     });
   } catch (err) {
-    // Handle errors if any occurred during the process
     res.status(500).json({
       success: false,
       message: "Server Error",
@@ -79,16 +91,12 @@ exports.updateProduct = async (req, res, next) => {
 exports.deleteProduct = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id);
-
     if (!product) {
       return next(new ErrorHandler("Product not found", 400));
     }
-
     await product.deleteOne();
-
     res.status(200).json({
       success: true,
-      product,
     });
   } catch (err) {
     res.status(500).json({
@@ -97,10 +105,8 @@ exports.deleteProduct = async (req, res, next) => {
     });
   }
 };
-
 exports.newProduct = async (req, res, next) => {
-  // req.body.seller = req.user.id;
-  req.body.seller = "662ba747e59446416eacee2d";
+  req.body.user = req.user.id;
 
   const product = await Product.create(req.body);
   res.status(201).json({
@@ -111,16 +117,34 @@ exports.newProduct = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    // req.body.user = req.user.id;
-    req.body.seller = "662ba747e59446416eacee2d";
-
+    const seller = await Seller.findById(req.params.sellerId);
+    if (!seller) {
+      return res.status(404).json({
+        success: false,
+        error: "Seller not found",
+      });
+    }
+    req.body.seller = req.params.sellerId;
     const newProduct = await Product.create(req.body);
+
+    console.log("Product created successfully");
 
     res.status(201).json({
       success: true,
       product: newProduct,
     });
   } catch (err) {
+    console.error("Error creating product:", err);
+
+    if (err.name === "ValidationError") {
+      const errors = Object.values(err.errors).map((error) => error.message);
+      console.log("error is :", err);
+      return res.status(400).json({
+        success: false,
+        error: errors.join(", "),
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Server Error",
@@ -131,43 +155,40 @@ exports.createProduct = async (req, res, next) => {
 exports.getRecommendations = async (req, res) => {
   console.log("Recommendation Process starting");
 
-  const userId = req.user._id; // Assuming you're using authentication middleware to set req.user
-
   try {
-    // Fetch the user document to get interactedProducts
-    const user = await User.findById(userId).exec();
-    let interactedProducts = user.interactedProducts || [];
+    // 1. Fetch user data (if authenticated)
+    let interactedProducts = null;
+    const userId = req.body.user ? req.body.user : null; // Handle unauthenticated users
+    console.log("User Id of rec user : ", userId);
+    if (userId) {
+      const user = await User.findById(userId).exec();
+      interactedProducts = user.interactedProducts || [];
+      console.log("Interacted Products:", interactedProducts);
+    }
 
-    console.log("Interacted Products:", interactedProducts);
-
-    // If interactedProducts is empty, fetch the first 12 products from the database
-    if (interactedProducts.length === 0) {
+    // 2. Handle empty interactedProducts and unauthenticated users
+    if (!interactedProducts || !userId) {
       const randomProducts = await Product.aggregate([
-        { $sample: { size: 24 } },
+        { $sample: { size: 50 } },
       ]);
 
       res.status(200).json(randomProducts);
-      return; // Return early after sending the response
+      return;
     }
 
-    // Call Flask server for recommendations
+    // 3. Call Flask server for recommendations (modify URL if needed)
     const response = await axios.post("http://localhost:5001/recommend", {
       product_ids: interactedProducts,
     });
-
     console.log("Response from Flask:", response.data);
     const recommendedProductIds = response.data;
 
-    // Fetch full product documents based on recommendations and conditions
+    // 4. Fetch recommended products with additional conditions
     const products = await Product.find({
-      $and: [
-        { _id: { $in: recommendedProductIds } }, // Include products recommended by Flask
-        {
-          $or: [
-            { inCart: false }, // Include products that are not in any cart
-            { cartUser: userId }, // Include products that are in the cart of the current user
-          ],
-        },
+      _id: { $in: recommendedProductIds }, // Include recommended products
+      $or: [
+        { inCart: false }, // Exclude products in any cart
+        { cartUser: { $ne: userId } }, // Exclude products in current user's cart
       ],
     });
 
@@ -176,7 +197,7 @@ exports.getRecommendations = async (req, res) => {
     console.error("Error fetching recommendations:", error.message);
     res.status(500).json({
       message: "Error fetching recommendations",
-      error: error.message,
+      error: error.message, // Consider sanitizing error message for security
     });
   }
 };

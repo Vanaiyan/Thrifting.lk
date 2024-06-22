@@ -15,6 +15,7 @@ import { Colors } from "../../Styles/Theme";
 const MessageField = () => {
   const dispatch = useDispatch();
   const { messages, chatId } = useSelector((state) => state.messages);
+  const { user } = useSelector((state) => state.auth);
   const { loginUser, currentUser, unreadMessages } = useSelector(
     (state) => state.user
   );
@@ -46,21 +47,25 @@ const MessageField = () => {
   };
 
   useEffect(() => {
-    if (!currentUser || !loginUser) {
+    console.log("asdfgh");
+    if (!currentUser || !user) {
       return;
     }
 
     const newChatId =
-      currentUser._id > loginUser._id
-        ? currentUser._id + loginUser._id
-        : loginUser._id + currentUser._id;
-
+      currentUser._id > user._id
+        ? currentUser._id + user._id
+        : user._id + currentUser._id;
+    console.log("ssss");
+    console.log("Current user to get msg : ", currentUser._id);
+    console.log("login user  to get msg : ", user._id);
+    console.log("ChatID user  to get msg : ", newChatId);
     dispatch(setChatId(newChatId));
 
     const unsubscribe = getMessagesForChat(
       newChatId,
       currentUser._id,
-      loginUser._id,
+      user._id,
       (messages) => {
         console.log("test200");
         dispatch(setMessages(messages));
@@ -69,10 +74,11 @@ const MessageField = () => {
     );
 
     return () => {
-      // Cleanup the listener when the component unmounts
-      // unsubscribe();
+      if (unsubscribe) {
+        // unsubscribe();
+      }
     };
-  }, [currentUser, loginUser, render]);
+  }, [currentUser, loginUser, user, dispatch]);
 
   return (
     <Paper
@@ -135,7 +141,7 @@ const MessageField = () => {
                 </Typography>
               )}
 
-              {message.senderId === loginUser._id ? (
+              {message.senderId === user._id ? (
                 <MsgSender key={message.id} message={message} />
               ) : (
                 <MsgReceiver key={message.id} message={message} />

@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const addressSchema = new mongoose.Schema({
   address: {
@@ -98,7 +100,6 @@ const sellerSchema = new mongoose.Schema({
 
   frontImage: imageSchema,
   backImage: imageSchema,
-
   rating: {
     type: Number,
     min: 0,
@@ -126,4 +127,17 @@ sellerSchema.query.byNicNumber = function (nicNumber) {
 sellerSchema.query.byId = function (_id) {
   return this.find({ _id: new RegExp(_id, "i") });
 };
+
+sellerSchema.methods.getJwtToken = function () {
+  console.log("Expire Time : ", process.env.JWT_EXPIRES_TIME);
+  return jwt.sign({ id: this.id, role: this.role }, process.env.JWT_SECRET, {
+    // expiresIn: "59s",
+    expiresIn: process.env.JWT_EXPIRES_TIME,
+  });
+};
+
+sellerSchema.methods.isValidPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 module.exports = mongoose.model("Seller", sellerSchema);

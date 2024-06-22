@@ -61,21 +61,6 @@ const ChatInput = ({ onSend }) => {
     reader.readAsDataURL(file);
   };
 
-  const handleAttachClick = async () => {
-    try {
-      const fileInput = document.getElementById("image-input");
-      fileInput.value = null; // Reset the input value to allow selecting the same file
-
-      const [file] = await fileInput.files();
-      if (file) {
-        handleFileChange({ target: { files: [file] } });
-      } else {
-        console.error("No file selected");
-      }
-    } catch (error) {
-      console.error("Error handling file:", error);
-    }
-  };
   return (
     <Paper
       variant="0"
@@ -127,12 +112,7 @@ const ChatInput = ({ onSend }) => {
       />
       <Box>
         <label htmlFor="image-input">
-          <IconButton
-            component="span"
-            color="primary"
-            aria-label="attach file"
-            onClick={handleAttachClick}
-          >
+          <IconButton component="span" color="primary" aria-label="attach file">
             <AttachFileIcon />
           </IconButton>
         </label>

@@ -4,6 +4,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
+// Define CartItemSchema
+const CartItemSchema = new mongoose.Schema({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -26,7 +35,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    defalult: "User",
+    default: "User",
   },
   // Products user interacted with, limited to 10
   interactedProducts: {
@@ -38,6 +47,8 @@ const userSchema = new mongoose.Schema({
     ],
     maxlength: 5, // Limiting the array length to 5
   },
+  // New field for cart items
+  cartItems: [CartItemSchema],
   resetPasswordToken: String,
   resetPasswordTokenExpire: Date,
   createdAt: {
@@ -54,8 +65,9 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.getJwtToken = function () {
-  return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
-    expiresIn: '10s',
+  console.log("Expire Time : ", process.env.JWT_EXPIRES_TIME);
+  return jwt.sign({ id: this.id, role: this.role }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_TIME,
   });
 };
 
