@@ -4,13 +4,14 @@ const ErrorHandler = require("../utils/errorHandler");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 const Order = require("../models/orderModel");
-const user = require("../models/userModel");
 const Feedback = require("../models/feedbackModel");
 const nodemailer = require('nodemailer'); // Import nodemailer for sending emails
 const User = require("../models/userModel");
 const Admin = require("../models/adminModel");
 const sendToken = require("../utils/jwt");
 const sendEmail = require("../utils/email");
+
+
 
 exports.registerAdmin = catchAsyncError(async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
@@ -43,6 +44,10 @@ exports.loginAdmin = catchAsyncError(async (req, res, next) => {
 
   sendToken(user, 201, res);
 });
+
+
+
+
 
 // All function to Admin Dashboard page
 
@@ -96,6 +101,7 @@ exports.getBestSeller = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 
@@ -182,23 +188,6 @@ exports.deleteProducts = async (req, res, next) => {
 };
 
 
-//Function To get All Sellers
-exports.getAllSellersToAdmin = async (req, res, next) => {
-  try {
-    // Fetch all sellers from the database
-    const sellers = await Seller.find();
-    // console.log(sellers);
-    res.status(200).json({
-      success: true,
-      sellers: sellers,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-};
 
 //Function to search product
 exports.searchProducts = async (req, res) => {
@@ -224,6 +213,12 @@ exports.searchProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+
+
+
+//All function to Sellers page
 
 // Function To get Approved Sellers
 exports.getApprovedSellersToAdmin = async (req, res, next) => {
@@ -284,7 +279,6 @@ exports.warnSeller = async (req, res, next) => {
 
 
 
-
 // Function to delete seller
 
 exports.deleteSeller = async (req, res, next) => {
@@ -329,6 +323,8 @@ exports.deleteSeller = async (req, res, next) => {
   }
 };
 
+
+
 //Function to search seller
 exports.searchSellers = async (req, res) => {
   try {
@@ -363,6 +359,12 @@ exports.searchSellers = async (req, res) => {
   }
 };
 
+
+
+
+//All function to Users page
+
+
 // Function To get users
 exports.getUsersToAdmin = async (req, res, next) => {
   try {
@@ -381,6 +383,13 @@ exports.getUsersToAdmin = async (req, res, next) => {
   }
 };
 
+
+
+
+
+//All funtion to Order List page
+
+// Function to get all orders to admin
 exports.getAllOrders = async (req, res, next) => {
   try {
     // Fetch all orders from the database and populate the references
@@ -434,6 +443,13 @@ exports.getAllOrders = async (req, res, next) => {
     });
   }
 };
+
+
+
+
+//All function to Seller Approval page
+
+
 // Function To get Sellers to Approval
 exports.getSellersToAdmin = async (req, res, next) => {
   try {

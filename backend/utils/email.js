@@ -10,22 +10,6 @@ const sendEmail = async (options) => {
     }
   });
 
-//   // Added logging for debug
-//   console.log('Email options:', options);
-
-//   try {
-//     await transport.sendMail({
-//       from: '"vanai" <vanaiyan@gmail.com>',
-//       to: options.to,
-//       subject: options.subject,
-//       text: options.text,
-//     });
-//     console.log('Email sent successfully');
-//   } catch (error) {
-//     console.error('Error sending email:', error);
-//     throw new ErrorHandler('Error sending email', 500);
-//   }
-// };
 
   const message = {
     from: '"vanai" <vanaiyan@gmail.com>',
