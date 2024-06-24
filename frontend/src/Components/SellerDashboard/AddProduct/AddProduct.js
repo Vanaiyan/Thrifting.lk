@@ -80,7 +80,7 @@ const AddProduct = () => {
 
     try {
       await axios.post(
-        "http://localhost:8000/api/products/6658263ee302c74e3e3617d8",
+        "http://localhost:8000/api/products/66797291e04e74698c41ba46",
         productData,
         {
           headers: {

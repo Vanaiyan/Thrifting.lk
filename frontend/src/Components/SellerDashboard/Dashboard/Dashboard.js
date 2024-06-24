@@ -35,7 +35,7 @@ const Dashboard = ({ sellerId }) => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={4} md={4}>
         <Paper elevation={3}>
           <Box padding={2}>
             <Typography variant="h6">My total Products</Typography>
@@ -43,7 +43,7 @@ const Dashboard = ({ sellerId }) => {
           </Box>
         </Paper>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={4} md={4}>
         <Paper elevation={3}>
           <Box padding={2}>
             <Typography variant="h6">Available Products</Typography>
@@ -51,7 +51,7 @@ const Dashboard = ({ sellerId }) => {
           </Box>
         </Paper>
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={4} md={4}>
         <Paper elevation={3}>
           <Box padding={2}>
             <Typography variant="h6">Sold Products</Typography>
@@ -68,10 +68,10 @@ const Dashboard = ({ sellerId }) => {
       </Grid>
       <Grid item xs={12}>
         <Box display="flex" justifyContent="center" mt={2}>
-          
-          <FloatingButton />
+
         </Box>
-      </Grid>
+      </Grid>  
+      <FloatingButton />
     </Grid>
   );
 };
