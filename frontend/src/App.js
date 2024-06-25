@@ -28,8 +28,9 @@ import EditProfile from "./Components/SellerDashboard/Profile/EditProfile";
 import { getUserAction } from "./Actions/userAction"; // Ensure this is correctly imported
 import { useDispatch } from "react-redux";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
-//import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
+import ContactUs from "./Components/Footer/ContactUs";
+import Terms from "./Components/Footer/Terms";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,11 +66,6 @@ function App() {
           />
           <Route path="/product" Component={ProductMain} />
           <Route path="/seller/dashboard" Component={Dashboard_S} />
-          {/* <Route path="/seller/profile" Component={ProfilePage} /> */}
-          <Route
-            path="/seller/profile/edit/:sellerId"
-            Component={EditProfile}
-          />
           <Route path="/seller/dashboard/addProduct" Component={AddProduct} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
@@ -83,6 +79,9 @@ function App() {
           <Route path="admin/login" Component={AdminLoginPage} />
           <Route path="/seller/login" Component={SellerLoginPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
+          <Route path="/contactUs" Component={ContactUs} />
+          <Route path="/terms" Component={Terms} />
+
         </Routes>
       </div>
     </ThemeProvider>

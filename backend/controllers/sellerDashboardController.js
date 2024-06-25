@@ -36,7 +36,6 @@ const getProductsBySellerId = async (req, res) => {
 
 const getSellerProfile = async (req, res) => {
   try {
-    //const id = "662ba6ddffd7af4f4a7fd633";
     const id = req.params.sellerId;
     const seller = await Seller.findById(id);
     if (!seller) {

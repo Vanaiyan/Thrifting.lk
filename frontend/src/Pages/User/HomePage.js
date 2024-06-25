@@ -9,6 +9,7 @@ import FloatingButton from "../../Components/Chat/floatingbutton";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getWishlistItems } from "../../Actions/wishListActions";
+import Footer from "../../Components/Footer/Footer";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -62,8 +63,9 @@ export const HomePage = () => {
           Recommended items{" "}
         </Typography>
         <RecProducts />
-        <FloatingButton />
+        <FloatingButton /> 
       </Box>
+      <Footer />
     </>
   );
 };
