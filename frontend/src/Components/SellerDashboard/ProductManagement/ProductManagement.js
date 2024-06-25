@@ -73,14 +73,14 @@ const ProductManagement = ({ sellerId }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 6,
-                height: "60vh",
+                height: "70vh",
               }}
             >
               <img
                 src={addimg}
                 alt="add new product"
                 style={{
-                  width: "800px",
+                  width: "700px",
                   height: "500px",
                   transform: "scaleX(-1)",
                 }}
