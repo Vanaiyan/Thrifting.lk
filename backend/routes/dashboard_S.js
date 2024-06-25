@@ -8,7 +8,9 @@ router
   .route("/seller/authenticate/:sellerId")
   .patch(Dashboard_S.authenticateSeller);
 
-router.route("/myproducts/:sellerId").get(Dashboard_S.getProductsBySellerId);
+router
+  .route("/myproducts/:sellerId")
+  .get(Dashboard_S.getProductsBySellerId);
 
 router
   .route("/myproduct")

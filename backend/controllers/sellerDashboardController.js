@@ -33,7 +33,6 @@ const getProductsBySellerId = async (req, res) => {
   }
 };
 
-
 const getSellerProfile = async (req, res) => {
   try {
     const id = req.params.sellerId;
@@ -113,26 +112,26 @@ const updateSellerPassword = async (req, res) => {
 const changeProductStatus = async (req, res, next) => {
   try {
     const productId = req.params.productId;
-    console.log(productId);
-    // Find the product by its ID
+    console.log("Received productId:", productId);
+
     const product = await Product.findById(productId);
     if (!product) {
+      console.error("Product not found for ID:", productId);
       return next(new ErrorHandler("Product not found", 400));
     }
 
-    // Toggle the product status
     product.status = !product.status;
     await product.save();
+    console.log("Product status changed:", product.status);
 
-    // If the product is sold, create a new 
-    
-    // If the product is sold, create a new order
     if (product.status) {
-      // const sellerId = req.seller._id;
-      const sellerId = "6648fcb3d57b2383f46d43ff";
-      // Find the seller by their ID
+      // const sellerId = req.seller; // Ensure req.seller is correctly set
+      const sellerId = "6668873c1808733db672e7ac";
+      console.log("Seller ID:", sellerId);
+
       const seller = await Seller.findById(sellerId);
       if (!seller) {
+        console.error("Seller not found for ID:", sellerId);
         return next(new ErrorHandler("Seller not found", 400));
       }
 
@@ -155,6 +154,7 @@ const changeProductStatus = async (req, res, next) => {
       );
 
       const userId = lastInterestedUser.userId;
+      console.log("Last interested user ID:", userId);
 
       // Create a new order
       const newOrder = new Order({
@@ -165,6 +165,7 @@ const changeProductStatus = async (req, res, next) => {
       });
 
       await newOrder.save();
+      console.log("New order created:", newOrder);
     }
 
     return res.status(200).json({
@@ -172,6 +173,7 @@ const changeProductStatus = async (req, res, next) => {
       message: `Product ${product.status ? "sold" : "available"} successfully`,
     });
   } catch (err) {
+    console.error("Error occurred:", err);
     return res.status(500).json({
       success: false,
       message: "Server Error",
@@ -179,6 +181,27 @@ const changeProductStatus = async (req, res, next) => {
   }
 };
 
+// const changeProductStatus = async (req, res, next) => {
+//   try {
+//     const productId = req.params.productId;
+//     const product = await Product.findById(productId);
+//     if (!product) {
+//       return next(new ErrorHandler("Product not found", 400));
+//     }
+//     product.status = !product.status;
+//     await product.save();
+
+//     return res.status(200).json({
+//       success: true,
+//       message: `Product ${product.status ? "sold" : "available"} successfully`,
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Server Error",
+//     });
+//   }
+// };
 
 // //Function To get All Sellers
 // exports.getAllSellersToAdmin = async (req, res, next) => {

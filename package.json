@@ -25,6 +25,7 @@
     "mongoose": "^8.0.3",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.8",
+    "recharts": "^2.12.7",
     "validator": "^13.11.0"
   },
   "devDependencies": {

@@ -95,9 +95,7 @@ const ProductManagement = ({ sellerId }) => {
                     name={product.name}
                     price={product.price}
                     imageSrcs={
-                      product.pictures?.map((picture) => picture.image) || [
-                        "https://images.unsplash.com/photo-1708921047448-389333bac8f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTcxMDMwOTQ2Mw&ixlib=rb-4.0.3&q=80&w=1080",
-                      ]
+                      product.pictures?.map((picture) => picture.image)
                     }
                     description={product.description}
                     discount={product.discount}
