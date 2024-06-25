@@ -23,3 +23,23 @@ exports.loginSeller = catchAsyncError(async (req, res, next) => {
 
   sendToken(user, 201, res);
 });
+
+exports.getSingleSeller = async (req, res, next) => {
+  try {
+    const seller = await Seller.findById(req.params.id);
+    if (!seller) {
+      return next(new ErrorHandler("Seller not found", 400));
+    }
+
+    res.status(200).json({
+      success: true,
+      seller,
+    });
+  } catch (err) {
+    // Handle errors if any occurred during the process
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};

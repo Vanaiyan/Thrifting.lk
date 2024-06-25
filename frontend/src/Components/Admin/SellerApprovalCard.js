@@ -1,9 +1,9 @@
-// SellerApprovalCard.js
 import React, { useState } from 'react';
-import { Card, CardHeader, CardContent, Avatar, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Card, CardHeader, Avatar, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { approveSeller, rejectSeller } from '../../Actions/adminActions'; // Adjust the path as needed
 
 const SellerApprovalCard = ({ seller }) => {
-  const { firstName, lastName, avatar, email, nicNumber, phoneNumber,addressField } = seller;
+  const { _id, firstName, lastName, avatar, email, nicNumber, phoneNumber, addressField } = seller;
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -13,12 +13,44 @@ const SellerApprovalCard = ({ seller }) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const getAvatarContent = (name, avatar) => {
+
+  const handleApprove = async () => {
+    try {
+      await approveSeller(_id);
+      window.location.reload(); // Reload the webpage
+    } catch (error) {
+      console.error("Error approving seller:", error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      await rejectSeller(_id);
+      window.location.reload(); // Reload the webpage
+    } catch (error) {
+      console.error("Error rejecting seller:", error);
+    }
+  };
+
+  // Function to generate a random background color
+  const getRandomColor = () => {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  };
+
+  // Function to determine avatar content based on availability
+  const getAvatarContent = () => {
     if (avatar) {
-      return <Avatar alt={name} src={avatar} />;
+      return <Avatar alt={`${firstName} ${lastName}`} src={avatar} />;
     } else {
-      const firstLetter = name.charAt(0);
-      return <Avatar>{firstLetter}</Avatar>;
+      const firstLetter = `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`;
+      const backgroundColor = getRandomColor();
+      return (
+        <Avatar sx={{ bgcolor: backgroundColor }}>
+          {firstLetter}
+        </Avatar>
+      );
     }
   };
 
@@ -26,12 +58,24 @@ const SellerApprovalCard = ({ seller }) => {
     <div>
       <Card onClick={handleClickOpen} style={{ cursor: 'pointer', marginBottom: '20px' }}>
         <CardHeader
-          avatar={getAvatarContent(`${firstName} ${lastName}`, avatar)}
+          avatar={getAvatarContent()}
           title={`${firstName} ${lastName}`}
         />
       </Card>
 
-      <Dialog open={open} onClose={handleClose} aria-labelledby="seller-details-dialog">
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="seller-details-dialog"
+        maxWidth="md"
+        fullWidth
+        sx={{
+          '& .MuiDialog-paper': {
+            maxHeight: '80vh',
+            height: '80vh',
+          },
+        }}
+      >
         <DialogTitle id="seller-details-dialog">Seller Details</DialogTitle>
         <DialogContent>
           <Typography variant="body1"><strong>Name:</strong> {firstName} {lastName}</Typography>
@@ -42,8 +86,8 @@ const SellerApprovalCard = ({ seller }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">Close</Button>
-          <Button onClick={() => { /* Approve logic here */ }} style={{ color: 'green' }}>Approve</Button>
-          <Button onClick={() => { /* Reject logic here */ }} style={{ color: 'red' }}>Reject</Button>
+          <Button onClick={handleApprove} style={{ color: 'green' }}>Approve</Button>
+          <Button onClick={handleReject} style={{ color: 'red' }}>Reject</Button>
         </DialogActions>
       </Dialog>
     </div>

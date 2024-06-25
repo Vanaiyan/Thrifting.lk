@@ -4,11 +4,36 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     cartItems: [],
+    cartItemCount: 0,
     error: null,
   },
   reducers: {
     addToCartSuccess(state, action) {
-      state.cartItems = action.payload;
+      const newItem = action.payload;
+      const existingSeller = state.cartItems[newItem.sellerId] || [];
+
+      // Check if the item already exists in the cart
+      const itemIndex = existingSeller.findIndex(
+        (item) => item.productId === newItem.productId
+      );
+
+      if (itemIndex === -1) {
+        // Add new item if it doesn't exist
+        existingSeller.push(newItem);
+      }
+
+      // Update the state
+      state.cartItems = {
+        ...state.cartItems,
+        [newItem.sellerId]: existingSeller,
+      };
+
+      // Update the cart item count
+      state.cartItemCount = Object.values(state.cartItems).reduce(
+        (totalCount, items) => totalCount + items.length,
+        0
+      );
+
       state.error = null;
     },
     addToCartFailure(state, action) {
@@ -16,6 +41,10 @@ const cartSlice = createSlice({
     },
     getCartSuccess(state, action) {
       state.cartItems = action.payload;
+      state.cartItemCount = Object.values(action.payload).reduce(
+        (totalCount, items) => totalCount + items.length,
+        0
+      );
       state.error = null;
     },
     getCartFailure(state, action) {
@@ -38,28 +67,10 @@ const cartSlice = createSlice({
 
       // Update state with the modified cart items
       state.cartItems = updatedCartItems;
-    },
-    updateCartItemQuantitySuccess(state, action) {
-      const { productId, newQuantity } = action.payload;
-
-      // Iterate over each seller ID in the cartItems object
-      Object.keys(state.cartItems).forEach((sellerId) => {
-        // Find the index of the product with the given productId in the current seller's array
-        const productIndex = state.cartItems[sellerId].findIndex(
-          (item) => item.productId === productId
-        );
-
-        // If the product is found in the current seller's array
-        if (productIndex !== -1) {
-          // Update the quantity of the product
-          state.cartItems[sellerId][productIndex].quantity = newQuantity;
-        }
-      });
-
-      state.error = null;
-    },
-    updateCartItemQuantityFailure(state, action) {
-      state.error = action.payload;
+      state.cartItemCount = Object.values(updatedCartItems).reduce(
+        (totalCount, items) => totalCount + items.length,
+        0
+      );
     },
     updatesoldConfirmedSellerReducer(state, action) {
       const { productId, soldConfirmedBuyer } = action.payload;
@@ -90,8 +101,6 @@ export const {
   getCartSuccess,
   getCartFailure,
   removeFromCart,
-  updateCartItemQuantitySuccess,
-  updateCartItemQuantityFailure,
   updatesoldConfirmedSellerReducer,
 } = cartSlice.actions;
 

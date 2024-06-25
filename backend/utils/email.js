@@ -5,16 +5,17 @@ const sendEmail = async (options) => {
     host: "sandbox.smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "f6dc8a1d5d9b9e",
-      pass: "d8b9c3230a7f34"
+      user: "afba4f252f7379",
+      pass: "f68dc0190649e5"
     }
   });
 
+
   const message = {
-    from: `${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`,
-    to: options.email,
+    from: '"vanai" <vanaiyan@gmail.com>',
+    to: options.to,
     subject: options.subject,
-    text: options.message,
+    text: options.text,
   };
 
   await transport.sendMail(message);

@@ -6,6 +6,7 @@ import axios from "axios";
 import Form1 from "./Form1";
 import Form2 from "./Form2";
 import Form3 from "./Form3";
+import { useSelector } from "react-redux";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -20,14 +21,15 @@ const AddProduct = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
   const validateStep1 = () => {
     let errors = {};
     if (!name) errors.name = "ProductName is required";
     if (!description) {
       errors.description = "Description is required";
-    } else if (description.length < 100 || description.length > 500) {
-      errors.description = "Description must be between 100 and 500 characters";
+    } else if (description.length < 400 || description.length > 800) {
+      errors.description = "Description must be between 400 and 800 characters";
     }
     if (!price || isNaN(price) || price <= 0)
       errors.price = "Valid price is required and must be greater than zero";
@@ -46,8 +48,8 @@ const AddProduct = () => {
 
   const validateStep3 = () => {
     let errors = {};
-    if (pictures.length === 0)
-      errors.pictures = "At least one picture must be uploaded";
+    if (pictures.length < 5)
+      errors.pictures = "Exactly 5 pictures must be uploaded";
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -63,7 +65,7 @@ const AddProduct = () => {
     setStep((prevStep) => prevStep - 1);
   };
   const handleBack = () => {
-    navigate('/seller/dashboard');
+    navigate("/seller/dashboard");
   };
 
   const handleSubmit = async () => {
@@ -80,7 +82,8 @@ const AddProduct = () => {
 
     try {
       await axios.post(
-        "http://localhost:8000/api/products/66797291e04e74698c41ba46",
+
+        `http://localhost:8000/api/products/${user._id}`,
         productData,
         {
           headers: {
@@ -147,6 +150,7 @@ const AddProduct = () => {
               pictures={pictures}
               setPictures={setPictures}
               errors={errors}
+              setErrors={setErrors}
             />
           )}
           <Grid
@@ -178,7 +182,11 @@ const AddProduct = () => {
             )}
             {step === 3 && (
               <Grid item>
-                <Button variant="contained" onClick={handleSubmit}>
+                <Button
+                  variant="contained"
+                  onClick={handleSubmit}
+                  disabled={pictures.length < 5}
+                >
                   Submit
                 </Button>
               </Grid>

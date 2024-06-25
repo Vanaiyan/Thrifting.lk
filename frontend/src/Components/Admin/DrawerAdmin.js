@@ -8,11 +8,13 @@ import {
   ListItemText,
 } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
-import StoreIcon from "@mui/icons-material/Store";
-import PeopleIcon from "@mui/icons-material/People";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-import ReportIcon from "@mui/icons-material/Report";
+import StoreIcon from '@mui/icons-material/Store';
+import PeopleIcon from '@mui/icons-material/People';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import ReportIcon from '@mui/icons-material/Report';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+
 import ExitToAppIcon from "@mui/icons-material/ExitToApp"; // Import logout icon
 import { useNavigate } from "react-router-dom";
 import { NavTitle } from "../../Styles/NavBar/nav01";
@@ -55,27 +57,14 @@ const DrawerAdmin = () => {
       <NavTitle sx={{ color: "#ff5003", m: "15px" }}>Thrifting.lk</NavTitle>
       <List>
         {[
-          {
-            text: "All Products",
-            icon: <StoreIcon />,
-            path: "/admin/allproducts",
-          },
+          { text: "Dashboard", icon: <DashboardIcon />, path:"/admin/Dashboard"},
+          { text: "All Products", icon: <StoreIcon />, path: "/admin/AllProducts" },
           { text: "Sellers", icon: <PeopleIcon />, path: "/admin/Sellers" },
-          {
-            text: "Order List",
-            icon: <ListAltIcon />,
-            path: "/admin/OrderList",
-          },
-          {
-            text: "Seller Approval",
-            icon: <VerifiedUserIcon />,
-            path: "/admin/SellerApproval",
-          },
-          {
-            text: "Report Feedback",
-            icon: <ReportIcon />,
-            path: "/admin/Report feedback",
-          },
+          { text: "Buyers", icon: <PeopleIcon />, path: "/admin/Buyers" },
+          { text: "Order List", icon: <ListAltIcon />, path: "/admin/OrderList" },
+          { text: "Seller Approval", icon: <VerifiedUserIcon />, path: "/admin/SellerApproval" },
+          { text: "Report Feedback", icon: <ReportIcon />, path: "/admin/ReportFeedback" },
+
         ].map((item, index) => (
           <ListItem
             key={index}

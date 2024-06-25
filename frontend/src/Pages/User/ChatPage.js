@@ -16,6 +16,7 @@ import { Colors } from "../../Styles/Theme";
 const ChatPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
   const { loginUser, currentUser } = useSelector((state) => state.user);
   const { keyword, chatId } = useSelector((state) => state.messages);
   const [users, setUsers] = useState([]);
@@ -28,7 +29,7 @@ const ChatPage = () => {
     try {
       if (users.length > 0 && usersLoaded) {
         console.log("all user list: ", users);
-        const sortedUserIds = await getSortedUsers(loginUser._id);
+        const sortedUserIds = await getSortedUsers(user._id);
         console.log("Sorted Users:", sortedUserIds);
         const sortedUserObjects = sortedUserIds.map((userId) =>
           users.find((user) => user._id === userId)
@@ -86,7 +87,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     fetchSortedUsers();
-  }, [usersLoaded, users, userPRender]);
+  }, [usersLoaded, users, userPRender, user]);
 
   useEffect(() => {
     if (chatId) {

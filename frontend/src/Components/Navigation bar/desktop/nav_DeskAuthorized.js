@@ -11,17 +11,27 @@ import {
 } from "../../../Styles/NavBar/nav01";
 import { NavLink, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import { Divider, Grid, IconButton, Menu, MenuItem } from "@mui/material";
+import {
+  Divider,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Badge,
+} from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../Actions/userAction"; // Adjust the path as needed
+import SearchItem from "../../Home/SearchItem";
 
 export const NavDesktopAuthorized = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const cartItemCount = useSelector((state) => state.cart.cartItemCount);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -73,7 +83,9 @@ export const NavDesktopAuthorized = () => {
           <NavLink to="/seller" exact activeClassName="active">
             <NavListItemText>SELL</NavListItemText>
           </NavLink>
-          <NavListItemText>CATEGORIES</NavListItemText>
+          <NavLink to="/product" exact activeClassName="active">
+            <NavListItemText>CATEGORIES</NavListItemText>
+          </NavLink>
           <NavListItemText>ABOUT</NavListItemText>
         </NavList>
       </Grid>
@@ -87,10 +99,7 @@ export const NavDesktopAuthorized = () => {
           justifyContent: "flex-end",
         }}
       >
-        <SearchContainer>
-          <SearchIcon />
-          <SearchInput placeholder="Search" />
-        </SearchContainer>
+        <SearchItem />
       </Grid>
 
       <Grid
@@ -119,7 +128,9 @@ export const NavDesktopAuthorized = () => {
           sx={{ color: "black", width: "40px", height: "40px" }}
           onClick={() => handleNavigate("/cart")}
         >
-          <ShoppingCartOutlinedIcon sx={{ fontSize: "24px" }} />
+          <Badge badgeContent={cartItemCount} color="primary">
+            <ShoppingCartOutlinedIcon sx={{ fontSize: "24px" }} />
+          </Badge>
         </IconButton>
 
         <IconButton
