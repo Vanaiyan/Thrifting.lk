@@ -30,6 +30,7 @@ import { useDispatch } from "react-redux";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 //import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
+import UserProfile from "./Pages/User/UserProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -83,6 +84,7 @@ function App() {
           <Route path="admin/login" Component={AdminLoginPage} />
           <Route path="/seller/login" Component={SellerLoginPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
+          <Route path="/user/profile" Component={UserProfile} />
         </Routes>
       </div>
     </ThemeProvider>
