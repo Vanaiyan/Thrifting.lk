@@ -77,7 +77,7 @@ const ProductDetailBox = ({ product }) => {
             fontSize: "15px",
           }}
         >
-          LKR {product.price}
+          LKR {product.price - product.discount}
         </Typography>
 
         <Grid container spacing={1}>

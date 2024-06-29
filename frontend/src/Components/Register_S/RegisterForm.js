@@ -170,7 +170,7 @@ const RegisterForm = () => {
         if (dataStatus === 200) {
           setSuccessMessage("Form submitted successfully!");
           setTimeout(() => {
-            navigate("/seller/dashboard"); //            navigate("/seller/login");
+            navigate("/seller/login");
           }, 3000);
         } else {
           console.log("Form validation failed. Please check the errors.");
