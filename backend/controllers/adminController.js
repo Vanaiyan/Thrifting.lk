@@ -5,13 +5,11 @@ const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 const Order = require("../models/orderModel");
 const Feedback = require("../models/feedbackModel");
-const nodemailer = require('nodemailer'); // Import nodemailer for sending emails
+const nodemailer = require("nodemailer"); // Import nodemailer for sending emails
 const User = require("../models/userModel");
 const Admin = require("../models/adminModel");
 const sendToken = require("../utils/jwt");
 const sendEmail = require("../utils/email");
-
-
 
 exports.registerAdmin = catchAsyncError(async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
@@ -44,10 +42,6 @@ exports.loginAdmin = catchAsyncError(async (req, res, next) => {
 
   sendToken(user, 201, res);
 });
-
-
-
-
 
 // All function to Admin Dashboard page
 
@@ -84,28 +78,24 @@ exports.getCounts = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Server Error',
+      message: "Server Error",
       error: error.message,
     });
   }
 };
 
-
 // Get best sellers
 exports.getBestSeller = async (req, res) => {
   try {
-    const sellers = await Seller.find({ rating: { $gte: 5 } }).sort({ rating: -1 });
+    const sellers = await Seller.find({ rating: { $gte: 5 } }).sort({
+      rating: -1,
+    });
     res.json(sellers);
   } catch (error) {
-    console.error('Error fetching best sellers:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error fetching best sellers:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-
-
-
 
 //All function to All Product page
 
@@ -114,12 +104,10 @@ exports.getAllProductsToAdmin = async (req, res, next) => {
   try {
     // Fetch all products where status is false and select only specified fields
     // const products = await Product.find({ status: true }).select('_id name description price image seller');
-    const products = await Product.find({ status:false})
-    .populate({
-      path: 'seller',
-      select: 'firstName lastName'
+    const products = await Product.find({ status: false }).populate({
+      path: "seller",
+      select: "firstName lastName",
     });
-
 
     res.status(200).json({
       success: true,
@@ -136,11 +124,10 @@ exports.getAllProductsToAdmin = async (req, res, next) => {
 // Function to Delete product
 exports.deleteProducts = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.id)
-    .populate({
-        path: 'seller',  
-        select: 'firstName lastName email rating' // Assuming Seller model has these fields
-      });
+    const product = await Product.findById(req.params.id).populate({
+      path: "seller",
+      select: "firstName lastName email rating", // Assuming Seller model has these fields
+    });
 
     if (!product) {
       return next(new ErrorHandler("Product not found", 400));
@@ -157,19 +144,19 @@ exports.deleteProducts = async (req, res, next) => {
       // Reduce the seller's rating by 1
       seller.rating -= 1;
       await seller.save();
-      console.log("suki")
+      console.log("suki");
     } else {
       // Send an email to the seller
-      
-       console.log(seller.email)
+
+      console.log(seller.email);
       const mailOptions = {
         to: seller.email,
-        subject: 'Product Deletion Notification',
+        subject: "Product Deletion Notification",
         text: `Dear ${seller.firstName} ${seller.lastName},\n\nWe are writing to inform you that the product you have added to our platform,"${product.name}" has been removed from our listing.\n\nAfter careful consideration, we regret to inform you that we are not confident in the product you have added, and therefore, we have decided to delete it from our platform. We understand that this may be disappointing news, and we apologize for any inconvenience this may cause.\n\nIf you have any questions or require further information, please do not hesitate to contact our support team at [Support Email Address] or [Support Phone Number].\n\nBest regards,\nThrifting.lk`,
-            };
-      console.log("data")
+      };
+      console.log("data");
       await sendEmail(mailOptions);
-     console.log("hello")
+      console.log("hello");
     }
 
     await product.deleteOne();
@@ -178,7 +165,7 @@ exports.deleteProducts = async (req, res, next) => {
       success: true,
       message: "Product deleted successfully",
       product,
-    });  
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -187,36 +174,28 @@ exports.deleteProducts = async (req, res, next) => {
   }
 };
 
-
-
 //Function to search product
 exports.searchProducts = async (req, res) => {
   try {
     const { query } = req.query;
 
     if (!query) {
-      return res.status(400).json({ message: 'Query parameter is required' });
+      return res.status(400).json({ message: "Query parameter is required" });
     }
 
     let products = [];
 
     if (query) {
       products = await Product.find({
-        $or: [
-          { name: { $regex: query, $options: 'i' } },
-        ]
+        $or: [{ name: { $regex: query, $options: "i" } }],
       });
     }
-    res.json({ products});
+    res.json({ products });
   } catch (error) {
-    console.error('Search error:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Search error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
-
-
-
-
 
 //All function to Sellers page
 
@@ -238,8 +217,6 @@ exports.getApprovedSellersToAdmin = async (req, res, next) => {
   }
 };
 
-
-
 // Function to send warning email to seller
 exports.warnSeller = async (req, res, next) => {
   try {
@@ -252,7 +229,7 @@ exports.warnSeller = async (req, res, next) => {
     // Prepare email options
     const mailOptions = {
       to: seller.email,
-      subject: 'Warning Notification',
+      subject: "Warning Notification",
       text: `Dear ${seller.firstName} ${seller.lastName},\n\nThis is a warning regarding your account. Please take the necessary actions to comply with our policies.\n\nBest regards,\nYour Company`,
     };
 
@@ -269,15 +246,13 @@ exports.warnSeller = async (req, res, next) => {
       message: "Warning email sent successfully",
     });
   } catch (err) {
-    console.error('Error sending warning email:', err);
+    console.error("Error sending warning email:", err);
     res.status(500).json({
       success: false,
       message: "Server Error",
     });
   }
 };
-
-
 
 // Function to delete seller
 
@@ -297,7 +272,7 @@ exports.deleteSeller = async (req, res, next) => {
     // Prepare email options
     const mailOptions = {
       to: sellerEmail,
-      subject: 'Account Deletion Notification',
+      subject: "Account Deletion Notification",
       text: `Dear ${sellerName},\n\nWe regret to inform you that your seller account has been deleted from our platform due to receiving an excessive amount of negative feedback from users and suspicious activity associated with your account.\n\nIf you have any questions or wish to discuss this matter further, please contact our support team at [Support Email Address] or [Support Phone Number].\n\nWe apologize for any inconvenience this may cause.\n\nBest regards,\nThrifting.lk`,
     };
 
@@ -315,7 +290,7 @@ exports.deleteSeller = async (req, res, next) => {
       seller,
     });
   } catch (err) {
-    console.error('Error deleting seller:', err);
+    console.error("Error deleting seller:", err);
     res.status(500).json({
       success: false,
       message: "Server Error",
@@ -323,15 +298,15 @@ exports.deleteSeller = async (req, res, next) => {
   }
 };
 
-
-
 //Function to search seller
 exports.searchSellers = async (req, res) => {
   try {
     const { query, sellerId } = req.query;
 
     if (!query && !sellerId) {
-      return res.status(400).json({ message: 'Query or seller ID parameter is required' });
+      return res
+        .status(400)
+        .json({ message: "Query or seller ID parameter is required" });
     }
 
     let sellers = [];
@@ -339,9 +314,9 @@ exports.searchSellers = async (req, res) => {
     if (query) {
       sellers = await Seller.find({
         $or: [
-          { firstName: { $regex: query, $options: 'i' } },
-          { lastName: { $regex: query, $options: 'i' } }
-        ]
+          { firstName: { $regex: query, $options: "i" } },
+          { lastName: { $regex: query, $options: "i" } },
+        ],
       });
     }
 
@@ -354,21 +329,17 @@ exports.searchSellers = async (req, res) => {
 
     res.json({ sellers });
   } catch (error) {
-    console.error('Search error:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Search error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-
-
-
 //All function to Users page
-
 
 // Function To get users
 exports.getUsersToAdmin = async (req, res, next) => {
   try {
-    // Fetch all users from the database 
+    // Fetch all users from the database
     const users = await User.find();
 
     res.status(200).json({
@@ -382,10 +353,6 @@ exports.getUsersToAdmin = async (req, res, next) => {
     });
   }
 };
-
-
-
-
 
 //All funtion to Order List page
 
@@ -408,9 +375,8 @@ exports.getAllOrders = async (req, res, next) => {
       });
 
     // Filter out orders where productId or userId is null
-    const validOrders = orders.filter(order => 
-      order.productId !== null && 
-      order.userId !== null
+    const validOrders = orders.filter(
+      (order) => order.productId !== null && order.userId !== null
     );
 
     // Check the filtered orders
@@ -419,12 +385,16 @@ exports.getAllOrders = async (req, res, next) => {
     // Transform the valid orders
     const transformedOrders = validOrders.map((order) => ({
       id: order._id,
-      productName: order.productId ? order.productId.name : 'Unknown',
-      sellerName: order.sellerId ? `${order.sellerId.firstName} ${order.sellerId.lastName}` : 'Unknown',
-      userName: order.userId ? `${order.userId.firstName} ${order.userId.lastName}` : 'Unknown' ,
+      productName: order.productId ? order.productId.name : "Unknown",
+      sellerName: order.sellerId
+        ? `${order.sellerId.firstName} ${order.sellerId.lastName}`
+        : "Unknown",
+      userName: order.userId
+        ? `${order.userId.firstName} ${order.userId.lastName}`
+        : "Unknown",
       date: order.timestamp, // Use timestamp as the order date
-      amount: order.productId ? `$ ${order.productId.price}` : 'Unknown', 
-      userAvatar: order.userId.avatar, 
+      amount: order.productId ? `$ ${order.productId.price}` : "Unknown",
+      userAvatar: order.userId.avatar,
       sellerAvatar: order.sellerId ? order.sellerId.avatar : null,
 
       // orderId: order._id, // Uncomment if orderId is needed
@@ -444,11 +414,7 @@ exports.getAllOrders = async (req, res, next) => {
   }
 };
 
-
-
-
 //All function to Seller Approval page
-
 
 // Function To get Sellers to Approval
 exports.getSellersToAdmin = async (req, res, next) => {
@@ -468,12 +434,15 @@ exports.getSellersToAdmin = async (req, res, next) => {
   }
 };
 
-
 // Function to approve a seller
 exports.approveSeller = async (req, res, next) => {
   try {
     const sellerId = req.params.id;
-    const seller = await Seller.findByIdAndUpdate(sellerId, { authenticated: true }, { new: true });
+    const seller = await Seller.findByIdAndUpdate(
+      sellerId,
+      { authenticated: true },
+      { new: true }
+    );
 
     if (!seller) {
       return res.status(404).json({
@@ -494,7 +463,6 @@ exports.approveSeller = async (req, res, next) => {
     });
   }
 };
-
 
 // Function to reject a seller
 exports.rejectSeller = async (req, res, next) => {
@@ -522,9 +490,6 @@ exports.rejectSeller = async (req, res, next) => {
   }
 };
 
-
-
-
 // All function to Report Feedback
 
 // Function to fetch data based on issue category count
@@ -533,11 +498,11 @@ exports.getIssueSeller = async (req, res) => {
     const aggregateResult = await Feedback.aggregate([
       {
         $group: {
-          _id: { sellerId: '$sellerId', issueCategory: '$issueCategory' },
+          _id: { sellerId: "$sellerId", issueCategory: "$issueCategory" },
           count: { $sum: 1 },
-          sellerName: { $first: '$firstName $lastName' }, // Assuming seller name is in the Seller model
-          sellerEmail: { $first: '$email' }, // Assuming seller email is in the Seller model
-          rating: { $first: '$rating' }, // Calculate average rating
+          sellerName: { $first: "$firstName $lastName" }, // Assuming seller name is in the Seller model
+          sellerEmail: { $first: "$email" }, // Assuming seller email is in the Seller model
+          rating: { $first: "$rating" }, // Calculate average rating
         },
       },
       {
@@ -547,32 +512,30 @@ exports.getIssueSeller = async (req, res) => {
       },
     ]);
     // Fetch additional seller details using the sellerId
-    const sellerIds = aggregateResult.map(result => result._id.sellerId);
+    const sellerIds = aggregateResult.map((result) => result._id.sellerId);
     const sellers = await Seller.find({ _id: { $in: sellerIds } });
     // Combine seller details into the aggregate result
-    const results = aggregateResult.map(result => {
-      const seller = sellers.find(s => s._id.toString() === result._id.sellerId.toString());
+    const results = aggregateResult.map((result) => {
+      const seller = sellers.find(
+        (s) => s._id.toString() === result._id.sellerId.toString()
+      );
       return {
         sellerId: result._id.sellerId,
-        sellerName: seller ? `${seller.firstName} ${seller.lastName}` : 'Unknown',
-        sellerEmail: seller ? seller.email : 'Unknown',
+        sellerName: seller
+          ? `${seller.firstName} ${seller.lastName}`
+          : "Unknown",
+        sellerEmail: seller ? seller.email : "Unknown",
         issueCategory: result._id.issueCategory,
-        rating: seller ? seller.rating : 'null',
+        rating: seller ? seller.rating : "null",
       };
     });
 
     res.json(results);
   } catch (error) {
-    console.error('Error fetching grouped feedback:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error fetching grouped feedback:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-
-
-
-
 
 //Graph
 // Utility function to get the last six months
@@ -594,34 +557,44 @@ exports.getOrderCountLastSixMonths = async (req, res) => {
       {
         $match: {
           timestamp: {
-            $gte: new Date(Date.UTC(lastSixMonths[0].year, lastSixMonths[0].month - 1, 1)),
-            $lt: new Date(Date.UTC(lastSixMonths[5].year, lastSixMonths[5].month, 1))
-          }
-        }
+            $gte: new Date(
+              Date.UTC(lastSixMonths[0].year, lastSixMonths[0].month - 1, 1)
+            ),
+            $lt: new Date(
+              Date.UTC(lastSixMonths[5].year, lastSixMonths[5].month, 1)
+            ),
+          },
+        },
       },
       {
         $group: {
-          _id: { year: { $year: "$timestamp" }, month: { $month: "$timestamp" } },
-          count: { $sum: 1 }
-        }
+          _id: {
+            year: { $year: "$timestamp" },
+            month: { $month: "$timestamp" },
+          },
+          count: { $sum: 1 },
+        },
       },
       {
-        $sort: { "_id.year": 1, "_id.month": 1 }
-      }
+        $sort: { "_id.year": 1, "_id.month": 1 },
+      },
     ]);
 
-    const data = lastSixMonths.map(month => {
-      const found = results.find(result => result._id.year === month.year && result._id.month === month.month);
+    const data = lastSixMonths.map((month) => {
+      const found = results.find(
+        (result) =>
+          result._id.year === month.year && result._id.month === month.month
+      );
       return {
         name: `${month.month}/${month.year}`,
         uv: found ? found.count : 0,
-        count: found ? found.count : 0
+        count: found ? found.count : 0,
       };
     });
 
     res.json(data);
   } catch (error) {
-    console.error('Error fetching order count:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error fetching order count:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

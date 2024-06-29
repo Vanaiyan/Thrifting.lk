@@ -61,7 +61,7 @@ export const pushInteractedProduct = (productId) => async () => {
 export const getRecommendations = (user) => async (dispatch) => {
   dispatch(fetchProductsStart());
   try {
-    // console.log("User from action rec : ", user);
+    console.log("User from action rec : ", user);
     const response = await axios.post(
       `${BASE_URL}/recommendations`,
       { user },
@@ -69,7 +69,7 @@ export const getRecommendations = (user) => async (dispatch) => {
         withCredentials: true, // Ensure credentials are sent if using cookies for authentication
       }
     );
-    // console.log(response.data);
+    console.log(response.data);
     dispatch(fetchProductsSuccess(response.data));
   } catch (error) {
     console.error("Error fetching recommendations:", error);

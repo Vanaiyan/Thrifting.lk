@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { Box, Paper, Alert, Snackbar, Hidden, Checkbox, FormControlLabel } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Paper,
+  Alert,
+  Snackbar,
+  Hidden,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import theme from "../../Styles/Theme";
 import signupImage from "./images/img-signup.png";
 import NavLogin from "../Navigation bar/nav-login";
-import { useState } from "react";
-import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
+import { registerUser } from "../../Actions/userAction";
+import { useDispatch } from "react-redux";
 
 const SignUpDesk = () => {
   const [firstName, setFirstName] = useState("");
@@ -23,6 +31,8 @@ const SignUpDesk = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
   const [checked, setChecked] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleChangeterm = (event) => {
     setChecked(event.target.checked);
@@ -63,7 +73,8 @@ const SignUpDesk = () => {
         } else if (value.length < 8) {
           errors.password = "Password must be at least 8 characters long";
         } else if (!/[a-zA-Z]/.test(value) || !/\d/.test(value)) {
-          errors.password = "Password must contain at least one letter and one number";
+          errors.password =
+            "Password must contain at least one letter and one number";
         } else {
           errors.password = "";
         }
@@ -117,39 +128,22 @@ const SignUpDesk = () => {
     }
     if (Object.values(validationErrors).some((error) => error)) return;
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/register",
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    const userData = {
+      firstName,
+      lastName,
+      email,
+      password,
+    };
 
-      const data = response.data;
-      if (data.success) {
-        console.log("Success:", data);
-        setSuccessMessage("Account Created Successfully!");
-        setSnackbarOpen(true);
-
-        // Redirect to home page after a short delay
-        setTimeout(() => {
-          navigate("/");
-        }, 2000); // 2 seconds delay to show the Snackbar message
-      } else {
-        setErrorMessage(data.message);
-      }
-    } catch (error) {
-      console.error("Error:", error.response.data);
-      setErrorMessage(error.response.data.message || "An error occurred");
-    }
+    await dispatch(
+      registerUser(
+        userData,
+        setSnackbarOpen,
+        setSuccessMessage,
+        setErrorMessage,
+        navigate
+      )
+    );
   };
 
   return (

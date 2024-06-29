@@ -30,6 +30,8 @@ import { useDispatch } from "react-redux";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 //import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
+import { getCartProducts } from "./Actions/cartActions";
+import { getAllProducts } from "./Actions/adminActions";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +41,8 @@ function App() {
       try {
         // Dispatch action with user data
         dispatch(getUserAction());
+        dispatch(getCartProducts());
+        dispatch(getAllProducts());
       } catch (error) {
         // console.error("Error fetching user data:", error);
         // Handle error (e.g., dispatch failure action)
@@ -77,7 +81,7 @@ function App() {
           <Route path="/admin/Sellers" Component={AllSellersPage} />
           <Route path="/admin/Buyers" Component={AllUsersPage} />
           <Route path="/admin/OrderList" Component={OrderList} />
-          <Route path="admin/SellerApproval" Component={SellerApproval}/>
+          <Route path="admin/SellerApproval" Component={SellerApproval} />
           <Route path="/admin/Dashboard" Component={AdminDashboard} />
           <Route path="/admin/ReportFeedback" Component={FeedbackReport} />
           <Route path="admin/login" Component={AdminLoginPage} />
