@@ -1,9 +1,9 @@
-import NavBar from "../../Components/Navigation bar/navigation";
 import Banner from "../../Components/SellerPage/Banner";
 import { Box, Typography } from "@mui/material";
 import { List } from "../../Components/SellerPage/Reasonlist";
 import { Steps } from "../../Components/SellerPage/Steps";
 import { NavSellerDesktop } from "../../Components/Navigation bar/desktop/nav_seller_desktop";
+import Footer from "../../Components/Footer/Footer";
 
 export const SellerPage = () => {
   return (
@@ -22,6 +22,7 @@ export const SellerPage = () => {
       </Typography>
       <List />
       <Steps />
+      <Footer />
     </Box>
   );
 };
