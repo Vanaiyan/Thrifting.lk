@@ -110,6 +110,12 @@ const sellerSchema = new mongoose.Schema({
     type: Boolean,
     default:false,
   },
+  warnings: [
+    {
+      issueCategory: { type: String, required: true },
+      date: { type: Date, default: Date.now }
+    }
+  ],
 
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
 

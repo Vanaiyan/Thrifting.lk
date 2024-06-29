@@ -1,9 +1,10 @@
+// src/Components/Admin/DashboardCard.js
 import React, { useState } from 'react';
 import { Grid, Card, Typography, Box, IconButton, Popover, Menu, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const DashboardCard = ({ title, value, icon, timestamp, showDetailsPath }) => {
+const DashboardCard = ({ title, value, icon, timestamp, showDetailsPath, backgroundColor, iconBackgroundColor }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -18,7 +19,7 @@ const DashboardCard = ({ title, value, icon, timestamp, showDetailsPath }) => {
 
   return (
     <Grid item xs={12} sm={6} md={3}>
-      <Card sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 2, borderRadius: 3 }}>
+      <Card sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 2, borderRadius: 3 }} style={{ backgroundColor }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
             {title}
@@ -40,11 +41,11 @@ const DashboardCard = ({ title, value, icon, timestamp, showDetailsPath }) => {
             }}
           >
             <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose} >
-              <MenuItem  component={Link} to={showDetailsPath} onClick={handleClose} sx={{ color: '#ff5003' }}> {/* Use Link component for navigation */}
-                   Show Details
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose} >
+              <MenuItem component={Link} to={showDetailsPath} onClick={handleClose} sx={{ color: '#ff5003' }}> {/* Use Link component for navigation */}
+                Show Details
               </MenuItem>
             </Menu>
           </Popover>
@@ -56,7 +57,7 @@ const DashboardCard = ({ title, value, icon, timestamp, showDetailsPath }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: '#ff5003',
+                backgroundColor: iconBackgroundColor, // Use iconBackgroundColor prop
                 color: 'white',
                 borderRadius: 2,
                 width: 40,
