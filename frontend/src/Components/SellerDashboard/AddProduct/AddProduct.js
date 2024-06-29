@@ -82,6 +82,7 @@ const AddProduct = () => {
 
     try {
       await axios.post(
+
         `http://localhost:8000/api/products/${user._id}`,
         productData,
         {
