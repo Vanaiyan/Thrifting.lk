@@ -33,7 +33,8 @@ import ContactUs from "./Components/Footer/ContactUs";
 import Terms from "./Components/Footer/Terms";
 import { getCartProducts } from "./Actions/cartActions";
 import { getAllProducts } from "./Actions/adminActions";
-
+import ContactUs from "./Components/Footer/ContactUs";
+import Terms from "./Components/Footer/Terms";
 function App() {
   const dispatch = useDispatch();
 
