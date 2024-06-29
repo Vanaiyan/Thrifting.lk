@@ -31,7 +31,7 @@ const OrderManagement = ({sellerId}) => {
 
   const handleProductStatus = async (productId) => {
     try {
-      await axios.put(`http://localhost:8000/api/myproducts/${productId}`, { withCredentials: true },);
+      await axios.put(`http://localhost:8000/api/myproducts/changeStatus/${productId}`, { withCredentials: true },);
       setProducts(
         products.map((product) =>
           product._id === productId

@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const {isAuthenticatedUser, authorizeRoles} = require('../middlewares/authenticate');
 
-const path = require("path");
 const Dashboard_S = require("../controllers/sellerDashboardController");
 
 router
@@ -13,12 +12,8 @@ router
   .route("/myproducts/:sellerId")
   .get(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.getProductsBySellerId);
 
-// router
-//   .route("/myproduct")
-//   .get(Dashboard_S.getProductsBySellerId);
-
 router
-  .route("/myproducts/:productId")
+  .route("/myproducts/changeStatus/:productId")
   .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.changeProductStatus);
 
 router
