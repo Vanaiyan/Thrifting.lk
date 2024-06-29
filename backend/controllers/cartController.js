@@ -4,6 +4,8 @@ const Cart = require("../models/cartModel"); // No longer needed
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Seller = require("../models/sellerModel");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.addToCart = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
@@ -168,24 +170,34 @@ exports.updateCartItemQuantity = catchAsyncError(async (req, res, next) => {
   return next(new ErrorHandler(400, "Quantity update is not supported"));
 });
 
-// To add a Product is interested to a user
 exports.interestedProduct = catchAsyncError(async (req, res, next) => {
   try {
     const userId = req.user._id;
     const productId = req.params.productId;
 
+    if (!ObjectId.isValid(productId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid product ID format" });
+    }
+
+    const objectId = new ObjectId(productId);
+    // console.log("Converted ObjectId:", objectId);
+
     // Find the product by its ID
-    const product = await Product.findById(productId);
+    const product = await Product.findById(objectId);
     if (!product) {
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
     }
+    // console.log("Product:", product);
 
     // Update the product's interested status and timestamp
     product.isInterested = true;
     product.interestedTimestamp = new Date();
     await product.save();
+    // console.log("Product interest status updated");
 
     // Find the seller associated with the product
     const seller = await Seller.findById(product.seller);
@@ -194,12 +206,14 @@ exports.interestedProduct = catchAsyncError(async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "Seller not found" });
     }
+    // console.log("Seller:", seller);
 
     // Check if the user is already in the interestedUsers array for this product
     const existingInterest = seller.interestedUsers.find(
       (interest) =>
-        interest.productId.equals(productId) && interest.userId.equals(userId)
+        interest.productId.equals(objectId) && interest.userId.equals(userId)
     );
+    // console.log("Existing Interest:", existingInterest);
 
     if (existingInterest) {
       // Update the timestamp if the user is already interested
@@ -207,13 +221,14 @@ exports.interestedProduct = catchAsyncError(async (req, res, next) => {
     } else {
       // Add the user's interest to the seller's interestedUsers array
       seller.interestedUsers.push({
-        productId,
-        userId,
+        productId: objectId,
+        userId: userId,
         timestamp: new Date(),
       });
     }
 
     await seller.save();
+    console.log("Seller's interestedUsers updated");
 
     res.status(200).json({
       success: true,
@@ -221,6 +236,7 @@ exports.interestedProduct = catchAsyncError(async (req, res, next) => {
       product,
     });
   } catch (error) {
+    console.error("Error:", error);
     return next(
       new ErrorHandler("An error occurred while updating product interest", 500)
     );

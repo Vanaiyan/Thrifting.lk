@@ -12,6 +12,15 @@ import DeleteDialog from "./DeleteDialog";
 import InterestedDialog from "./InterestedDeleteDialog";
 import RemainingTimeWarning from "./RemainingTimeWarning";
 
+// Utility function to truncate text
+const truncateText = (text, wordLimit) => {
+  const words = text.split(" ");
+  if (words.length > wordLimit) {
+    return words.slice(0, wordLimit).join(" ") + "...";
+  }
+  return text;
+};
+
 const CartCard = ({
   productId,
   productName,
@@ -138,9 +147,15 @@ const CartCard = ({
 
         <Stack spacing={1} height={"100%"} width={"100%"}>
           <Stack>
-            <Typography variant="subtitle2">{productName}</Typography>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+              {truncateText(productName, 8)}{" "}
+              {/* Truncate productName to 5 words */}
+            </Typography>
           </Stack>
-          <Typography variant="subtitle3">{description}</Typography>
+          <Typography variant="body2">
+            {truncateText(description, 20)}{" "}
+            {/* Truncate description to 10 words */}
+          </Typography>
           <Typography variant="subtitle2">{price}</Typography>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="subtitle2" sx={{ color: Colors.InPholder }}>

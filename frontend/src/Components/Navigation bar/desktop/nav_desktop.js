@@ -9,7 +9,7 @@ import {
   ButtonContainer,
   SignUpButton,
 } from "../../../Styles/NavBar/nav01";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { Divider, Grid } from "@mui/material";
 import Search from "@mui/icons-material/Search";
@@ -24,7 +24,9 @@ export const NavDesktop = () => {
       sx={{ padding: { md: "0 2vw", lg: "0 7vw" } }}
     >
       <Grid item md={2.7} lg={3}>
-        <NavTitle sx={{ color: "#ff5003" }}>Thrifting.lk</NavTitle>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <NavTitle sx={{ color: "#ff5003" }}>Thrifting.lk</NavTitle>
+        </Link>
         <Divider orientation="vertical" flexItem />
       </Grid>
 

@@ -5,7 +5,7 @@ const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 const Order = require("../models/orderModel");
 const Feedback = require("../models/feedbackModel");
-const nodemailer = require('nodemailer'); // Import nodemailer for sending emails
+const nodemailer = require("nodemailer"); // Import nodemailer for sending emails
 const User = require("../models/userModel");
 const Admin = require("../models/adminModel");
 const sendToken = require("../utils/jwt");
@@ -79,10 +79,6 @@ exports.loginAdmin = catchAsyncError(async (req, res, next) => {
   sendToken(user, 201, res);
 });
 
-
-
-
-
 // All function to Admin Dashboard page
 
 //Function to get Products, Sellers, Buyers and Orders Counts
@@ -118,21 +114,22 @@ exports.getCounts = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Server Error',
+      message: "Server Error",
       error: error.message,
     });
   }
 };
 
-
 // Get best sellers
 exports.getBestSeller = async (req, res) => {
   try {
-    const sellers = await Seller.find({ rating: { $gte: 5 } }).sort({ rating: -1 });
+    const sellers = await Seller.find({ rating: { $gte: 5 } }).sort({
+      rating: -1,
+    });
     res.json(sellers);
   } catch (error) {
-    console.error('Error fetching best sellers:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error fetching best sellers:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -398,11 +395,10 @@ exports.getAllProductsToAdmin = async (req, res, next) => {
 // Function to Delete product
 exports.deleteProducts = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.id)
-    .populate({
-        path: 'seller',  
-        select: 'firstName lastName email rating' // Assuming Seller model has these fields
-      });
+    const product = await Product.findById(req.params.id).populate({
+      path: "seller",
+      select: "firstName lastName email rating", // Assuming Seller model has these fields
+    });
 
     if (!product) {
       return next(new ErrorHandler("Product not found", 400));
@@ -419,19 +415,19 @@ exports.deleteProducts = async (req, res, next) => {
       // Reduce the seller's rating by 1
       seller.rating -= 1;
       await seller.save();
-      console.log("suki")
+      console.log("suki");
     } else {
       // Send an email to the seller
-      
-       console.log(seller.email)
+
+      console.log(seller.email);
       const mailOptions = {
         to: seller.email,
-        subject: 'Product Deletion Notification',
+        subject: "Product Deletion Notification",
         text: `Dear ${seller.firstName} ${seller.lastName},\n\nWe are writing to inform you that the product you have added to our platform,"${product.name}" has been removed from our listing.\n\nAfter careful consideration, we regret to inform you that we are not confident in the product you have added, and therefore, we have decided to delete it from our platform. We understand that this may be disappointing news, and we apologize for any inconvenience this may cause.\n\nIf you have any questions or require further information, please do not hesitate to contact our support team at [Support Email Address] or [Support Phone Number].\n\nBest regards,\nThrifting.lk`,
-            };
-      console.log("data")
+      };
+      console.log("data");
       await sendEmail(mailOptions);
-     console.log("hello")
+      console.log("hello");
     }
 
     await product.deleteOne();
@@ -440,7 +436,7 @@ exports.deleteProducts = async (req, res, next) => {
       success: true,
       message: "Product deleted successfully",
       product,
-    });  
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -449,15 +445,13 @@ exports.deleteProducts = async (req, res, next) => {
   }
 };
 
-
-
 //Function to search product
 exports.searchProducts = async (req, res) => {
   try {
     const { query, page, limit } = req.query;
 
     if (!query) {
-      return res.status(400).json({ message: 'Query parameter is required' });
+      return res.status(400).json({ message: "Query parameter is required" });
     }
 
     const searchQuery = {
@@ -478,14 +472,10 @@ exports.searchProducts = async (req, res) => {
       currentPage: result.currentPage,
     });
   } catch (error) {
-    console.error('Search error:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Search error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
-
-
-
-
 
 //All function to Sellers page
 
@@ -516,8 +506,6 @@ exports.getApprovedSellersToAdmin = async (req, res, next) => {
   }
 };
 
-
-
 // Function to delete seller
 
 exports.deleteSeller = async (req, res, next) => {
@@ -536,7 +524,7 @@ exports.deleteSeller = async (req, res, next) => {
     // Prepare email options
     const mailOptions = {
       to: sellerEmail,
-      subject: 'Account Deletion Notification',
+      subject: "Account Deletion Notification",
       text: `Dear ${sellerName},\n\nWe regret to inform you that your seller account has been deleted from our platform due to receiving an excessive amount of negative feedback from users and suspicious activity associated with your account.\n\nIf you have any questions or wish to discuss this matter further, please contact our support team at [Support Email Address] or [Support Phone Number].\n\nWe apologize for any inconvenience this may cause.\n\nBest regards,\nThrifting.lk`,
     };
 
@@ -554,15 +542,13 @@ exports.deleteSeller = async (req, res, next) => {
       seller,
     });
   } catch (err) {
-    console.error('Error deleting seller:', err);
+    console.error("Error deleting seller:", err);
     res.status(500).json({
       success: false,
       message: "Server Error",
     });
   }
 };
-
-
 
 //Function to search seller
 exports.searchSellers = async (req, res) => {
@@ -596,14 +582,15 @@ exports.searchSellers = async (req, res) => {
       currentPage: result.currentPage,
     });
   } catch (error) {
-    console.error('Search error:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Search error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 
-//All function to Users page
 
+
+//All function to Users page
 
 // Function To get users
 exports.getUsersToAdmin = async (req, res, next) => {
@@ -631,10 +618,6 @@ exports.getUsersToAdmin = async (req, res, next) => {
     });
   }
 };
-
-
-
-
 
 //All funtion to Order List page
 
@@ -698,7 +681,6 @@ exports.getAllOrders = async (req, res, next) => {
 
 //All function to Seller Approval page
 
-
 // Function To get Sellers to Approval
 exports.getSellersToAdmin = async (req, res, next) => {
   try {
@@ -727,11 +709,11 @@ exports.getSellersToAdmin = async (req, res, next) => {
 };
 
 
-
 // Function to approve a seller
 exports.approveSeller = async (req, res, next) => {
   try {
     const sellerId = req.params.id;
+
     const seller = await Seller.findByIdAndUpdate(
       sellerId,
       { authenticated: true },
@@ -768,7 +750,6 @@ exports.approveSeller = async (req, res, next) => {
     });
   }
 };
-
 
 // Function to reject a seller
 exports.rejectSeller = async (req, res, next) => {
@@ -807,9 +788,6 @@ exports.rejectSeller = async (req, res, next) => {
   }
 };
 
-
-
-
 // All function to Report Feedback
 
 // Function to fetch data based on issue category count to delete seller
@@ -822,7 +800,7 @@ exports.getDeleteSeller = async (req, res) => {
     const aggregateResult = await Feedback.aggregate([
       {
         $group: {
-          _id: { sellerId: '$sellerId', issueCategory: '$issueCategory' },
+          _id: { sellerId: "$sellerId", issueCategory: "$issueCategory" },
           count: { $sum: 1 },
           sellerName: { $first: '$firstName' },
           sellerLastName: { $first: '$lastName' },
@@ -846,10 +824,12 @@ exports.getDeleteSeller = async (req, res) => {
       const seller = sellers.find(s => s._id.toString() === result._id.sellerId.toString());
       return {
         sellerId: result._id.sellerId,
-        sellerName: seller ? `${seller.firstName} ${seller.lastName}` : 'Unknown',
-        sellerEmail: seller ? seller.email : 'Unknown',
+        sellerName: seller
+          ? `${seller.firstName} ${seller.lastName}`
+          : "Unknown",
+        sellerEmail: seller ? seller.email : "Unknown",
         issueCategory: result._id.issueCategory,
-        rating: seller ? seller.rating : 'null',
+        rating: seller ? seller.rating : "null",
       };
     });
 
@@ -872,8 +852,8 @@ exports.getDeleteSeller = async (req, res) => {
 
     res.json({ results, totalCount: totalCount[0]?.total || 0 });
   } catch (error) {
-    console.error('Error fetching grouped feedback:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error fetching grouped feedback:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 

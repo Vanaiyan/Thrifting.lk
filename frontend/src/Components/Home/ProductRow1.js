@@ -56,8 +56,6 @@ const ProductRow = () => {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    console.log(user);
-    console.log("Rec user : = ", user ? user._id : "");
     const fetchRecommendations = async () => {
       try {
         await dispatch(getRecommendations(user ? user._id : ""));
@@ -137,7 +135,11 @@ const ProductRow = () => {
             id={product._id}
             title={product.name}
             price={product.price}
-            imageSrc={product.pictures ? product.pictures[0].image : ""}
+            imageSrc={
+              product.pictures && product.pictures.length > 0
+                ? product.pictures[0].image
+                : ""
+            }
           />
         ))}
       </Slider>

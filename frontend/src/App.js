@@ -28,10 +28,16 @@ import EditProfile from "./Components/SellerDashboard/Profile/EditProfile";
 import { getUserAction } from "./Actions/userAction"; // Ensure this is correctly imported
 import { useDispatch } from "react-redux";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
-//import ProfilePage from "./Components/SellerDashboard/Profile/ProfilePage";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
+<<<<<<< HEAD
 import ProtectedRoute from "./Components/Admin/ProtectedRoute";
 
+=======
+import { getCartProducts } from "./Actions/cartActions";
+import { getAllProducts } from "./Actions/adminActions";
+import ContactUs from "./Components/Footer/ContactUs";
+import Terms from "./Components/Footer/Terms";
+>>>>>>> d81eb56871c41f44cb580908b2d8e1ec4d4958cd
 function App() {
   const dispatch = useDispatch();
 
@@ -40,6 +46,8 @@ function App() {
       try {
         // Dispatch action with user data
         dispatch(getUserAction());
+        dispatch(getCartProducts());
+        dispatch(getAllProducts());
       } catch (error) {
         // console.error("Error fetching user data:", error);
         // Handle error (e.g., dispatch failure action)
@@ -66,11 +74,6 @@ function App() {
           />
           <Route path="/product" Component={ProductMain} />
           <Route path="/seller/dashboard" Component={Dashboard_S} />
-          {/* <Route path="/seller/profile" Component={ProfilePage} /> */}
-          <Route
-            path="/seller/profile/edit/:sellerId"
-            Component={EditProfile}
-          />
           <Route path="/seller/dashboard/addProduct" Component={AddProduct} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
@@ -78,12 +81,15 @@ function App() {
           <Route path="/admin/Sellers" Component={AllSellersPage} />
           <Route path="/admin/Buyers" Component={AllUsersPage} />
           <Route path="/admin/OrderList" Component={OrderList} />
-          <Route path="admin/SellerApproval" Component={SellerApproval}/>
+          <Route path="admin/SellerApproval" Component={SellerApproval} />
           <Route path="/admin/Dashboard" Component={AdminDashboard} />
           <Route path="/admin/ReportFeedback" Component={FeedbackReport} />
           <Route path="admin/login" Component={AdminLoginPage} />
           <Route path="/seller/login" Component={SellerLoginPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
+          <Route path="/contactUs" Component={ContactUs} />
+          <Route path="/terms" Component={Terms} />
+
         </Routes>
       </div>
     </ThemeProvider>

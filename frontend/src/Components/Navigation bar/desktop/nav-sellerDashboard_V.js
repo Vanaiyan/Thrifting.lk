@@ -60,7 +60,6 @@ const NavSellerDashboard_V = ({ sellerId }) => {
           <NavListItemText onClick={() => handleTabClick("orderManagement")}>
             Order Management
           </NavListItemText>
-          {/* <NavListItemText onClick={() => handleTabClick("chat")}>Chat</NavListItemText> */}
           <NavListItemText onClick={() => handleTabClick("profile_S")}>
             Profile
           </NavListItemText>
