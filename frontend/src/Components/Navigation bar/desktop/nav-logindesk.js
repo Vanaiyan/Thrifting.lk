@@ -11,13 +11,15 @@ import {
 } from "../../../Styles/NavBar/nav01";
 import SearchIcon from "@mui/icons-material/Search"; // Import Search icon from Material-UI
 import { Divider, Grid } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export const NavLoginDesktop = () => {
   return (
     <Grid container spacing={4} alignItems="center" sx={{ padding: "0 7vw" }}>
       <Grid item md={3} lg={3} marginY={2}>
-        <NavTitle sx={{ color: "#ffff" }}>Thrifting.lk</NavTitle>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <NavTitle sx={{ color: "#FFFF" }}>Thrifting.lk</NavTitle>
+        </Link>{" "}
         <Divider orientation="vertical" flexItem />
       </Grid>
 

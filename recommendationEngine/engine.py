@@ -27,6 +27,12 @@ print(products_df.columns)
 
 # Ensure the 'description' and 'category' columns exist
 if 'description' in products_df.columns and 'category' in products_df.columns:
+    # Convert description to string and handle NaN values
+    products_df['description'] = products_df['description'].astype(
+        str).fillna('')
+    # Convert category array to a single string
+    products_df['category'] = products_df['category'].apply(
+        lambda x: ' '.join(x))
     # Create a new column 'text' by concatenating 'description' and 'category'
     products_df['text'] = products_df['description'] + \
         ' ' + products_df['category']

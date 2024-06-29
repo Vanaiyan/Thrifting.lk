@@ -75,3 +75,51 @@ export const logoutUser = () => {
     }
   };
 };
+
+export const registerUser = (
+  userData,
+  setSnackbarOpen,
+  setSuccessMessage,
+  setErrorMessage,
+  navigate
+) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/register",
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response", response);
+      const data = response.data;
+      if (data.success) {
+        console.log("Success:", data);
+        const token = data.token;
+        const user = data.user;
+
+        // Set the token in cookie (example)
+        document.cookie = `token=${token}; path=/`; // Adjust the cookie name and path as needed
+
+        // Dispatch success action to update Redux state
+        dispatch(authSuccess({ isAuthenticated: true, user }));
+
+        setSuccessMessage("Account Created Successfully!");
+        setSnackbarOpen(true);
+
+        // Redirect to home page after a short delay
+        setTimeout(() => {
+          navigate("/");
+        }, 2000); // 2 seconds delay to show the Snackbar message
+      } else {
+        setErrorMessage(data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error.response.data);
+      setErrorMessage(error.response.data.message || "An error occurred");
+    }
+  };
+};
