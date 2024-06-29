@@ -5,9 +5,10 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  uploadBytes,
 } from "firebase/storage";
 import { app } from "../firebase"; // Adjust the import based on your file structure
-
+// uploadImage.js or inside the same file as RegisterForm
 const storage = getStorage(app);
 
 export const uploadImageToFirebase = async (file, onProgress) => {
@@ -92,4 +93,16 @@ export const loginSeller = (email, password) => {
       throw error; // Rethrow the error to handle it in the component
     }
   };
+};
+export const uploadNicImages = async (file) => {
+  const storageRef = ref(storage, `NIC_Images/${file.name}`);
+  try {
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    await uploadTask;
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
+  } catch (error) {
+    console.error("Error uploading image to Firebase:", error);
+    throw error;
+  }
 };

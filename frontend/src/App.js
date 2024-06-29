@@ -29,8 +29,6 @@ import { getUserAction } from "./Actions/userAction"; // Ensure this is correctl
 import { useDispatch } from "react-redux";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
-import ContactUs from "./Components/Footer/ContactUs";
-import Terms from "./Components/Footer/Terms";
 import { getCartProducts } from "./Actions/cartActions";
 import { getAllProducts } from "./Actions/adminActions";
 import ContactUs from "./Components/Footer/ContactUs";
