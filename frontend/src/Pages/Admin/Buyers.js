@@ -1,97 +1,70 @@
-// import React, { useState, useEffect } from 'react';
-// import { Box, Grid } from "@mui/material";
-// import DrawerAdmin from '../../Components/Admin/DrawerAdmin';
-// import AppBarAdmin from '../../Components/Admin/AppBarAdmin';
-// import UserCard from '../../Components/Admin/BuyerCard'; // Assuming UserCard component is similar to SellerCard but without delete option
-// import Breadcrumb from '../../Components/Admin/Breadcrumbs';
-// import { getUsers } from '../../Actions/adminActions'; // Assuming getApprovedUsers is similar to getApprovedSellers
-
-// const AllUsersPage = () => {
-//   const [users, setUsers] = useState([]);
-
-//   useEffect(() => {
-//     const fetchUsers = async () => {
-//       try {
-//         const usersData = await getUsers();
-//         setUsers(usersData);
-//       } catch (error) {
-//         console.error('Error fetching users:', error);
-//       }
-//     };
-
-//     fetchUsers();
-//   }, );
-
-//   return (
-//     <Box sx={{ display: "flex" }}>
-//       <DrawerAdmin />
-//       <Box sx={{ flexGrow: 1 }}>
-//         <AppBarAdmin />
-//         <Box sx={{ p: "15px", display: 'flex'}}>
-//           <Breadcrumb />
-//         </Box>
-//         <Grid container spacing={2} sx={{ p: "15px" }}>
-//           {users.map(user => (
-//             <Grid item key={user._id} xs={12} sm={6} md={4}>
-//               <UserCard user={user} />
-//             </Grid>
-//           ))}
-//         </Grid>
-//       </Box>
-//     </Box>
-//   );
-// }
-
-// export default AllUsersPage;
-
-
-
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Container, Grid, GlobalStyles } from '@mui/material';
 import BuyerCard from '../../Components/Admin/BuyerCard';
 import AppBarAdmin from '../../Components/Admin/AppBarAdmin';
 import DrawerAdmin from '../../Components/Admin/DrawerAdmin';
 import Breadcrumb from '../../Components/Admin/Breadcrumbs';
-import { getUsers } from '../../Actions/adminActions'; // Assuming getUsers fetches all users from backend
+import { getUsers } from '../../Actions/adminActions'; 
+import PagePagination from '../../Components/Admin/Pagination';
 
 const AllUserPage = () => {
   const [buyers, setBuyers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1); // Default to 1 page
 
   useEffect(() => {
     const fetchBuyers = async () => {
       try {
-        const buyersData = await getUsers(); // Replace with actual API call to fetch buyers
-        setBuyers(buyersData || []); // Ensure buyersData is an array or default to an empty array
+        const response = await getUsers(currentPage); // Adjust limit as per your backend pagination
+        if (response.success) {
+          setBuyers(response.users);
+          setTotalPages(response.totalPages);
+        }
       } catch (error) {
         console.error('Error fetching buyers:', error);
-        setBuyers([]); // Set buyers to empty array on error
       }
     };
 
     fetchBuyers();
-  }, []); // Empty dependency array ensures useEffect runs only once on component mount
+  }, [currentPage]); // Fetch buyers whenever currentPage changes
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <DrawerAdmin />
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBarAdmin />
-        <Box sx={{ p: "15px" }}>
-          <Breadcrumb />
-          <Container sx={{ p: "15px" }}>
-            <Grid container spacing={3}>
-              {buyers.map((buyer, index) => (
-                <Grid item key={index} xs={12} sm={6} md={4}>
-                  <BuyerCard buyer={buyer} />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
+    <>
+      <GlobalStyles styles={{
+        'html, body': {
+          backgroundColor: '#EFEFEF',
+          margin: 0,
+          padding: 0,
+          height: '100%',
+        }
+      }} />
+
+      <Box sx={{ display: 'flex', backgroundColor: '#EFEFEF', minHeight: '100vh' }}>
+        <DrawerAdmin />
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          <AppBarAdmin />
+          <Box sx={{ p: '15px', flex: 1 }}>
+            <Breadcrumb />
+            <Container sx={{ p: '15px' }}>
+              <Grid container spacing={3}>
+                {buyers.map((buyer, index) => (
+                  <Grid item key={index} xs={12} sm={6} md={4}>
+                    <BuyerCard buyer={buyer} />
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+            {/* Pagination component */}
+            <PagePagination totalPages={totalPages} currentPage={currentPage} handlePageChange={handlePageChange} />
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
 export default AllUserPage;
-

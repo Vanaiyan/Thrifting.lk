@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Paper, Typography, Box, Button, Avatar } from '@mui/material';
+import { Paper, Typography, Box, Avatar } from '@mui/material';
 import StarPurple500Icon from '@mui/icons-material/StarPurple500';
 import { getBestSeller } from '../../Actions/adminActions';
 
@@ -33,10 +33,13 @@ const BestSellers = () => {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        height: 600, // Fixed height
+        height: 500, // Fixed height
+        // backgroundColor: '#DEE0EC', // Set background color 
       }}
     >
-      <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>Best Sellers</Typography>
+      <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+        Best Sellers
+      </Typography>
       <Box sx={{ flexGrow: 1, overflowY: 'auto' }} ref={containerRef}>
         {sellers.map((seller, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
@@ -56,17 +59,28 @@ const BestSellers = () => {
               <Typography variant="body1">{`${seller.firstName} ${seller.lastName}`}</Typography>
               <Typography variant="body2" color="textSecondary">{seller.email}</Typography>
             </Box>
-            <Typography variant="body1" sx={{ marginLeft: 'auto', marginRight: 10 }}>Rating: {seller.rating.toFixed(1)}</Typography>
+            <Typography variant="body1" sx={{ marginLeft: 'auto', marginRight: 6 }}>Rating: {seller.rating.toFixed(1)}</Typography>
           </Box>
         ))}
       </Box>
-      {/* Scroll button */}
-      {/* sx={{ marginTop: 2, alignSelf: 'flex-end' }} */}
-      <Button variant="contained" color="primary" >
-        <StarPurple500Icon />
-        <StarPurple500Icon />
-        <StarPurple500Icon />
-      </Button>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 2,
+          padding: 2,
+          backgroundColor: '#ff5003',
+          borderRadius: 1,
+          color: '#fff' // Set text color to white
+        }}
+      >
+        <StarPurple500Icon sx={{ marginRight: 1, color: '#fff' }} />
+        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+          Top Rated Sellers
+        </Typography>
+        <StarPurple500Icon sx={{ marginLeft: 1, color: '#fff' }} />
+      </Box>
     </Paper>
   );
 };

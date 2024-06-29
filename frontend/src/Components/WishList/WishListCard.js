@@ -5,6 +5,15 @@ import { Colors } from "../../Styles/Theme";
 import { grey } from "@mui/material/colors";
 import AddToCartButton from "../Cart/AddtoCartBtn";
 
+// Utility function to truncate text
+const truncateText = (text, wordLimit) => {
+  const words = text.split(" ");
+  if (words.length > wordLimit) {
+    return words.slice(0, wordLimit).join(" ") + "...";
+  }
+  return text;
+};
+
 const WishlistCard = ({
   productId,
   productName,
@@ -53,9 +62,15 @@ const WishlistCard = ({
           <CloseIcon sx={{ width: "16px", height: "16px" }} />
         </IconButton>
         <Stack spacing={1} height={"100%"} width={"100%"}>
-          <Typography variant="subtitle2">{productName}</Typography>
+          <Typography variant="subtitle2">
+            {truncateText(productName, 5)}{" "}
+            {/* Truncate productName to 5 words */}
+          </Typography>
 
-          <Typography variant="subtitle3">{description}</Typography>
+          <Typography variant="body2">
+            {truncateText(description, 15)}{" "}
+            {/* Truncate description to 10 words */}
+          </Typography>
 
           <Typography variant="subtitle2">{price}</Typography>
 
