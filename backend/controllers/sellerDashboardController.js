@@ -10,10 +10,10 @@ const authenticateSeller = async (req, res) => {
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
     }
-    seller.authenticated = true;
-    await seller.save();
-
-    res.json({ message: "Seller authenticated successfully", seller });
+    // seller.authenticated = true;
+    // await seller.save();
+    authenticatedStatus = seller.authenticated
+    res.json({ message: "Seller authenticated successfully", authenticatedStatus });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -113,7 +113,7 @@ const sellerSchema = new mongoose.Schema({
 
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
 
-  interestedUsers: [interestedUserSchema], //To store array of interested users of this sellers product
+  interestedUsers: [interestedUserSchema], 
 });
 
 sellerSchema.query.byName = function (firstName) {

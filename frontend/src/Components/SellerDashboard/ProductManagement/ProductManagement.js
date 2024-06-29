@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 const ProductManagement = ({ sellerId }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Add state for authentication status
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -23,23 +24,39 @@ const ProductManagement = ({ sellerId }) => {
   const navigate = useNavigate();
 
   const handleAddProduct = () => {
-    navigate(`/seller/dashboard/addProduct`);
+    if (isAuthenticated) {
+      navigate(`/seller/dashboard/addProduct`);
+    } else {
+      setSnackbar({
+        open: true,
+        message: "You need to be authenticated to add products",
+        severity: "warning",
+      });
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch products
         const response = await axios.get(
-          `http://localhost:8000/api/myproducts/${sellerId}`, { withCredentials: true },
+          `http://localhost:8000/api/myproducts/${sellerId}`,
+          { withCredentials: true }
         );
         const availableProducts = response.data.filter(
           (product) => !product.status
         );
-
         setProducts(availableProducts);
+
+        const authResponse = await axios.get(
+          `http://localhost:8000/api/authenticate/${sellerId}`, 
+          { withCredentials: true }
+        );
+        setIsAuthenticated(authResponse.data);
+
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching products or checking authentication:", error);
         setLoading(false);
       }
     };
@@ -94,9 +111,7 @@ const ProductManagement = ({ sellerId }) => {
                     id={product._id}
                     name={product.name}
                     price={product.price}
-                    imageSrcs={
-                      product.pictures?.map((picture) => picture.image)
-                    }
+                    imageSrcs={product.pictures?.map((picture) => picture.image)}
                     description={product.description}
                     discount={product.discount}
                     setProducts={setProducts}
@@ -121,7 +136,11 @@ const ProductManagement = ({ sellerId }) => {
           cursor: "pointer",
         }}
       >
-        <Button variant="contained" color="primary" onClick={handleAddProduct}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddProduct}
+        >
           Add Product
         </Button>
       </Grid>

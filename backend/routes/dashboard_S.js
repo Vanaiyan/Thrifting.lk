@@ -5,8 +5,8 @@ const {isAuthenticatedUser, authorizeRoles} = require('../middlewares/authentica
 const Dashboard_S = require("../controllers/sellerDashboardController");
 
 router
-  .route("/seller/authenticate/:sellerId")
-  .patch(Dashboard_S.authenticateSeller);
+  .route("/authenticate/:sellerId")
+  .get(Dashboard_S.authenticateSeller);
 
 router
   .route("/myproducts/:sellerId")
