@@ -7,13 +7,17 @@ import {
   SearchContainer,
   SearchInput,
   ButtonContainer,
-  SignUpButton,
 } from "../../../Styles/NavBar/nav01";
 import { Link, NavLink } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import { Divider, Grid } from "@mui/material";
+import { Divider, Grid, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export const NavSellerDesktop = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.user);
+  const role = user ? user.role : 0;
+
   return (
     <Grid
       container
@@ -43,8 +47,9 @@ export const NavSellerDesktop = () => {
             <NavListItemText>Home</NavListItemText>
           </NavLink>
           <NavLink to="/seller" exact activeClassName="active">
-            <NavListItemText>SELL</NavListItemText>
+            <NavListItemText>Sell</NavListItemText>
           </NavLink>
+
           <NavLink to="/product" exact activeClassName="active">
             <NavListItemText>CATEGORIES</NavListItemText>
           </NavLink>
@@ -77,12 +82,54 @@ export const NavSellerDesktop = () => {
         }}
       >
         <ButtonContainer>
-          <NavLink to="/seller/login" exact activeClassName="active">
-            <NavListItemText>Log In</NavListItemText>
-          </NavLink>
-          <NavLink to="/signup" exact activeClassName="active">
-            <SignUpButton> SignUp</SignUpButton>
-          </NavLink>
+          {isAuthenticated && role === "Seller" ? (
+            <NavLink to="/seller/dashboard" exact activeClassName="active">
+              <Typography
+                sx={{
+                  textDecoration: "none",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "6px 20px",
+                  background: "#1B202D",
+                  borderRadius: "45px",
+                  border: "none",
+                  color: "#FFFF",
+                  maxHeight: "35px",
+                  minWidth: "60px",
+                }}
+              >
+                Seller Dashboard
+              </Typography>
+            </NavLink>
+          ) : (
+            <>
+              <NavLink to="/seller/login" exact activeClassName="active">
+                <NavListItemText>Log In</NavListItemText>
+              </NavLink>
+              <NavLink to="/seller/register" exact activeClassName="active">
+                <Typography
+                  sx={{
+                    textDecoration: "none",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "6px 20px",
+                    background: "#1B202D",
+                    borderRadius: "45px",
+                    border: "none",
+                    color: "#FFFF",
+                    maxHeight: "35px",
+                    minWidth: "60px",
+                    "&:hover": {
+                      color: "#FFF",
+                      borderRadius: "45px",
+                    },
+                  }}
+                >
+                  SignUp
+                </Typography>{" "}
+              </NavLink>
+            </>
+          )}
         </ButtonContainer>
       </Grid>
     </Grid>

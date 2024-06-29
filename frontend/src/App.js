@@ -32,6 +32,8 @@ import UserProfile from "./Pages/User/UserProfile";
 import { SellerProtectedRoute } from "./ProtectedRoutes";
 import { AdminProtectedRoute } from "./ProtectedRoutes";
 import { finishLoading } from "./Reducers/authSlice";
+import ForgotPassword from "./Pages/User/ForgotPassword";
+import PasswordReset from "./Pages/User/PasswordReset";
 function App() {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
@@ -73,6 +75,8 @@ function App() {
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
           <Route path="/user/profile" Component={UserProfile} />
+          <Route path="/forgot-password" Component={ForgotPassword} />
+          <Route path="/password/reset/:token" Component={PasswordReset} />
 
           {/* Protected Routes for Sellers */}
           <Route path="/seller">
