@@ -37,6 +37,24 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "User",
   },
+  // New fields
+  address: {
+    type: String,
+    default: "",
+  },
+  dateOfBirth: {
+    type: Date,
+    default: null,
+  },
+  profilePicture: {
+    type: String,
+    default: "path/to/default/profile/picture.jpg", // Change this to your default profile picture path
+  },
+  gender: {
+    type: String,
+    enum: ["male", "female", "other"],
+    default: "other",
+  },
   // Products user interacted with, limited to 10
   interactedProducts: {
     type: [

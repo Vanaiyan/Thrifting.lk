@@ -28,6 +28,7 @@ import EditProfile from "./Components/SellerDashboard/Profile/EditProfile";
 import { getUserAction } from "./Actions/userAction";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
+import UserProfile from "./Pages/User/UserProfile";
 import { SellerProtectedRoute } from "./ProtectedRoutes";
 import {AdminProtectedRoute} from "./ProtectedRoutes";
 import { finishLoading } from "./Reducers/authSlice";
@@ -69,6 +70,7 @@ function App() {
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
+          <Route path="/user/profile" Component={UserProfile} />
 
           {/* Protected Routes for Sellers */}
           <Route path="/seller">

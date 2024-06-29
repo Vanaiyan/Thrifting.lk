@@ -126,22 +126,22 @@ exports.changePassword = catchAsyncError(async (req, res, next) => {
   });
 });
 
-exports.updateProfile = catchAsyncError(async (req, res, next) => {
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-  };
+// exports.updateProfile = catchAsyncError(async (req, res, next) => {
+//   const newUserData = {
+//     name: req.body.name,
+//     email: req.body.email,
+//   };
 
-  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
-    new: true,
-    runValidators: true,
-  });
+//   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+//     new: true,
+//     runValidators: true,
+//   });
 
-  res.status(200).json({
-    success: true,
-    user,
-  });
-});
+//   res.status(200).json({
+//     success: true,
+//     user,
+//   });
+// });
 
 exports.getUserInfo = (req, res) => {
   try {
@@ -152,3 +152,73 @@ exports.getUserInfo = (req, res) => {
     res.status(500).json({ error: "Failed to retrieve user information." });
   }
 };
+
+exports.updateUserInfo = catchAsyncError(async (req, res, next) => {
+  try {
+    const { firstName, lastName, email, address, gender, dateOfBirth, currentPassword, newPassword } = req.body;
+    
+    const user = await User.findById(req.user.id).select("+password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Check if the email is being updated
+    if (user.email !== email) {
+      const emailExists = await User.findOne({ email });
+
+      if (emailExists) {
+        return res.status(400).json({ success: false, message: "The email address is already in use" });
+      }
+    }
+
+    // Update user profile information
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.email = email || user.email;
+    user.address = address || user.address;
+    user.gender = gender || user.gender;
+    user.dateOfBirth = dateOfBirth || user.dateOfBirth;
+
+    if (currentPassword && newPassword) {
+      if (!(await user.isValidPassword(currentPassword))) {
+        return res.status(400).json({ success: false, message: "Wrong current password" });
+      }
+      user.password = newPassword;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Server Error", 500));
+  }
+});
+
+
+exports.updateUserProfilePicture = catchAsyncError(async (req, res, next) => {
+  try {
+    const { profilePicture } = req.body;
+    
+    const user = await User.findById(req.user.id).select("+password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    user.profilePicture = profilePicture;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Server Error", 500));
+  }
+});
+
