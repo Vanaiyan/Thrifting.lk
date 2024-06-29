@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardActions, IconButton, Menu, MenuItem, Avatar } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { deleteSeller, warnSeller } from '../../Actions/adminActions';
+import { deleteSeller} from '../../Actions/adminActions';
 
 const SellerCard = ({ seller, onDelete }) => {
   const { _id, firstName, lastName, email, image } = seller;
@@ -20,20 +20,10 @@ const SellerCard = ({ seller, onDelete }) => {
       await deleteSeller(_id);
       onDelete(_id);
       window.location.reload(); // Reload the page immediately
+      alert('Seller deleted successfully.');
     } catch (error) {
       console.error('Error deleting seller:', error);
-    } finally {
-      handleClose();
-    }
-  };
-
-  const handleWarning = async () => {
-    try {
-      await warnSeller(_id);
-      console.log("Warning email sent successfully");
-      window.location.reload(); // Reload the page immediately
-    } catch (error) {
-      console.error('Error sending warning email:', error);
+      alert('Failed to delete seller.');
     } finally {
       handleClose();
     }
@@ -75,7 +65,6 @@ const SellerCard = ({ seller, onDelete }) => {
           onClose={handleClose}
         >
           <MenuItem onClick={handleDelete} sx={{ color: '#ff5003' }}>Delete</MenuItem>
-          <MenuItem onClick={handleWarning} sx={{ color: '#ff5003' }}>Warning</MenuItem>
         </Menu>
       </CardActions>
     </Card>

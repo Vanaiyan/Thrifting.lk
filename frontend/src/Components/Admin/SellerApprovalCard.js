@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Box,
 } from "@mui/material";
 import { approveSeller, rejectSeller } from "../../Actions/adminActions"; // Adjust the path as needed
 
@@ -139,17 +138,10 @@ const SellerApprovalCard = ({ seller }) => {
               <Typography variant="body1">
                 <strong>NIC Front Image:</strong>
               </Typography>
-              <Box
-                component="img"
+              <img
                 src={frontImage}
                 alt="NIC Front"
-                sx={{
-                  width: "100%",
-                  maxWidth: "200px",
-                  height: "auto",
-                  display: "block",
-                  margin: "10px auto",
-                }}
+                style={{ width: "100%", maxHeight: "200px", marginTop: "10px" }}
               />
             </div>
           )}
@@ -158,17 +150,10 @@ const SellerApprovalCard = ({ seller }) => {
               <Typography variant="body1">
                 <strong>NIC Back Image:</strong>
               </Typography>
-              <Box
-                component="img"
+              <img
                 src={backImage}
                 alt="NIC Back"
-                sx={{
-                  width: "100%",
-                  maxWidth: "200px",
-                  height: "auto",
-                  display: "block",
-                  margin: "10px auto",
-                }}
+                style={{ width: "100%", maxHeight: "200px", marginTop: "10px" }}
               />
             </div>
           )}

@@ -9,19 +9,22 @@ import {
   Alert,
   Paper,
   Divider,
+  Link,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import theme from "../../Styles/Theme";
 import NavLogin from "../../Components/Navigation bar/nav-login";
-import { loginAdmin } from "../../Actions/adminActions";
 import { useSnackbar } from "../../Actions/snackbar";
-import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { registerAdmin } from "../../Actions/adminActions";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
-const AdminLoginPage = () => {
+const AdminRegister = () => {
   const { snackbarOpen, successMessage, handleSnackbarClose, showSnackbar } =
     useSnackbar();
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -29,22 +32,29 @@ const AdminLoginPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const adminData = {
+      firstName,
+      lastName,
+      email,
+      password,
+    };
+
     try {
-      const response = await dispatch(loginAdmin(email, password));
+      const response = await dispatch(registerAdmin(adminData));
 
       if (response.data.success) {
-        console.log("Success:", response.data);
-        showSnackbar("Login successful!");
-
-        setTimeout(() => {
-          navigate("/admin/dashboard");
-        }, 1000);
+        console.log("Registration Success:", response.data);
+        showSnackbar("Registration successful!");
+        navigate("/admin/dashboard");
       } else {
         showSnackbar(response.data.message);
       }
     } catch (error) {
-      console.error(error);
-      showSnackbar("An error occurred. Please try again.");
+      console.error("Registration Error:", error);
+      showSnackbar(
+        "An error occurred during registration. Please try again."
+      );
     }
   };
 
@@ -85,11 +95,36 @@ const AdminLoginPage = () => {
                     textAlign: "center",
                   }}
                 >
-                  Login as Admin
+                  Register as Admin
                 </Typography>
                 <Divider />
 
                 <form onSubmit={handleSubmit}>
+                  <TextField
+                    label="First Name"
+                    fullWidth
+                    margin="normal"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                    sx={{
+                      fontSize: "14px",
+                      marginBottom: "10px",
+                      marginTop: "30px",
+                    }}
+                  />
+                  <TextField
+                    label="Last Name"
+                    fullWidth
+                    margin="normal"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                    sx={{
+                      fontSize: "14px",
+                      marginBottom: "10px",
+                    }}
+                  />
                   <TextField
                     label="Email"
                     fullWidth
@@ -100,7 +135,6 @@ const AdminLoginPage = () => {
                     sx={{
                       fontSize: "14px",
                       marginBottom: "10px",
-                      marginTop: "30px",
                     }}
                   />
                   <TextField
@@ -120,34 +154,33 @@ const AdminLoginPage = () => {
                     color="primary"
                     sx={{
                       fontSize: "14px",
-                      marginBottom: "10px",
+                      marginBottom: "5%",
                       borderRadius: "8px",
                       padding: "10px 20px",
                     }}
                   >
-                    Sign In
+                    Register
                   </Button>
-
-                  <Grid container justifyContent="flex-end">
-                    <Grid item>
-                      <Typography variant="body2">
-                        Don't have an account?{" "}
-                        <NavLink
-                          to="/admin/register"
-                          style={{ textDecoration: "none", color: "#3f51b5" }}
-                        >
-                          Register
-                        </NavLink>
-                      </Typography>
-                    </Grid>
-                  </Grid>
                 </form>
+
+                <Typography
+                  variant="body2"
+                  sx={{
+                    textAlign: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  Already have an account?{" "}
+                  <Link component={RouterLink} to="/admin/login">
+                    Sign In
+                  </Link>
+                </Typography>
 
                 <Snackbar
                   open={snackbarOpen}
-                  autoHideDuration={6000}
+                  autoHideDuration={6000} // Adjust the duration as needed
                   onClose={handleSnackbarClose}
-                  anchorOrigin={{ vertical: "center", horizontal: "left" }}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 >
                   <Alert onClose={handleSnackbarClose} severity="success">
                     {successMessage}
@@ -162,4 +195,6 @@ const AdminLoginPage = () => {
   );
 };
 
-export default AdminLoginPage;
+
+
+export default AdminRegister;

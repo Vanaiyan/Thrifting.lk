@@ -155,7 +155,10 @@ export const NavDesktopAuthorized = () => {
             horizontal: "right",
           }}
         >
-          <MenuItem sx={{ paddingY: 0, paddingX: 5 }} onClick={handleLogout}>
+          <MenuItem sx={{ paddingY: 0, paddingX: 5 }} onClick={() => {
+            handleNavigate("user/profile");
+            handleMenuClose();
+          }}>
             My Profile
           </MenuItem>
           <Divider />
