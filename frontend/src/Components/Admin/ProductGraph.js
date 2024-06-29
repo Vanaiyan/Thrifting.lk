@@ -41,15 +41,16 @@ const ProductGraph = () => {
         backgroundColor: '#FFF0F5',
       }}
     >
-      <Typography variant="h6" gutterBottom>Total Products Sold Graph</Typography>
+      <Typography variant="h5" gutterBottom>Total Products Sold Graph</Typography>
+      <Typography variant="h6" gutterBottom>Monthly Data</Typography>
       
-      <Button
+      {/* <Button
         onClick={handleMonthlyClick}
         variant="contained"
         sx={{ marginBottom: '1rem',backgroundColor: '#C71585' }} 
       >
         Show Monthly Data
-      </Button>
+      </Button> */}
 
       <ResponsiveContainer width="100%" height={410}>
         <BarChart data={data}>

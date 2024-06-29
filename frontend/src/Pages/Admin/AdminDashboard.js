@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, GlobalStyles } from '@mui/material';
 import DashboardCard from '../../Components/Admin/DashboardCard';
 import BestSellers from '../../Components/Admin/BestSeller';
 import DrawerAdmin from '../../Components/Admin/DrawerAdmin';
@@ -41,6 +41,16 @@ const AdminDashboard = () => {
   };
 
   return (
+    <>
+      <GlobalStyles styles={{
+        'html, body': {
+          backgroundColor: '#EFEFEF',
+          margin: 0,
+          padding: 0,
+          height: '100%',
+        }
+      }} />
+
     <Box sx={{ display: "flex", backgroundColor: "#EFEFEF", minHeight: "100vh" }}> {/* Set background color and minimum height */}
       <DrawerAdmin />
       <Box sx={{ flexGrow: 1 }}>
@@ -109,6 +119,7 @@ const AdminDashboard = () => {
         </Box>
       </Box>
     </Box>
+    </>
   );
 };
 
