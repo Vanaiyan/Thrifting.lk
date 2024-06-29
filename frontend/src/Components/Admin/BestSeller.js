@@ -33,7 +33,8 @@ const BestSellers = () => {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        height: 600, // Fixed height
+        height: 500, // Fixed height
+        // backgroundColor: '#DEE0EC', // Set background color 
       }}
     >
       <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>Best Sellers</Typography>
@@ -56,13 +57,11 @@ const BestSellers = () => {
               <Typography variant="body1">{`${seller.firstName} ${seller.lastName}`}</Typography>
               <Typography variant="body2" color="textSecondary">{seller.email}</Typography>
             </Box>
-            <Typography variant="body1" sx={{ marginLeft: 'auto', marginRight: 10 }}>Rating: {seller.rating.toFixed(1)}</Typography>
+            <Typography variant="body1" sx={{ marginLeft: 'auto', marginRight: 6 }}>Rating: {seller.rating.toFixed(1)}</Typography>
           </Box>
         ))}
       </Box>
-      {/* Scroll button */}
-      {/* sx={{ marginTop: 2, alignSelf: 'flex-end' }} */}
-      <Button variant="contained" color="primary" >
+      <Button variant="contained" color="primary" > {/* Dark blue color */}
         <StarPurple500Icon />
         <StarPurple500Icon />
         <StarPurple500Icon />

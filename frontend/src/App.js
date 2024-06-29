@@ -1,11 +1,11 @@
-import "./app.css";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
+import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import theme from "./Styles/Theme";
 import SignUp from "./Pages/User/SignUpMain";
 import Login from "./Pages/User/LoginMain";
 import { HomePage } from "./Pages/User/HomePage";
-import { Route, Routes } from "react-router-dom";
 import { Demo } from "./Components/demo";
 import Register_S from "./Pages/Seller/Register_S";
 import ChatPage from "./Pages/User/ChatPage";
@@ -25,27 +25,21 @@ import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import FeedbackReport from "./Pages/Admin/ReportFeedback";
 import SellerLoginPage from "./Pages/Seller/loginSellerPage";
 import EditProfile from "./Components/SellerDashboard/Profile/EditProfile";
-import { getUserAction } from "./Actions/userAction"; // Ensure this is correctly imported
-import { useDispatch } from "react-redux";
+import { getUserAction } from "./Actions/userAction";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
-import { getCartProducts } from "./Actions/cartActions";
-import { getAllProducts } from "./Actions/adminActions";
-import ContactUs from "./Components/Footer/ContactUs";
-import Terms from "./Components/Footer/Terms";
+import SellerProtectedRoute from "./Pages/Seller/SellerProtectedRoute";
+import AdminProtectedRoute from "./Pages/Admin/AdminProtectedRoute";
+
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Dispatch action with user data
         dispatch(getUserAction());
-        dispatch(getCartProducts());
-        dispatch(getAllProducts());
       } catch (error) {
-        // console.error("Error fetching user data:", error);
-        // Handle error (e.g., dispatch failure action)
+        // Handle error
       }
     };
 
@@ -61,30 +55,73 @@ function App() {
           <Route path="/signup" Component={SignUp} />
           <Route path="/demo" Component={Demo} />
           <Route path="/chat/:chatId" Component={ChatPage} />
-          <Route path="/seller" Component={SellerPage} />
-          <Route path="/seller/register" Component={Register_S} />
-          <Route
-            path="/productDetail/:productId"
-            Component={ProductDetailPage}
-          />
+          <Route path="/productDetail/:productId" Component={ProductDetailPage} />
           <Route path="/product" Component={ProductMain} />
-          <Route path="/seller/dashboard" Component={Dashboard_S} />
-          <Route path="/seller/dashboard/addProduct" Component={AddProduct} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
-          <Route path="/admin/AllProducts" Component={AllProductsPage} />
-          <Route path="/admin/Sellers" Component={AllSellersPage} />
-          <Route path="/admin/Buyers" Component={AllUsersPage} />
-          <Route path="/admin/OrderList" Component={OrderList} />
-          <Route path="admin/SellerApproval" Component={SellerApproval} />
-          <Route path="/admin/Dashboard" Component={AdminDashboard} />
-          <Route path="/admin/ReportFeedback" Component={FeedbackReport} />
-          <Route path="admin/login" Component={AdminLoginPage} />
-          <Route path="/seller/login" Component={SellerLoginPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
-          <Route path="/contactUs" Component={ContactUs} />
-          <Route path="/terms" Component={Terms} />
 
+          {/* Protected Routes for Sellers */}
+          <Route path="/seller">
+            <Route index Component={SellerPage} />
+            <Route path="register" Component={Register_S} />
+            <Route path="dashboard" Component={() => (
+              <SellerProtectedRoute>
+                <Dashboard_S />
+              </SellerProtectedRoute>
+            )} />
+            <Route path="dashboard/addProduct" Component={() => (
+              <SellerProtectedRoute>
+                <AddProduct />
+              </SellerProtectedRoute>
+            )} />
+            <Route path="profile/edit/:sellerId" Component={() => (
+              <SellerProtectedRoute>
+                <EditProfile />
+              </SellerProtectedRoute>
+            )} />
+            <Route path="login" Component={SellerLoginPage} />
+          </Route>
+
+          {/* Protected Routes for Admin */}
+          <Route path="/admin">
+            <Route path="AllProducts" Component={() => (
+              <AdminProtectedRoute>
+                <AllProductsPage />
+              </AdminProtectedRoute>
+            )} />
+            <Route path="Sellers" Component={() => (
+              <AdminProtectedRoute>
+                <AllSellersPage />
+              </AdminProtectedRoute>
+            )} />
+            <Route path="Buyers" Component={() => (
+              <AdminProtectedRoute>
+                <AllUsersPage />
+              </AdminProtectedRoute>
+            )} />
+            <Route path="OrderList" Component={() => (
+              <AdminProtectedRoute>
+                <OrderList />
+              </AdminProtectedRoute>
+            )} />
+            <Route path="SellerApproval" Component={() => (
+              <AdminProtectedRoute>
+                <SellerApproval />
+              </AdminProtectedRoute>
+            )} />
+            <Route path="Dashboard" Component={() => (
+              <AdminProtectedRoute>
+                <AdminDashboard />
+              </AdminProtectedRoute>
+            )} />
+            <Route path="ReportFeedback" Component={() => (
+              <AdminProtectedRoute>
+                <FeedbackReport />
+              </AdminProtectedRoute>
+            )} />
+            <Route path="login" Component={AdminLoginPage} />
+          </Route>
         </Routes>
       </div>
     </ThemeProvider>
