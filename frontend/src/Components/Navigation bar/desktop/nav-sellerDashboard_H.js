@@ -24,7 +24,8 @@ const NavSellerDashboard_H = ({ sellerId }) => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/profile/${sellerId}`
+          `http://localhost:8000/api/profile/${sellerId}`,
+          { withCredentials: true },
         );
 
         setSeller(response.data);

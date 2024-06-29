@@ -17,7 +17,8 @@ const OrderManagement = ({sellerId}) => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/myproducts/${sellerId}`
+          `http://localhost:8000/api/myproducts/${sellerId}`,
+          { withCredentials: true },
         );
         setProducts(response.data);
       } catch (error) {
@@ -30,7 +31,7 @@ const OrderManagement = ({sellerId}) => {
 
   const handleProductStatus = async (productId) => {
     try {
-      await axios.put(`http://localhost:8000/api/myproducts/${productId}`);
+      await axios.put(`http://localhost:8000/api/myproducts/${productId}`, { withCredentials: true },);
       setProducts(
         products.map((product) =>
           product._id === productId

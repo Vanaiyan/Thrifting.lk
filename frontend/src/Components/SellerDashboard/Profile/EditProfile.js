@@ -50,7 +50,7 @@ const EditProfile = ({ seller }) => {
     try {
       const response = await axios.put(
         `http://localhost:8000/api/profile/${editableSeller._id}`,
-        editableSeller
+        editableSeller, { withCredentials: true },
       );
       console.log("Seller details updated successfully:", response.data);
       setEditMode(false);

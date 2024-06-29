@@ -66,7 +66,7 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
       };
   
       // Send the updated product details in the request body
-      const response = await axios.put(`http://localhost:8000/api/products/${id}`, updatedProduct);
+      const response = await axios.put(`http://localhost:8000/api/products/${id}`, updatedProduct, { withCredentials: true });
   
       // Update products state
       setProducts(prevProducts =>
@@ -108,7 +108,7 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
   const handleDeleteConfirm = async() => {
     setDeleteDialogOpen(false);
     try {
-      await axios.delete(`http://localhost:8000/api/products/${id}`);
+      await axios.delete(`http://localhost:8000/api/products/${id}`, { withCredentials: true },);
       setProducts(prevProducts => prevProducts.filter(product => product._id !== id));
       setSnackbar({
         open: true,

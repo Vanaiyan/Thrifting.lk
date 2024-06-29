@@ -85,6 +85,7 @@ const AddProduct = () => {
 
         `http://localhost:8000/api/products/${user._id}`,
         productData,
+        { withCredentials: true },
         {
           headers: {
             "Content-Type": "application/json",
