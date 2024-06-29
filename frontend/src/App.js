@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import theme from "./Styles/Theme";
 import SignUp from "./Pages/User/SignUpMain";
 import Login from "./Pages/User/LoginMain";
@@ -28,23 +28,32 @@ import EditProfile from "./Components/SellerDashboard/Profile/EditProfile";
 import { getUserAction } from "./Actions/userAction";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
-import SellerProtectedRoute from "./Pages/Seller/SellerProtectedRoute";
-import AdminProtectedRoute from "./Pages/Admin/AdminProtectedRoute";
+import { SellerProtectedRoute } from "./ProtectedRoutes";
+import {AdminProtectedRoute} from "./ProtectedRoutes";
+import { finishLoading } from "./Reducers/authSlice";
 
 function App() {
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
+  const user  = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        dispatch(getUserAction());
+        await dispatch(getUserAction());
       } catch (error) {
         // Handle error
+      } finally {
+        dispatch(finishLoading());
       }
     };
 
     fetchData();
   }, [dispatch]);
+
+  if (loading) {
+    return <div>Loading...</div>; // or any loading spinner
+  }
 
   return (
     <ThemeProvider theme={theme}>
