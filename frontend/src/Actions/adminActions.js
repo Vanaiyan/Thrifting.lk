@@ -27,7 +27,7 @@ export const getBestSeller = async () => {
   }
 };
 
-// All Product
+
 
 export const loginAdmin = (email, password) => {
   return async (dispatch) => {
@@ -71,6 +71,48 @@ export const loginAdmin = (email, password) => {
 };
 
 
+
+export const registerAdmin = async ({ firstName, lastName, email, password }) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8000/api/admin/register",
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data; // Return response data if needed
+  } catch (error) {
+    console.error("Registration Error:", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+
+// All Product
+
+export const getAllProducts = async (page = 1, limit = 5) => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/admin/products', {
+      params: { page, limit },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return { products: [], totalCount: 0, totalPages: 0, currentPage: 1 };
+  }
+};
+
+
 export const deleteProduct = async (productId) => {
     try {
       await axios.delete(`http://localhost:8000/api/admin/product/${productId}`, {
@@ -84,69 +126,37 @@ export const deleteProduct = async (productId) => {
     }
   };
 
-  export const searchProducts = async (query) => {
+  export const searchProducts = async (query, page = 1, limit = 30) => {
     try {
       const response = await axios.get('http://localhost:8000/api/admin/product/search', {
-        params: { query }
-      });
-      return response.data.products;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-
-  export const getApprovedSellers = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/admin/sellers');
-      console.log("Sellerss from Actions",response.data)
-      return response.data.sellers;
-    } catch (error) {
-      // Handle error
-      console.error('Error fetching sellers:', error);
-      return [];
-    }
-  };
-
-  export const getAllProducts = async () => {
-  try {
-    const response = await axios.get(
-      "http://localhost:8000/api/admin/products",
-      {
+        params: { query, page, limit },
         withCredentials: true,
-      }
-    );
-    console.log("Products from Actions", response.data);
-    return response.data.products;
-  } catch (error) {
-    // Handle error
-    console.error("Error fetching products:", error);
-    return [];
-  }
-};
-
-export const getAllSellers = async () => {
-  try {
-    const response = await axios.get("http://localhost:8000/api/admin/sellers");
-    console.log("Sellerss from Actions", response.data);
-    return response.data.sellers;
-  } catch (error) {
-    // Handle error
-    console.error("Error fetching sellers:", error);
-    return [];
-  }
-};
-
-
-  export const warnSeller = async (sellerId) => {
-    try {
-      const response = await axios.post(`http://localhost:8000/api/admin/warnseller/${sellerId}`);
+      });
       return response.data;
     } catch (error) {
-      console.error('Error sending warning email:', error);
       throw error;
     }
   };
+
+
+
+// Seller
+
+export const getApprovedSellers = async (page = 1, limit = 30) => {
+  try {
+    const response = await axios.get(`http://localhost:8000/api/admin/sellers`, {
+      params: {
+        page,
+        limit,
+      },
+    });
+    console.log("Sellers from Actions", response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching sellers:', error);
+    throw error;
+  }
+};
 
 
  export const deleteSeller = async (sellerId) => {
@@ -162,60 +172,82 @@ export const getAllSellers = async () => {
   }
 };
 
-export const searchSellers = async ({ query, sellerId }) => {
+
+export const searchSellers = async (searchQuery, page = 1, limit = 30) => {
   try {
-    const response = await axios.get('http://localhost:8000/api/admin/seller/search', {
-      params: { query, sellerId }
+    const response = await axios.get(`http://localhost:8000/api/admin/seller/search`, {
+      params: {
+        query: searchQuery,
+        page,
+        limit,
+      },
     });
-    return response.data.sellers;
+    return response.data;
   } catch (error) {
     throw error;
   }
 };
 
+
+
+
+
 // Users
 
-export const getUsers = async () => {
+export const getUsers = async (page = 1, limit = 30) => {
   try {
-    const response = await axios.get('http://localhost:8000/api/admin/users');
+    const response = await axios.get('http://localhost:8000/api/admin/users',{
+      params: {
+        page,
+        limit,
+      },
+    });
     console.log("Users from Actions",response.data)
-    console.log(response)
-    return response.data.users;
+
+    return response.data;
   } catch (error) {
     // Handle error
     console.error('Error fetching users:', error);
-    return [];
+    throw error;
   }
 };
 
+
+
+
 // Order List
 
-export const getOrderList = async () => {
+export const getOrderList = async (page, limit) => {
   try {
-      const response = await axios.get('http://localhost:8000/api/admin/orders');
-      console.log("Orders from Actions",response.data)
-      return response.data.orders;
+    const response = await axios.get('http://localhost:8000/api/admin/orders', {
+      params: { page, limit }
+    });
+    return response.data;
   } catch (error) {
-      // Handle error
-      console.error('Error fetching orders:', error);
-      return [];
+    console.error('Error fetching orders:', error);
+    return { orders: [], totalCount: 0 };
   }
-  };
+};
+
 
 
   
 
   //Seller Approval
-
-  export const getSellers = async () => {
+  export const getSellers = async (page = 1, limit = 40) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/admin/sellerstoapproval');
-      console.log("Sellerss from Actions",response.data)
-      return response.data.sellers;
+      const response = await axios.get('http://localhost:8000/api/admin/sellerstoapproval', {
+        params: {
+          page,
+          limit,
+        },
+      });
+  
+      console.log("Sellers from Actions", response.data);
+      return response.data;
     } catch (error) {
-      // Handle error
       console.error('Error fetching sellers:', error);
-      return [];
+      return { success: false, message: 'Error fetching sellers' };
     }
   };
 
@@ -244,13 +276,52 @@ export const rejectSeller = async (sellerId) => {
 
 //Report Feedback
 
-export const issueSelller = async() => {
-  try{
-    const response = await axios.get('http://localhost:8000/api/admin/issueseller');
+export const toDeleteSeller = async (page, limit) => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/admin/todeleteseller', {
+      params: { page, limit }
+    });
     return response.data;
-  }catch(error) {
-    console.log ("Error fetching issue sellers:", error)
-    return [];
+  } catch (error) {
+    console.log("Error fetching issue sellers:", error);
+    return { results: [], totalCount: 0 };
   }
-}
+};
 
+
+
+export const toWarnSeller = async (page, limit) => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/admin/towarnseller', {
+      params: { page, limit }
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching issue sellers:", error);
+    return { results: [], totalCount: 0 };
+  }
+};
+
+
+
+export const warnSeller = async (sellerId) => {
+  try {
+    const response = await axios.post(`http://localhost:8000/api/admin/warnseller`);
+    return response.data;
+  } catch (error) {
+    console.error('Error sending warning email:', error);
+    throw error;
+  }
+};
+
+
+
+export const getMonthlyOrderSummary = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/order-count-last-six-months');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching monthly order summary:', error);
+    throw error;
+  }
+};

@@ -167,7 +167,7 @@ exports.getRecommendations = async (req, res) => {
     }
 
     // 2. Handle empty interactedProducts and unauthenticated users
-    if (!interactedProducts || !userId) {
+    if (!interactedProducts || !userId || !interactedProducts.length > 0) {
       const randomProducts = await Product.aggregate([
         { $sample: { size: 50 } },
       ]);

@@ -3,7 +3,7 @@ import { Card, CardHeader, Avatar, Typography, Dialog, DialogTitle, DialogConten
 import { approveSeller, rejectSeller } from '../../Actions/adminActions'; // Adjust the path as needed
 
 const SellerApprovalCard = ({ seller }) => {
-  const { _id, firstName, lastName, avatar, email, nicNumber, phoneNumber, addressField } = seller;
+  const { _id, firstName, lastName, avatar, email, nicNumber, phoneNumber, addressField,frontImage,backImage } = seller;
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -83,6 +83,7 @@ const SellerApprovalCard = ({ seller }) => {
           <Typography variant="body1"><strong>NIC Number:</strong> {nicNumber}</Typography>
           <Typography variant="body1"><strong>Phone Number:</strong> {phoneNumber}</Typography>
           <Typography variant="body1"><strong>Address:</strong> {`${addressField.address}, ${addressField.city}, ${addressField.district}, ${addressField.postalCode}`}</Typography>
+          <Typography variant="body1"><strong>NIC Image:</strong> {`${frontImage}   ${backImage}`}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">Close</Button>

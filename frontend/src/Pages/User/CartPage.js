@@ -25,7 +25,6 @@ const CartPage = () => {
       <h5
         style={{
           padding: "10px 7vw 1px 7vw",
-          color: "red",
           fontWeight: "100",
         }}
       >
