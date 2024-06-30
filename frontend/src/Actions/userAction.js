@@ -123,3 +123,42 @@ export const registerUser = (
     }
   };
 };
+
+export const sendResetPasswordLink = async (email) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8000/api/password/forgot",
+      { email }
+    );
+    return { success: true, message: response.data.message };
+  } catch (err) {
+    console.error("Error:", err.response);
+
+    return {
+      success: false,
+      error:
+        err.response?.data?.message || "An error occurred. Please try again.",
+    };
+  }
+};
+
+// Function to reset password
+export const resetPassword = async (token, password) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:8000/api/password/reset/${token}`,
+      {
+        password,
+      }
+    );
+    return { success: true, message: response.data.message };
+  } catch (err) {
+    console.error("Error:", err);
+
+    return {
+      success: false,
+      error:
+        err.response?.data?.message || "An error occurred. Please try again.",
+    };
+  }
+};

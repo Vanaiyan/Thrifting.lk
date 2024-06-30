@@ -34,7 +34,6 @@ export const footerStyles = {
 
   footerContainer: {
     backgroundColor: "#242325",
-
     padding: " 20px 100px",
   },
 
@@ -50,7 +49,7 @@ export const footerStyles = {
       fontSize: "18px",
       fontWeight: "bold",
       marginBottom: "10px",
-      color:"#fff"
+      color: "#fff",
     },
     ul: {
       listStyleType: "none",
