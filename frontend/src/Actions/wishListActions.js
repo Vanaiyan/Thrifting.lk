@@ -45,6 +45,7 @@ export const getWishlistItems = () => async (dispatch) => {
     console.log("WishlistItems", response.data.wishlistItems);
     dispatch(getWishlistItemsSuccess(response.data.wishlistItems));
   } catch (error) {
+    console.error(error);
     dispatch(getWishlistItemsFailure(error.response.data.message));
   }
 };

@@ -94,6 +94,7 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
         isInterested: product.isInterested,
         soldConfirmedBuyer: product.soldConfirmedBuyer,
         interestedTimestamp: product.interestedTimestamp,
+        image: product.pictures[0].image,
       });
     });
 
@@ -101,7 +102,7 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
     for (const sellerId of Object.keys(productsBySeller)) {
       const seller = await Seller.findById(sellerId);
       const sellerName = seller
-        ? seller.firstName + seller.lastName
+        ? seller.firstName + " " + seller.lastName
         : "Unknown Seller"; // Assuming userName is the field for seller's name
       productsBySeller[sellerId].forEach((product) => {
         product.sellerName = sellerName;

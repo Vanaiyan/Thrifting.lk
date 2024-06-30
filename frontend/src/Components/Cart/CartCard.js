@@ -11,6 +11,7 @@ import ConfirmPurchaseButton from "./ConfirmPurchaseBtn";
 import DeleteDialog from "./DeleteDialog";
 import InterestedDialog from "./InterestedDeleteDialog";
 import RemainingTimeWarning from "./RemainingTimeWarning";
+import { grey } from "@mui/material/colors";
 
 // Utility function to truncate text
 const truncateText = (text, wordLimit) => {
@@ -30,6 +31,7 @@ const CartCard = ({
   interestedTimestamp,
   seller,
   isInterested,
+  image,
 }) => {
   const expirationHours = 24; // 24 hours in milliseconds
   const interestedExpirationHours = 48; // 48 hours in milliseconds
@@ -114,8 +116,23 @@ const CartCard = ({
             border: "1px solid",
             borderRadius: "6px",
             borderColor: Colors.Inborder,
+            overflow: "hidden", // Ensures the image does not overflow the box
+            display: "flex", // Centers the image inside the box
+            justifyContent: "center",
+            alignItems: "center",
           }}
-        ></Box>
+        >
+          <img
+            src={image}
+            alt="Product"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover", // Ensures the image covers the box while maintaining its aspect ratio
+            }}
+          />
+        </Box>
+
         <IconButton
           aria-label="delete"
           color="error"
@@ -147,16 +164,20 @@ const CartCard = ({
 
         <Stack spacing={1} height={"100%"} width={"100%"}>
           <Stack>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              {truncateText(productName, 8)}{" "}
-              {/* Truncate productName to 5 words */}
-            </Typography>
+            {productName && (
+              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {truncateText(productName, 8)}{" "}
+                {/* Truncate productName to 8 words */}
+              </Typography>
+            )}
           </Stack>
-          <Typography variant="body2">
-            {truncateText(description, 20)}{" "}
-            {/* Truncate description to 10 words */}
-          </Typography>
-          <Typography variant="subtitle2">{price}</Typography>
+          {description && (
+            <Typography variant="body2" color={grey[600]}>
+              {truncateText(description, 20)}{" "}
+              {/* Truncate description to 20 words */}
+            </Typography>
+          )}
+          <Typography variant="subtitle2">LKR {price}</Typography>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="subtitle2" sx={{ color: Colors.InPholder }}>
               Remaining Time: {remainingTime}

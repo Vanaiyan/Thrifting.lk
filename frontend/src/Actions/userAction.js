@@ -34,7 +34,7 @@ export const loginUser = (email, password) => {
 
       return data; // Return the entire response if needed
     } catch (error) {
-      console.error("Login Error:", error);
+      // console.error("Login Error:", error);
       dispatch(authFailure(error.message)); // Dispatch failure action if login fails
       throw error; // Rethrow the error to handle it in the component
     }

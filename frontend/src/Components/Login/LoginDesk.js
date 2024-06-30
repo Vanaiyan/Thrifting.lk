@@ -49,8 +49,8 @@ const LoginDesk = () => {
         showSnackbar(response.data.message);
       }
     } catch (error) {
-      console.error(error);
-      showSnackbar("An error occurred. Please try again.");
+      // console.error(error);
+      showSnackbar(error.response.data.message);
     }
   };
 
