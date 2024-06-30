@@ -87,7 +87,7 @@ const productSchema = new mongoose.Schema({
   },
   status: {
     type: Boolean,
-    default: false,
+    default: false, // sold status true
   },
 });
 

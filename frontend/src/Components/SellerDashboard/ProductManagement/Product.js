@@ -75,7 +75,6 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
         )
       );
 
-      // Log success message and response
       console.log("Product updated successfully");
       console.log(response.data.product);
       setSnackbar({

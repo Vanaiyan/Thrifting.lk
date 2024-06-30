@@ -13,8 +13,12 @@ router
   .get(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.getProductsBySellerId);
 
 router
-  .route("/myproducts/changeStatus/:productId")
-  .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.changeProductStatus);
+  .route("/myproducts/changeSoldStatus/:productId")
+  .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.changeSoldProductStatus);
+
+router
+  .route("/myproducts/changeNotSoldStatus/:productId")
+  .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.changeNotSoldProductStatus);
 
 router
   .route("/profile/:sellerId")
