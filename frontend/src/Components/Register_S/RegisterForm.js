@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import districts from "../Data/Districts";
 import axios from "axios";
+import { uploadNicImages } from "../../Actions/sellerAction";
 
 const RegisterForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -133,6 +134,9 @@ const RegisterForm = () => {
     if (validateForm()) {
       setSubmitting(true);
       try {
+        const frontImageUrl = await uploadNicImages(frontImage);
+        const backImageUrl = await uploadNicImages(backImage);
+
         const response = await axios.post(
           "http://localhost:8000/seller",
           {
@@ -149,15 +153,8 @@ const RegisterForm = () => {
             },
             nicName,
             nicNumber,
-            frontImage: {
-              name: frontImage.name,
-              type: frontImage.type,
-            },
-
-            backImage: {
-              name: backImage.name,
-              type: backImage.type,
-            },
+            frontImage: frontImageUrl,
+            backImage: backImageUrl,
           },
           {
             headers: {
@@ -166,18 +163,16 @@ const RegisterForm = () => {
           }
         );
 
-        const dataStatus = response.status;
-        if (dataStatus === 200) {
+        if (response.status === 200) {
           setSuccessMessage("Form submitted successfully!");
           setTimeout(() => {
-            navigate("/seller/dashboard"); //            navigate("/seller/login");
+            navigate("/seller/dashboard");
           }, 3000);
         } else {
           console.log("Form validation failed. Please check the errors.");
         }
       } catch (error) {
         setBackErrors(error.response.data);
-        console.log(backErrors);
         console.error("Error:", error.response.data);
       } finally {
         setSubmitting(false);

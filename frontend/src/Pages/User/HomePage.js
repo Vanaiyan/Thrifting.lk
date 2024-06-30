@@ -27,6 +27,8 @@ export const HomePage = () => {
         sx={{
           width: "100vw",
           overflowX: "hidden",
+          marginBottom: "50px",
+          paddingBottom: "40px",
         }}
       >
         <NavBar />
@@ -63,7 +65,7 @@ export const HomePage = () => {
           Recommended items{" "}
         </Typography>
         <RecProducts />
-        <FloatingButton /> 
+        <FloatingButton />
       </Box>
       <Footer />
     </>
