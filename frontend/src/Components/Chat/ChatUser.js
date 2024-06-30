@@ -44,14 +44,9 @@ const ChatUser = ({ user, onClick, unreadCount }) => {
             {user.firstName}
           </Typography>
           <Typography fontSize={12} color={Colors.orgchatsub}>
-            Registered Seller
+            Registered {user.role}
           </Typography>
         </Box>
-        {unreadCount && (
-          <span style={{ marginLeft: "5px", fontWeight: 700 }}>
-            ({unreadCount})
-          </span>
-        )}
       </Box>
       <Divider
         sx={{

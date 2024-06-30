@@ -30,6 +30,13 @@ export const getMessagesForChat = async (
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
+      const chatData = docSnap.data();
+
+      // Check if loginUser is authorized
+      if (!chatData.AuthorizedId.includes(loginUser)) {
+        throw new Error("User not authorized to access this chat.");
+      }
+
       const messagesCollectionRef = collection(docRef, "messages");
       const messagesQuery = query(messagesCollectionRef, orderBy("timestamp"));
 

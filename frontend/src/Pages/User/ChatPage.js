@@ -8,7 +8,6 @@ import { getUsers } from "../../Actions/chatActions";
 import { getUserProfile } from "../../Actions/chatActions";
 import ChatSearch from "../../Components/Chat/ChatSearch";
 import MessageField from "../../Components/Chat/MessageField";
-import ChLoginUser from "../../Components/Chat/ChLoginUser";
 import { setCurrentUser, setLoginUser } from "../../Reducers/userSlice";
 import { getSortedUsers } from "../../Actions/chatFirebase";
 import { Colors } from "../../Styles/Theme";
@@ -102,7 +101,8 @@ const ChatPage = () => {
         container
         width={"100%"}
         sx={{
-          padding: "0px 20px 0 0",
+          padding: "10px",
+          gap: "10px",
           backgroundColor: "aliceblue",
         }}
       >
@@ -113,8 +113,8 @@ const ChatPage = () => {
           sm={5}
           xs={12}
           sx={{
+            // margin: "10px",
             borderRadius: "20px ",
-            margin: "10px",
             backgroundColor: Colors.chatdark,
           }}
         >
