@@ -60,17 +60,16 @@ exports.addToCart = catchAsyncError(async (req, res, next) => {
     .json({ success: true, message: "Product added to cart successfully" });
 });
 
-// Function for get products of a user
+// Function to get products of a user
 exports.getCartProduct = catchAsyncError(async (req, res, next) => {
   try {
     const userId = req.user._id;
-    // Find the user
+
+    // Find the user and populate cart items with product details
     const user = await User.findById(userId).populate("cartItems.productId");
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     // Create an object to store products grouped by seller ID
@@ -79,31 +78,36 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
     // Combine product details with cart items and group by seller ID
     user.cartItems.forEach((cartItem) => {
       const product = cartItem.productId;
-      //console.log("product Seller : ", product.seller);
-      if (!productsBySeller[product.seller]) {
-        productsBySeller[product.seller] = [];
+      // console.log("CartItem")
+      // console.log("CartItem product",product)
+      if (product) {
+        if (!productsBySeller[product.seller]) {
+          productsBySeller[product.seller] = [];
+        }
+
+        productsBySeller[product.seller].push({
+          productId: product._id,
+          name: product.name,
+          price: product.price,
+          discount: product.discount,
+          description: product.description,
+          seller: product.seller,
+          cartTimestamp: cartItem.createdAt, // assuming there's a timestamp on the cartItem
+          isInterested: product.isInterested,
+          soldConfirmedBuyer: product.soldConfirmedBuyer,
+          interestedTimestamp: product.interestedTimestamp,
+          image: product.pictures[0].image,
+        });
+      } else {
+        console.error("Product not found for cartItem:", cartItem._id);
       }
-      productsBySeller[product.seller].push({
-        productId: product._id,
-        name: product.name,
-        price: product.price,
-        discount: product.discount,
-        description: product.description,
-        seller: product.seller,
-        cartTimestamp: product.cartTimestamp,
-        isInterested: product.isInterested,
-        soldConfirmedBuyer: product.soldConfirmedBuyer,
-        interestedTimestamp: product.interestedTimestamp,
-        image: product.pictures[0].image,
-      });
     });
 
     // Fetch the name of the seller for each seller ID
     for (const sellerId of Object.keys(productsBySeller)) {
       const seller = await Seller.findById(sellerId);
-      const sellerName = seller
-        ? seller.firstName + " " + seller.lastName
-        : "Unknown Seller"; // Assuming userName is the field for seller's name
+      const sellerName = seller ? `${seller.firstName} ${seller.lastName}` : "Unknown Seller";
+      
       productsBySeller[sellerId].forEach((product) => {
         product.sellerName = sellerName;
       });
