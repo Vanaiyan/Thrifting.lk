@@ -79,7 +79,7 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
     // Combine product details with cart items and group by seller ID
     user.cartItems.forEach((cartItem) => {
       const product = cartItem.productId;
-      //console.log("product Seller : ", product.seller);
+      // console.log("product Seller : ", product);
       if (!productsBySeller[product.seller]) {
         productsBySeller[product.seller] = [];
       }

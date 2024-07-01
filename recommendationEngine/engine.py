@@ -11,8 +11,9 @@ app = Flask(__name__)
 CORS(app)
 
 # Connect to MongoDB
-client = MongoClient('mongodb://localhost:27017/')
-db = client['mydatabase']  # Replace with your database name
+client = MongoClient(
+    'mongodb+srv://kvanaiyan2000:TheHexClan@cluster0.dtlyu7o.mongodb.net/Thrifting?retryWrites=true&w=majority&appName=Cluster0')
+db = client['Thrifting']  # Replace with your database name
 collection = db['products']  # Replace with your collection name
 
 # Fetch products data from MongoDB

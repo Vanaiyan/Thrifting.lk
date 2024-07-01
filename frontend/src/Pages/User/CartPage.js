@@ -9,12 +9,16 @@ import { grey } from "@mui/material/colors";
 
 const CartPage = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.cartItems);
 
   useEffect(() => {
-    dispatch(getCartProducts());
-    console.log("cartIt", cartItems);
+    const fetchCartProducts = async () => {
+      await dispatch(getCartProducts());
+    };
+    fetchCartProducts();
   }, [dispatch]);
+
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  console.log("CartItems : ", cartItems);
 
   return (
     <Box bgcolor={Colors.bg}>
