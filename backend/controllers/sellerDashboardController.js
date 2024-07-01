@@ -10,9 +10,7 @@ const authenticateSeller = async (req, res) => {
     const seller = await Seller.findById(id);
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
-    }
-    // seller.authenticated = true;
-    // await seller.save();
+    }  
     authenticatedStatus = seller.authenticated;
     res.json({
       message: "Seller authenticated successfully",
@@ -31,11 +29,28 @@ const getProductsBySellerId = async (req, res) => {
       return res.status(404).json({ message: "Seller not found" });
     }
     const products = await Product.find({ seller: id });
+    //const products = await Product.find({ seller: id }).populate('cartUser', '_id');
+    //console.log(products);
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+// const getProductsBySellerId = async (req, res) => {
+//   try {
+//     const id = req.params.sellerId;
+//     const seller = await Seller.findById(id);
+//     if (!seller) {
+//       return res.status(404).json({ message: "Seller not found" });
+//     }
+//     // Populate cartUser field with user details
+//     const products = await Product.find({ seller: id }).populate('cartUser', 'firstName');
+//     res.json(products);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 const getSellerProfile = async (req, res) => {
   try {
@@ -217,48 +232,3 @@ module.exports = {
   validateSellerPassword,
   updateSellerPassword,
 };
-
- // if (product.status) {
-    //   console.log(req.seller);
-    //   const sellerId = req.seller; // Ensure req.seller is correctly set
-     
-    //   console.log("Seller ID:", sellerId);
-
-    //   const seller = await Seller.findById(sellerId);
-    //   if (!seller) {
-    //     console.error("Seller not found for ID:", sellerId);
-    //     return next(new ErrorHandler("Seller not found", 400));
-    //   }
-
-    //   // Get the last interested user for the specific product
-    //   const interestedUsersForProduct = seller.interestedUsers.filter(
-    //     (user) => user.productId.toString() === productId.toString()
-    //   );
-
-    //   if (interestedUsersForProduct.length === 0) {
-    //     return next(
-    //       new ErrorHandler("No interested user found for this product", 400)
-    //     );
-    //   }
-
-    //   // Find the user with the latest timestamp
-    //   const lastInterestedUser = interestedUsersForProduct.reduce(
-    //     (latest, user) => {
-    //       return user.timestamp > latest.timestamp ? user : latest;
-    //     }
-    //   );
-
-    //   const userId = lastInterestedUser.userId;
-    //   console.log("Last interested user ID:", userId);
-
-    //   // Create a new order
-    //   const newOrder = new Order({
-    //     sellerId,
-    //     productId,
-    //     userId,
-    //     timestamp: new Date(),
-    //   });
-
-    //   await newOrder.save();
-    //   console.log("New order created:", newOrder);
-    // }

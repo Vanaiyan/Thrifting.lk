@@ -13,7 +13,6 @@ import {
   MenuItem,
   DialogContentText,
 } from '@mui/material';
-import axios from 'axios';
 
 import { fetchUserProfile, updateUserProfile, uploadProfilePicture, updateProfilePicture } from '../../Actions/userProfileAction';
 import NavBar from '../../Components/Navigation bar/navigation';

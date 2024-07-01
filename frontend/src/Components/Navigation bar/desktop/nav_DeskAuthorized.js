@@ -162,7 +162,7 @@ export const NavDesktopAuthorized = () => {
           }}
         >
           <MenuItem sx={{ paddingY: 0, paddingX: 5 }} onClick={() => {
-            handleNavigate("user/profile");
+            handleNavigate("/user/profile");
             handleMenuClose();
           }}>
             My Profile
