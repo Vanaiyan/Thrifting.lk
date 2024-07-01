@@ -103,10 +103,9 @@ const ProductMain = () => {
       </Paper>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          overflow: "hidden",
+          display: "grid",
+          gridTemplateColumns: "repeat(5, 1fr)", // 5 products per row
+          gap: "16px", // Gap between grid items
           padding: { lg: "2vw", md: "1.8vw", sm: "1vw", xs: "1vw" },
           margin: { lg: "0 6vw", md: "0 3vw", sm: "0 0.5vw", xs: "0 0.3vw" },
           flex: "1 0 auto", // Ensure this box grows to fill available space
