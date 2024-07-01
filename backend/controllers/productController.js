@@ -1,6 +1,7 @@
 const Product = require("../models/productModel");
 const Seller = require("../models/sellerModel");
 const User = require("../models/userModel");
+const Wishlist = require("../models/wishListModel"); // Import your Wishlist model
 const ErrorHandler = require("../utils/errorHandler");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsyncError = require("../middlewares/catchAsyncError");
@@ -166,9 +167,11 @@ exports.getRecommendations = async (req, res) => {
 
     // 2. Handle empty interactedProducts and unauthenticated users
     if (!interactedProducts || !userId || !interactedProducts.length > 0) {
-      console.log("TRy to get random products : ");
+      console.log("Fetching random products");
+
+      // Fetch 50 random products
       const randomProducts = await Product.aggregate([
-        { $sample: { size: 50 } }, // Sample 50 random products
+        { $sample: { size: 50 } },
         {
           $match: {
             status: { $ne: true }, // Exclude products where status is true (sold)
@@ -176,24 +179,43 @@ exports.getRecommendations = async (req, res) => {
           },
         },
       ]);
-      // randomProducts now contains 50 random products that meet the specified conditions
 
       res.status(200).json(randomProducts);
       return;
     }
 
-    // 3. Call Flask server for recommendations (modify URL if needed)
-    const response = await axios.post("http://localhost:5001/recommend", {
-      product_ids: interactedProducts,
-    });
-    console.log("Response from Flask:", response.data);
-    const recommendedProductIds = response.data;
+    // 3. Call Flask server for recommendations
+    let recommendedProductIds = [];
+    try {
+      const response = await axios.post("http://localhost:5001/recommend", {
+        product_ids: interactedProducts,
+      });
+      console.log("Response from Flask:", response.data);
+      recommendedProductIds = response.data;
+    } catch (error) {
+      console.error("Error from Flask server:", error.message);
+      console.log("Fetching random products due to Flask server error");
+
+      // Fetch 50 random products if Flask server is not available or throws error
+      const randomProducts = await Product.aggregate([
+        { $sample: { size: 50 } },
+        {
+          $match: {
+            status: { $ne: true }, // Exclude products where status is true (sold)
+            inCart: { $ne: true }, // Exclude products in any cart
+          },
+        },
+      ]);
+
+      res.status(200).json(randomProducts);
+      return;
+    }
 
     // 4. Fetch recommended products with additional conditions
     const products = await Product.find({
       _id: { $in: recommendedProductIds }, // Include recommended products
       $or: [
-        { status: false }, //status means soldStatus(if status true = sold)
+        { status: false }, // Exclude products where status is true (sold)
         { inCart: false }, // Exclude products in any cart
         { cartUser: { $ne: userId } }, // Exclude products in current user's cart
       ],
@@ -259,3 +281,75 @@ exports.pushInteractedProduct = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(error.message, 500));
   }
 });
+
+exports.getSuggestions = async (req, res) => {
+  console.log("Suggestion Process starting");
+
+  try {
+    // 1. Fetch user data (if authenticated)
+    const userId = req.body.user ? req.body.user : null; // Handle unauthenticated users
+    console.log("User Id of rec user : ", userId);
+
+    // 2. Fetch wishlist and cart items IDs
+    const wishlistItems = await Wishlist.findOne({ user: userId })
+      .select("products")
+      .exec();
+    let cartIds = [];
+    const user = await User.findById(userId).exec();
+    if (user) {
+      cartIds = user.cartItems.map((item) => item.productId);
+    }
+    const wishlistIds = wishlistItems
+      ? wishlistItems.products.map((product) => product._id)
+      : [];
+
+    console.log("Wishlist IDs:", wishlistIds);
+    console.log("Cart IDs:", cartIds);
+
+    // 3. Call Flask server with wishlistIds and cartIds
+    let productIds = [];
+    try {
+      const response = await axios.post("http://localhost:5001/suggestion", {
+        wishlist_ids: wishlistIds,
+        cart_ids: cartIds,
+      });
+      productIds = response.data;
+      console.log("Response from Flask:", productIds);
+    } catch (error) {
+      console.error("Error from Flask server:", error.message);
+      console.log("Fetching random products due to Flask server error");
+
+      // Fetch 50 random products if Flask server is not available or throws error
+      const randomProducts = await Product.aggregate([
+        { $sample: { size: 50 } },
+        {
+          $match: {
+            status: { $ne: true }, // Exclude products where status is true (sold)
+            inCart: { $ne: true }, // Exclude products in any cart
+          },
+        },
+      ]);
+
+      res.status(200).json(randomProducts);
+      return;
+    }
+
+    // 4. Fetch recommended products with additional conditions
+    const products = await Product.find({
+      _id: { $in: productIds }, // Include recommended products
+      $or: [
+        { status: false }, // Exclude products where status is true (sold)
+        { inCart: false }, // Exclude products in any cart
+        { cartUser: { $ne: userId } }, // Exclude products in current user's cart
+      ],
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching recommendations:", error.message);
+    res.status(500).json({
+      message: "Error fetching recommendations",
+      error: error.message, // Consider sanitizing error message for security
+    });
+  }
+};

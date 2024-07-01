@@ -18,7 +18,7 @@ collection = db['products']  # Replace with your collection name
 
 # Fetch products data from MongoDB
 products_data = list(collection.find(
-    {}, {'_id': 1, 'name': 1, 'description': 1, 'category': 1, 'price': 1}))
+    {}, {'_id': 1, 'name': 1, 'description': 1, 'category': 1, 'price': 1, 'createdAt': 1}))
 
 # Convert dataset to DataFrame
 products_df = pd.DataFrame(products_data)
@@ -114,6 +114,60 @@ def get_recommendations():
     recommended_products = list(recommended_products)[:10]
     print("Recommended Products:", recommended_products)
     return jsonify(recommended_products)
+
+
+@app.route('/suggestion', methods=['POST'])
+def get_suggestions():
+    print("Suggestion engine running in Python server")
+    wishlist_ids = request.json.get('wishlist_ids', [])
+    cart_ids = request.json.get('cart_ids', [])
+    num_newest_products = request.json.get('num_newest_products', 5)
+    num_recommendations = request.json.get('num_recommendations', 10)
+
+    product_ids = wishlist_ids + cart_ids
+    product_ids = [ObjectId(pid) for pid in product_ids]
+
+    recommended_products = set()
+    decay_factor = 0.9
+
+    for i, product_id in enumerate(product_ids):
+        idx = products_df[products_df['_id'] == product_id].index
+        if len(idx) == 0:
+            continue
+
+        idx = idx[0]
+        sim_scores = list(enumerate(cosine_sim_matrix[idx]))
+        sim_scores = sorted(
+            sim_scores, key=lambda x: x[1] * (decay_factor ** i), reverse=True)
+        sim_scores = sim_scores[1:num_recommendations]
+
+        product_indices = [i[0] for i in sim_scores]
+        recommended_products.update(
+            products_df.iloc[product_indices]['_id'].astype(str).tolist())
+        # print(products_df.columns)
+        if len(recommended_products) >= num_recommendations:
+            break
+
+    recommended_products = list(recommended_products)[:num_recommendations]
+
+    # Sort by 'createdAt' if available in products_df
+    if 'createdAt' in products_df.columns:
+        try:
+            # print("'createdAt' column  found in products_df")
+
+            newest_products = products_df.sort_values(by='createdAt', ascending=False).head(
+                num_newest_products)['_id'].astype(str).tolist()
+        except KeyError:
+            print("KeyError: 'createdAt' column not found in products_df")
+            newest_products = []
+    else:
+        print("'createdAt' column not found in products_df, sorting by '_id' instead")
+        newest_products = products_df.sort_values(by='_id', ascending=False).head(
+            num_newest_products)['_id'].astype(str).tolist()
+
+    all_recommended_products = recommended_products + newest_products
+
+    return jsonify(all_recommended_products[:num_recommendations])
 
 
 if __name__ == '__main__':

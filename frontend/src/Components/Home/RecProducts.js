@@ -1,11 +1,28 @@
-import React from "react";
-import { Products } from "../Products";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import ProductCardlg from "../Cards/Productcardlg";
+import { getSuggestionAction } from "../../Actions/homeProductActions";
+import ProductCardmd from "../Cards/ProductCardmd";
+import { useSelector, useDispatch } from "react-redux";
 
 const RecProducts = () => {
-  const maxProductsToShow = 18;
-  const limitedProducts = Products.slice(0, maxProductsToShow);
+  const user = useSelector((state) => state.auth.user);
+  const [suggestProducts, setSuggestProducts] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const response = await dispatch(
+          getSuggestionAction(user ? user._id : "")
+        );
+        setSuggestProducts(response); // Assuming getSuggestionAction returns the products array
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      }
+    };
+
+    fetchRecommendations();
+  }, [user, dispatch]);
 
   return (
     <Box
@@ -17,13 +34,17 @@ const RecProducts = () => {
         margin: { lg: "0 7vw", md: "0 2vw", sm: "0 0.5vw", xs: "0 0.3vw" },
       }}
     >
-      {limitedProducts.map((product) => (
-        <ProductCardlg
-          key={product.id}
-          id={product.id} // Change to actual ID  value to get correct functionalities of WishList
-          title={product.title}
+      {suggestProducts.map((product) => (
+        <ProductCardmd
+          key={product._id}
+          id={product._id}
+          title={product.name}
           price={product.price}
-          imageSrc={product.imageSrc}
+          imageSrc={
+            product.pictures && product.pictures.length > 0
+              ? product.pictures[0].image
+              : ""
+          }
         />
       ))}
     </Box>
