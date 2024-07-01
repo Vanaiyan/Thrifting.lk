@@ -88,7 +88,7 @@ export const loginSeller = (email, password) => {
 
       return data; // Return the entire response if needed
     } catch (error) {
-      console.error("Login Error:", error);
+      // console.error("Login Error:", error.response.data.message);
       // dispatch(authFailure(error.message)); // Dispatch failure action if login fails
       throw error; // Rethrow the error to handle it in the component
     }

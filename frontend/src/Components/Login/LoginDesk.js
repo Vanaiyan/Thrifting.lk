@@ -5,14 +5,15 @@ import {
   Typography,
   TextField,
   Button,
-  Checkbox,
-  FormControlLabel,
   Paper,
   Hidden,
   Snackbar,
   Alert,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import theme from "../../Styles/Theme";
 import loginImage from "./images/img-login.png";
 import NavLogin from "../Navigation bar/nav-login";
@@ -27,9 +28,11 @@ const LoginDesk = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // State to manage snackbar severity
   const dispatch = useDispatch();
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,19 +42,28 @@ const LoginDesk = () => {
       if (response.data.success) {
         console.log("Success:", response.data);
 
+        setSnackbarSeverity("success");
         showSnackbar("Login successful!");
 
-        // Redirect to home page after a short delay
         setTimeout(() => {
           navigate("/");
-        }, 1000); // 1 seconds delay to show the Snackbar message
+        }, 1000);
       } else {
+        setSnackbarSeverity("error");
         showSnackbar(response.data.message);
       }
     } catch (error) {
-      // console.error(error);
+      setSnackbarSeverity("error");
       showSnackbar(error.response.data.message);
     }
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -117,17 +129,37 @@ const LoginDesk = () => {
                 />
                 <TextField
                   label="Password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   fullWidth
                   margin="normal"
                   required
                   sx={{ fontSize: "14px", marginBottom: "20px" }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
-                <NavLink to="/forgot-password" exact activeClassName="active">
-                  ForgotPassword
-                </NavLink>
+                <Button
+                  component={NavLink}
+                  to="/forgot-password"
+                  variant="text"
+                  color="primary"
+                  sx={{ fontSize: "14px", marginBottom: "10px" }}
+                >
+                  Forgot Password
+                </Button>
                 <br />
                 <Button
                   type="submit"
@@ -140,16 +172,16 @@ const LoginDesk = () => {
                     padding: "10px 20px",
                   }}
                 >
-                  signin
+                  Sign In
                 </Button>
               </form>
               <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={6000} // Adjust the duration as needed
+                autoHideDuration={6000}
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: "center", horizontal: "left" }}
               >
-                <Alert onClose={handleSnackbarClose} severity="success">
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
                   {successMessage}
                 </Alert>
               </Snackbar>

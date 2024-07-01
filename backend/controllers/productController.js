@@ -7,7 +7,7 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const axios = require("axios");
 
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-  const resPerPage = 16;
+  const resPerPage = 20;
   let userId = null;
   if (req.user && req.user._id) {
     userId = req.user._id; // Get the current user ID
