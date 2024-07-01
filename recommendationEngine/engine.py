@@ -53,8 +53,8 @@ tfidf_matrix_cat = tfidf_vectorizer_cat.fit_transform(products_df['category'])
 
 # Define weights
 weight_name = 2.0
-weight_cat = 3.5
-weight_desc = 0.5
+weight_cat = 4.5
+weight_desc = 0.1
 
 # Apply weights to the TF-IDF matrices
 weighted_matrix_name = tfidf_matrix_name * weight_name
