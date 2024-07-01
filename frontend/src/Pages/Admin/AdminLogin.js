@@ -127,20 +127,6 @@ const AdminLoginPage = () => {
                   >
                     Sign In
                   </Button>
-
-                  <Grid container justifyContent="flex-end">
-                    <Grid item>
-                      <Typography variant="body2">
-                        Don't have an account?{" "}
-                        <NavLink
-                          to="/admin/register"
-                          style={{ textDecoration: "none", color: "#3f51b5" }}
-                        >
-                          Register
-                        </NavLink>
-                      </Typography>
-                    </Grid>
-                  </Grid>
                 </form>
 
                 <Snackbar

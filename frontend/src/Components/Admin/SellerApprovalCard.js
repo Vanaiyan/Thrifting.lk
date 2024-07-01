@@ -141,7 +141,7 @@ const SellerApprovalCard = ({ seller }) => {
               <img
                 src={frontImage}
                 alt="NIC Front"
-                style={{ width: "100%", maxHeight: "200px", marginTop: "10px" }}
+                style={{ width: "200px", maxHeight: "300px", marginTop: "10px" }}
               />
             </div>
           )}
@@ -153,7 +153,7 @@ const SellerApprovalCard = ({ seller }) => {
               <img
                 src={backImage}
                 alt="NIC Back"
-                style={{ width: "100%", maxHeight: "200px", marginTop: "10px" }}
+                style={{ width: "200px", maxHeight: "300px", marginTop: "10px" }}
               />
             </div>
           )}

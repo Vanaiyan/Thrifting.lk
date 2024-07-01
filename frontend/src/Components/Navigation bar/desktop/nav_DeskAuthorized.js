@@ -26,6 +26,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../Actions/userAction"; // Adjust the path as needed
 import SearchItem from "../../Home/SearchItem";
 
+const scrollToFooter = () => {
+  document.getElementById('footer').scrollIntoView({ behavior: 'smooth' });
+};
+
 export const NavDesktopAuthorized = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
@@ -88,7 +92,9 @@ export const NavDesktopAuthorized = () => {
           <NavLink to="/product" exact activeClassName="active">
             <NavListItemText>CATEGORIES</NavListItemText>
           </NavLink>
-          <NavListItemText>ABOUT</NavListItemText>
+          <a onClick={scrollToFooter} style={{ cursor: 'pointer' }}>
+            <NavListItemText>ABOUT</NavListItemText>
+          </a>
         </NavList>
       </Grid>
 

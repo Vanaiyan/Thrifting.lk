@@ -10,6 +10,7 @@ import {
   fetchProductsByFilter,
   fetchProductsByKeyword,
 } from "../../Actions/homeProductActions";
+import Footer from "../../Components/Footer/Footer";
 
 const ProductMain = () => {
   const [products, setProducts] = useState([]);
@@ -85,7 +86,7 @@ const ProductMain = () => {
   };
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" minHeight="100vh">
       <NavBar />
       <Paper
         elevation={1}
@@ -108,8 +109,9 @@ const ProductMain = () => {
           justifyContent: "space-between",
           flexWrap: "wrap",
           overflow: "hidden",
-          padding: { lg: " 2vw", md: "1.8vw", sm: "1vw", xs: "1vw" },
+          padding: { lg: "2vw", md: "1.8vw", sm: "1vw", xs: "1vw" },
           margin: { lg: "0 6vw", md: "0 3vw", sm: "0 0.5vw", xs: "0 0.3vw" },
+          flex: "1 0 auto", // Ensure this box grows to fill available space
         }}
       >
         {products.map((product) => (
@@ -126,6 +128,7 @@ const ProductMain = () => {
           />
         ))}
       </Box>
+      <Footer style={{ width: '100px' }} />
     </Box>
   );
 };
