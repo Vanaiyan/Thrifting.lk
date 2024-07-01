@@ -7,7 +7,8 @@ export const NavListItemText = styled(Button)({
   fontWeight: 500,
   textDecoration: "none",
   backgroundColor: "#ff5003",
-  minWidth: "250px",
+  minWidth: "50px",
+  maxWidth: "300px",
   borderRadius: "10px",
   padding: "5px 10px",
   color: "#ffffff",
@@ -22,5 +23,9 @@ export const NavList = styled(List)({
   display: "flex",
   flexDirection: "column",
   gap: "20px",
-  minWidth: "250px",
+  alignItems: "flex-start", // Align items to start
+  padding: "0", // Reset padding if needed
+  margin: "0",  // Reset margin if needed
+  minWidth: "50px",
+  maxWidth: "300px",
 });

@@ -8,7 +8,7 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logout from "@mui/icons-material/Logout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../../Actions/userAction";
 import { useDispatch } from "react-redux";
 
@@ -24,7 +24,8 @@ const NavSellerDashboard_H = ({ sellerId }) => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/profile/${sellerId}`
+          `http://localhost:8000/api/profile/${sellerId}`,
+          { withCredentials: true },
         );
 
         setSeller(response.data);
@@ -63,7 +64,9 @@ const NavSellerDashboard_H = ({ sellerId }) => {
     >
       <Grid item md={11} lg={11} xs={11}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Link to="/" style={{ textDecoration: "none" }}>
           <NavTitle sx={{ color: "#ff5003", mr: 1 }}>Thrifting.lk</NavTitle>
+          </Link>
           <Divider orientation="vertical" flexItem />
         </Box>
       </Grid>
