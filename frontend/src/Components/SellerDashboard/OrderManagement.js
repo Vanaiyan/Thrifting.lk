@@ -25,7 +25,6 @@ const OrderManagement = ({ sellerId }) => {
           `http://localhost:8000/api/myproducts/${sellerId}`,
           { withCredentials: true }
         );
-        // Filter products where interestStatus is true
         const interestedProducts = response.data.filter(product => product.isInterested);
         console.log(interestedProducts);
         setProducts(interestedProducts);
@@ -39,14 +38,12 @@ const OrderManagement = ({ sellerId }) => {
 
   const handleProductStatus = async (productId) => {
     const status = selectedStatus[productId];
-    const endpoint = status === "sold"
-      ? `http://localhost:8000/api/myproducts/changeSoldStatus/${productId}`
-      : `http://localhost:8000/api/myproducts/changeNotSoldStatus/${productId}`;
+    const endpoint = `http://localhost:8000/api/myproducts/changeSoldStatus/${productId}`;
 
     try {
       await axios.put(
         endpoint,
-        { status: status === "sold" },
+        { status: status === "sold", sellerId },
         { withCredentials: true }
       );
       setProducts(
@@ -80,7 +77,6 @@ const OrderManagement = ({ sellerId }) => {
                 <TableCell>Price</TableCell>
                 <TableCell>Buyer</TableCell>
                 <TableCell>Status</TableCell>
-              
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
