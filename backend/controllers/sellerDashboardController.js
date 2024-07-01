@@ -1,5 +1,6 @@
 const Seller = require("../models/sellerModel");
 const Product = require("../models/productModel");
+const User = require("../models/userModel");
 const Order = require("../models/orderModel");
 const bcrypt = require("bcrypt");
 
@@ -124,16 +125,100 @@ const changeNotSoldProductStatus = async (req, res, next) => {
     }
 
     product.status = req.body.status;
-    product.inCart =false;
-    product.cartUser=null;
-    product.cartTimestamp=null;
-    product.isInterested=false;
-    product.interestedTimestamp= null;
+    product.inCart = false;
+    product.cartUser = null;
+    product.cartTimestamp = null;
+    product.isInterested = false;
+    product.interestedTimestamp = null;
+    product.soldConfirmedBuyer = false;
     await product.save();
-    console.log("Product status changed:", product.status);
 
-    console.log("Product :", product);
-    // if (product.status) {
+    // Find all users that have this product in their cart
+    const usersWithProductInCart = await User.updateMany(
+      { "cartItems.productId": productId },
+      { $pull: { cartItems: { productId: productId } } }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: `Product ${product.status ? "sold" : "available"} successfully`,
+    });
+  } catch (err) {
+    console.error("Error occurred:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const changeSoldProductStatus = async (req, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const { sellerId, status } = req.body;
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return next(new ErrorHandler("Product not found", 400));
+    }
+
+    const userId = product.cartUser;
+    console.log("UserId", product.cartUser);
+
+    // Update product status
+    product.status = status;
+    product.inCart = false;
+    product.cartUser = null;
+    product.cartTimestamp = null;
+    product.isInterested = false;
+    product.interestedTimestamp = null;
+    product.soldConfirmedBuyer = false;
+    await product.save();
+
+    // Remove the product from all users' cart items
+    await User.updateMany(
+      { "cartItems.productId": productId },
+      { $pull: { cartItems: { productId: productId } } }
+    );
+
+    // Create a new order if the product is marked as sold
+    if (status) {
+      const newOrder = new Order({
+        sellerId,
+        productId,
+        userId,
+        timestamp: new Date(),
+      });
+
+      await newOrder.save();
+      console.log("New order created:", newOrder);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Product ${status ? "sold" : "available"} successfully`,
+    });
+  } catch (err) {
+    console.error("Error occurred:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+module.exports = {
+  authenticateSeller,
+  getProductsBySellerId,
+  getSellerProfile,
+  updateSellerProfile,
+  changeSoldProductStatus,
+  changeNotSoldProductStatus,
+  validateSellerPassword,
+  updateSellerPassword,
+};
+
+ // if (product.status) {
     //   console.log(req.seller);
     //   const sellerId = req.seller; // Ensure req.seller is correctly set
      
@@ -177,49 +262,3 @@ const changeNotSoldProductStatus = async (req, res, next) => {
     //   await newOrder.save();
     //   console.log("New order created:", newOrder);
     // }
-
-    return res.status(200).json({
-      success: true,
-      message: `Product ${product.status ? "sold" : "available"} successfully`,
-    });
-  } catch (err) {
-    console.error("Error occurred:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-};
-
-const changeSoldProductStatus = async (req, res, next) => {
-  try {
-    const productId = req.params.productId;
-    const product = await Product.findById(productId);
-    if (!product) {
-      return next(new ErrorHandler("Product not found", 400));
-    }
-    product.status = req.body.status;
-    await product.save();
-
-    return res.status(200).json({
-      success: true,
-      message: `Product ${product.status ? "sold" : "available"} successfully`,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-};
-
-module.exports = {
-  authenticateSeller,
-  getProductsBySellerId,
-  getSellerProfile,
-  updateSellerProfile,
-  changeSoldProductStatus,
-  changeNotSoldProductStatus,
-  validateSellerPassword,
-  updateSellerPassword,
-};

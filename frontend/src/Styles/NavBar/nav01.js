@@ -1,5 +1,4 @@
 
-// nav01.js
 import {
   Box,
   Button,
@@ -40,7 +39,7 @@ export const NavTitle = styled(Typography)(() => ({
 export const NavSubTitle = styled(Typography)(() => ({
   width: "194px", 
   height: "30px",
-  fontFamily: "'Courier New', sans-serif",
+  fontFamily: "'Inter', sans-serif",
   fontStyle:'normal',
   fontWeight: 700,
   fontSize: "28px",
