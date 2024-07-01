@@ -13,6 +13,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Divider, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
+const scrollToFooter = () => {
+  document.getElementById('footer').scrollIntoView({ behavior: 'smooth' });
+};
+
 export const NavSellerDesktop = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
@@ -53,7 +57,9 @@ export const NavSellerDesktop = () => {
           <NavLink to="/product" exact activeClassName="active">
             <NavListItemText>CATEGORIES</NavListItemText>
           </NavLink>
-          <NavListItemText>ABOUT</NavListItemText>
+          <a onClick={scrollToFooter} style={{ cursor: 'pointer' }}>
+            <NavListItemText>ABOUT</NavListItemText>
+          </a>
         </NavList>
       </Grid>
 

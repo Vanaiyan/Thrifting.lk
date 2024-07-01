@@ -40,7 +40,7 @@ import React from 'react';
 import { Card, CardHeader, Avatar } from '@mui/material';
 
 const BuyerCard = ({ buyer }) => {
-  const { firstName, lastName, email, image } = buyer;
+  const { firstName, lastName, email, profilePicture } = buyer;
 
   // Function to generate a random background color
   const getRandomColor = () => {
@@ -49,18 +49,16 @@ const BuyerCard = ({ buyer }) => {
     return colors[randomIndex];
   };
 
+  // Determine the avatar content and styles
+  const avatarContent = profilePicture ? null : `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`;
+  const avatarStyle = profilePicture ? {} : { bgcolor: getRandomColor() };
+
   return (
     <Card style={{ maxWidth: '400px', height: '80px' }}>
       <CardHeader
         avatar={
-          <Avatar
-            alt={`${firstName} ${lastName}`}
-            src={image}
-            sx={{
-              bgcolor: image ? undefined : getRandomColor(), // Set random background color if avatar is not available
-            }}
-          >
-            {!image && `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`}
+          <Avatar alt={`${firstName} ${lastName}`} src={profilePicture} sx={avatarStyle}>
+            {avatarContent}
           </Avatar>
         }
         title={`${firstName} ${lastName}`}
