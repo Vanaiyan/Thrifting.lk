@@ -5,22 +5,22 @@ import {
   Typography,
   TextField,
   Button,
-  Checkbox,
-  FormControlLabel,
   Paper,
   Hidden,
   Snackbar,
   Alert,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import theme from "../../Styles/Theme";
 import loginImage from "../../Assets/Images/login/seller-login.png";
 import NavLogin from "../../Components/Navigation bar/nav-login";
-import { loginUser } from "../../Actions/userAction";
+import { loginSeller } from "../../Actions/sellerAction";
 import { useSnackbar } from "../../Actions/snackbar";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginSeller } from "../../Actions/sellerAction";
 
 const LoginSellerPage = () => {
   const { snackbarOpen, successMessage, handleSnackbarClose, showSnackbar } =
@@ -28,31 +28,42 @@ const LoginSellerPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // State to manage snackbar severity
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await dispatch(loginSeller(email, password));
-      //   const response = await loginSeller(email, password);
+
       if (response.data.success) {
         console.log("Success:", response.data);
 
+        setSnackbarSeverity("success");
         showSnackbar("Login successful!");
 
-        // Redirect to home page after a short delay
         setTimeout(() => {
           navigate("/seller/dashboard");
-        }, 1000); // 1 seconds delay to show the Snackbar message
+        }, 1000);
       } else {
+        setSnackbarSeverity("error");
         showSnackbar(response.data.message);
       }
     } catch (error) {
-      console.error(error);
-      showSnackbar("An error occurred. Please try again.");
+      setSnackbarSeverity("error");
+      showSnackbar(error.response.data.message);
     }
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -119,13 +130,27 @@ const LoginSellerPage = () => {
                 />
                 <TextField
                   label="Password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   fullWidth
                   margin="normal"
                   required
                   sx={{ fontSize: "14px", marginBottom: "20px" }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
 
                 <Button
@@ -139,16 +164,16 @@ const LoginSellerPage = () => {
                     padding: "10px 20px",
                   }}
                 >
-                  signin
+                  Sign In
                 </Button>
               </form>
               <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={6000} // Adjust the duration as needed
+                autoHideDuration={6000}
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: "center", horizontal: "left" }}
               >
-                <Alert onClose={handleSnackbarClose} severity="success">
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
                   {successMessage}
                 </Alert>
               </Snackbar>
