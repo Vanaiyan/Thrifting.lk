@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import Drawer from "@mui/material/Drawer";
-import { Box, IconButton, Typography, Avatar, Paper } from "@mui/material";
+import { Box, Typography, Avatar, Paper } from "@mui/material";
 import { Colors } from "../../Styles/Theme"; // Import your color theme
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const UserProfileView = ({ user }) => {
   const [open, setOpen] = useState(false);
 
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
+  const toggleDrawer = () => {
+    if (user.role === "Seller") {
+      setOpen(!open); // Toggle open state only if user role is "Seller"
+    }
   };
 
   const DrawerList = (
-    <Box sx={{ width: 350 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: 350 }} role="presentation" onClick={toggleDrawer}>
       <Paper
         elevation={0}
         sx={{
@@ -57,7 +59,7 @@ const UserProfileView = ({ user }) => {
             Contact Information
           </Typography>
           <Typography variant="subtitle2" color={Colors.dimgrey}>
-            {user.contactNumber || "077 11 22 356"}
+            {user.phoneNumber || "077 11 22 356"}
           </Typography>
         </Box>
 
@@ -66,7 +68,13 @@ const UserProfileView = ({ user }) => {
             Address
           </Typography>
           <Typography variant="subtitle2" color={Colors.dimgrey}>
-            {user.address || "Kattubedda, Morattuwa"}
+            {user.addressField
+              ? user.addressField.address +
+                " " +
+                user.addressField.city +
+                " " +
+                user.addressField.district
+              : "Kattubedda, Morattuwa"}
           </Typography>
         </Box>
 
@@ -85,16 +93,16 @@ const UserProfileView = ({ user }) => {
   return (
     <div>
       <Avatar
-        src="/path/to/avatar-image.jpg"
+        src={user.profilePicture}
         alt="Avatar"
-        onClick={toggleDrawer(true)}
+        onClick={toggleDrawer}
         sx={{
           cursor: "pointer",
           border: "2px solid",
           borderColor: Colors.orgchat,
         }}
       />
-      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+      <Drawer anchor="right" open={open} onClose={toggleDrawer}>
         {DrawerList}
       </Drawer>
     </div>

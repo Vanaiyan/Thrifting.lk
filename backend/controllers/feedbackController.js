@@ -57,9 +57,9 @@ exports.createFeedback = catchAsyncError(async (req, res, next) => {
       }
       // Prepare email options
       const emailOptions = {
-        email: seller.email,
+        to: seller.email,
         subject: "User Feedback: No Response",
-        message: `Dear ${seller.firstName},\n\nA user has reported that they have not received a response regarding the product "${product.name}". Please attend to this issue as soon as possible.\n\nThank you.`,
+        text: `Dear ${seller.firstName},\n\nA user has reported that they have not received a response regarding the product "${product.name}". Please attend to this issue as soon as possible.\n\nThank you.`,
       };
 
       // Send the email

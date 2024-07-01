@@ -19,6 +19,7 @@ const WishlistCard = ({
   productName,
   price,
   description,
+  image,
   onRemove,
 }) => {
   return (
@@ -46,7 +47,17 @@ const WishlistCard = ({
             borderRadius: "6px",
             borderColor: Colors.Inborder,
           }}
-        ></Box>
+        >
+          <img
+            src={image}
+            alt="Product"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover", // Ensures the image covers the box while maintaining its aspect ratio
+            }}
+          />
+        </Box>
         <IconButton
           aria-label="delete"
           color="error"
@@ -62,15 +73,18 @@ const WishlistCard = ({
           <CloseIcon sx={{ width: "16px", height: "16px" }} />
         </IconButton>
         <Stack spacing={1} height={"100%"} width={"100%"}>
-          <Typography variant="subtitle2">
-            {truncateText(productName, 5)}{" "}
-            {/* Truncate productName to 5 words */}
-          </Typography>
-
-          <Typography variant="body2">
-            {truncateText(description, 15)}{" "}
-            {/* Truncate description to 10 words */}
-          </Typography>
+          {productName && (
+            <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+              {truncateText(productName, 5)}{" "}
+              {/* Truncate productName to 5 words */}
+            </Typography>
+          )}
+          {description && (
+            <Typography variant="body2" color={grey[600]}>
+              {truncateText(description, 15)}{" "}
+              {/* Truncate description to 10 words */}
+            </Typography>
+          )}
 
           <Typography variant="subtitle2">{price}</Typography>
 

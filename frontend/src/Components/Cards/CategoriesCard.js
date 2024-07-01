@@ -5,7 +5,14 @@ import Typography from "@mui/material/Typography";
 import { Colors } from "../../Styles/Theme";
 import { Grid } from "@mui/material";
 
-export default function CategoryCard({ categoryName, categorySymbol }) {
+export default function CategoryCard({
+  categoryName,
+  categorySymbol,
+  onClick,
+}) {
+  const handleClick = () => {
+    onClick(categoryName); // Pass the category name to the parent handler
+  };
   return (
     <Card
       sx={{
@@ -18,6 +25,7 @@ export default function CategoryCard({ categoryName, categorySymbol }) {
           boxShadow: "0px 10px 33px rgba(0, 0, 0, 0.2)",
         },
       }}
+      onClick={handleClick}
     >
       <Grid
         container

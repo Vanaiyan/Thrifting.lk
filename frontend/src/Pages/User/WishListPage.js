@@ -52,6 +52,7 @@ const WishlistPage = () => {
               productName={wishlistItem.name}
               price={wishlistItem.price}
               description={wishlistItem.description}
+              image={wishlistItem.pictures[0].image}
               onRemove={() => handleRemoveFromWishlist(wishlistItem._id)}
             />
           ))}

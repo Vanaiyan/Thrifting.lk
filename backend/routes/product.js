@@ -31,7 +31,11 @@ router
 
 router
   .route("/users/interact")
-  .post(isAuthenticatedUser, authorizeRoles("User"), pushInteractedProduct);
+  .post(
+    isAuthenticatedUser,
+    authorizeRoles("User", "Seller"),
+    pushInteractedProduct
+  );
 router.route("/recommendations").post(getRecommendations);
 
 module.exports = router;

@@ -2,8 +2,8 @@ import { Box, Typography, Avatar, Divider, Paper } from "@mui/material";
 import React from "react";
 import { Colors } from "../../Styles/Theme";
 
-export const ChTitle = ({ userFirstName }) => {
-  console.log("Message entered tit:", userFirstName);
+export const ChTitle = ({ userFirstName, profilePicture, role }) => {
+  // console.log("Message entered tit:", userFirstName);
 
   return (
     <Box
@@ -18,7 +18,7 @@ export const ChTitle = ({ userFirstName }) => {
       }}
     >
       <Avatar
-        src="/path/to/avatar-image.jpg"
+        src={profilePicture}
         alt="Avatar"
         sx={{
           cursor: "pointer",
@@ -31,7 +31,7 @@ export const ChTitle = ({ userFirstName }) => {
           {userFirstName}
         </Typography>
         <Typography fontSize={12} color={Colors.orgchatsub}>
-          Registered Seller
+          Registered {role}
         </Typography>
       </Box>
     </Box>

@@ -5,6 +5,7 @@ import {
   authFailure,
   logout,
 } from "../Reducers/authSlice";
+import { setLoginUser } from "../Reducers/userSlice";
 
 export const loginUser = (email, password) => {
   return async (dispatch) => {
@@ -34,7 +35,7 @@ export const loginUser = (email, password) => {
 
       return data; // Return the entire response if needed
     } catch (error) {
-      console.error("Login Error:", error);
+      // console.error("Login Error:", error);
       dispatch(authFailure(error.message)); // Dispatch failure action if login fails
       throw error; // Rethrow the error to handle it in the component
     }
@@ -52,6 +53,7 @@ export const getUserAction = (userData) => {
       const user = response.data;
       // console.log("Logged in user : ", user);
       dispatch(authSuccess({ user }));
+      dispatch(setLoginUser(user));
     } catch (error) {
       // console.error("Error fetching user data:", error);
       dispatch(authFailure(error.message)); // Dispatch failure action if login fails
