@@ -99,7 +99,7 @@ export const registerAdmin = async ({ firstName, lastName, email, password }) =>
 
 // All Product
 
-export const getAllProducts = async (page = 1, limit = 5) => {
+export const getAllProducts = async (page = 1, limit = 6) => {
   try {
     const response = await axios.get('http://localhost:8000/api/admin/products', {
       params: { page, limit },

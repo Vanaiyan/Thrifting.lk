@@ -54,7 +54,6 @@ const RegisterDesk = () => {
               </Typography>
               <form>
                 <Grid container spacing={2}>
-                  {/* <RegisterForm /> */}
                   <RegisterForm />
                 </Grid>
               </form>

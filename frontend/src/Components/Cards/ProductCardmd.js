@@ -10,6 +10,16 @@ import { Box } from "@mui/material";
 import AddToCartButton from "../Cart/AddtoCartBtn";
 import { pushInteractedProduct } from "../../Actions/homeProductActions"; // Adjust path as necessary
 
+
+ // Function to truncate the title to a specified length
+ const truncateTitle = (text, maxLength) => {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + "...";
+  } else {
+    return text;
+  }
+};
+
 export default function ProductCardmd({ id, title, price, imageSrc }) {
   const [recommendations, setRecommendations] = useState([]);
   const navigate = useNavigate();
@@ -58,7 +68,7 @@ export default function ProductCardmd({ id, title, price, imageSrc }) {
           component="div"
           sx={{ fontWeight: 600, position: "absolute", top: "170px" }}
         >
-          {title}
+          {truncateTitle(title, 40)}
         </Typography>
         <Typography
           fontSize="14px"

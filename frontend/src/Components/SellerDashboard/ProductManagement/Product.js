@@ -27,6 +27,10 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
   const [editDiscount, setEditDiscount] = useState(discount);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
+  const truncate = (str, n) => {
+    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+  };
+
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? imageSrcs.length - 1 : prevIndex - 1
@@ -63,10 +67,10 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
         description: editDescription,
         discount: editDiscount,
       };
-  
+
       // Send the updated product details in the request body
       const response = await axios.put(`http://localhost:8000/api/products/${id}`, updatedProduct, { withCredentials: true });
-  
+
       // Update products state
       setProducts(prevProducts =>
         prevProducts.map(product =>
@@ -106,7 +110,7 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
   const handleDeleteConfirm = async() => {
     setDeleteDialogOpen(false);
     try {
-      await axios.delete(`http://localhost:8000/api/products/${id}`, { withCredentials: true },);
+      await axios.delete(`http://localhost:8000/api/products/${id}`, { withCredentials: true });
       setProducts(prevProducts => prevProducts.filter(product => product._id !== id));
       setSnackbar({
         open: true,
@@ -126,6 +130,7 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false);
   };
+
   return (
     <>
       {editMode && <BlurOverlay />}
@@ -216,7 +221,8 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
             </>
           ) : (
             <>
-              <Typography variant="h5">{editName}</Typography>
+              <Typography variant="h5">{truncate(editName, 10)}</Typography>
+
               <Typography variant="body2" color="textSecondary">
                 {showFullDescription
                   ? description
