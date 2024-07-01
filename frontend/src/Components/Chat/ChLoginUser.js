@@ -23,7 +23,7 @@ const ChLoginUser = () => {
     >
       <Grid container>
         <Avatar
-          src="/path/to/avatar-image.jpg"
+          src={user.profilePicture}
           alt="Avatar"
           sx={{
             cursor: "pointer",
@@ -33,10 +33,10 @@ const ChLoginUser = () => {
           }}
         />
         <Box>
-          <Typography fontSize={14} fontWeight={600} color={Colors.org1}>
+          <Typography fontSize={14} fontWeight={600} color={"white"}>
             {user.firstName}
           </Typography>
-          <Typography fontSize={12} color={Colors.orgchatsub}>
+          <Typography fontSize={12} color={"white"}>
             {user.lastName}{" "}
           </Typography>
         </Box>

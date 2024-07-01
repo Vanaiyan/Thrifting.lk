@@ -29,12 +29,12 @@ const removeExpiredCartItems = async () => {
             (item) => !expiredCartItems.includes(item)
           );
           await user.save();
-          console.log("Expired cart items removed from user:", user._id);
+          // console.log("Expired cart items removed from user:", user._id);
         }
       })
     );
 
-    console.log("Expired cart items removed from users' carts");
+    // console.log("Expired cart items removed from users' carts");
   } catch (error) {
     console.error("Error clearing expired cart items:", error);
   }
@@ -88,9 +88,9 @@ const updateInterestedProducts = async () => {
         }
       );
 
-      console.log(
-        "Expired interested products updated and removed from users' carts"
-      );
+      // console.log(
+      //   "Expired interested products updated and removed from users' carts"
+      // );
     }
   } catch (error) {
     console.error("Error updating interested products:", error);
@@ -125,9 +125,9 @@ const calculateSellerRatings = async () => {
             console.error(`Seller with id ${_id} not found.`);
             return;
           }
-          console.log(
-            `Updated seller ${seller._id} with average rating ${averageRating}`
-          );
+          // console.log(
+          //   `Updated seller ${seller._id} with average rating ${averageRating}`
+          // );
         } catch (error) {
           console.error(
             `Error updating seller ${_id} with average rating:`,

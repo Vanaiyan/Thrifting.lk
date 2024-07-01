@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../Actions/cartActions";
 import LoginPromptModal from "../Home/loginPromptModal"; // Adjust the import path as needed
 
-const AddToCartButton = ({ productId }) => {
+const AddToCartLongButton = ({ productId }) => {
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.auth.isAuthenticated);
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,21 +26,17 @@ const AddToCartButton = ({ productId }) => {
 
   return (
     <>
-      <IconButton
-        color="primary"
-        aria-label="add to cart"
-        sx={{
-          position: "absolute",
-          bottom: "10px",
-          padding: "5px",
-        }}
+      <Button
+        variant="contained"
+        startIcon={<AddShoppingCartIcon />}
+        sx={{ height: "35px", width: "180px" }}
         onClick={handleAddToCartClick}
       >
-        <AddShoppingCartIcon />
-      </IconButton>
+        Add to Cart
+      </Button>
       <LoginPromptModal open={modalOpen} onClose={handleCloseModal} />
     </>
   );
 };
 
-export default AddToCartButton;
+export default AddToCartLongButton;

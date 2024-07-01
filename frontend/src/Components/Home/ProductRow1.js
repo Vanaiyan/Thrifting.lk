@@ -12,6 +12,7 @@ import {
 import { Colors } from "../../Styles/Theme";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ProductCardlg from "../Cards/Productcardlg";
 
 const NextArrow = (props) => {
   const { onClick } = props;

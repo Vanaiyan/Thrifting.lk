@@ -35,6 +35,7 @@ const CartSeller = ({ cartItems }) => {
                       cartTimestamp={item.cartTimestamp}
                       isInterested={item.isInterested}
                       interestedTimestamp={item.interestedTimestamp}
+                      image={item.image}
                     />
                   ))}
                 </Stack>

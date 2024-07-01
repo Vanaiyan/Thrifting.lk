@@ -12,8 +12,8 @@ const CartSum = (products) => {
     let totalDiscount = 0;
 
     products.products.forEach((item) => {
-      totalSum += item.price * item.quantity;
-      totalDiscount += item.discount * item.quantity;
+      totalSum += item.price;
+      totalDiscount += item.discount;
     });
 
     const amountToPay = totalSum - totalDiscount;
@@ -25,7 +25,9 @@ const CartSum = (products) => {
 
   useEffect(() => {
     const { totalSum, totalDiscount, amountToPay } = calculateTotals();
+    console.log("products  dd");
     console.log(products.products);
+    console.log(amountToPay);
     // Update state or perform any other actions based on new totals
   }, [products]);
 

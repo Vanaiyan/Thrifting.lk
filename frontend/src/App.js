@@ -70,7 +70,8 @@ function App() {
             path="/productDetail/:productId"
             Component={ProductDetailPage}
           />
-          <Route path="/product" Component={ProductMain} />
+          <Route path="/product/:category" Component={ProductMain} />
+          <Route path="/product" element={<ProductMain />} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/orders" Component={MyPurchasesPage} />

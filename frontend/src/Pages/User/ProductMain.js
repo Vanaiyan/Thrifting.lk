@@ -10,6 +10,7 @@ import {
   fetchProductsByFilter,
   fetchProductsByKeyword,
 } from "../../Actions/homeProductActions";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Footer from "../../Components/Footer/Footer";
 
 const ProductMain = () => {
@@ -18,50 +19,46 @@ const ProductMain = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
+  const navigate = useNavigate();
+  const { category } = useParams();
+  const location = useLocation();
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(location.search);
     const keyword = searchParams.get("keyword");
     if (keyword) {
       setSearchKeyword(keyword);
+    } else {
+      setSearchKeyword(""); // Reset search keyword if not present
     }
-  }, []);
+  }, [location.search]);
 
   useEffect(() => {
-    if (searchKeyword) {
-      fetchProductsByKeyword(searchKeyword).then((products) => {
-        setProducts(products);
-      });
-    } else {
-      fetchAllProducts();
-    }
-  }, [searchKeyword]);
+    const fetchProducts = async () => {
+      try {
+        if (searchKeyword) {
+          console.log("Fetching products by keyword:", searchKeyword);
+          const products = await fetchProductsByKeyword(searchKeyword);
+          console.log("Fetched products by keyword:", products);
+          setProducts(products);
+        } else if (category) {
+          console.log("Fetching products by category:", category);
+          const products = await fetchProductsByCategory(category);
+          console.log("Fetched products by category:", products);
+          setProducts(products);
+        } else {
+          console.log("Fetching all products");
+          const products = await fetchProductsAll();
+          console.log("Fetched all products:", products);
+          setProducts(products);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-  useEffect(() => {
-    if (selectedCategory) {
-      fetchCategoryProducts(selectedCategory);
-    } else {
-      fetchAllProducts();
-    }
-  }, [selectedCategory]);
-
-  const fetchAllProducts = async () => {
-    try {
-      const products = await fetchProductsAll();
-      setProducts(products);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
-
-  const fetchCategoryProducts = async (category) => {
-    try {
-      const products = await fetchProductsByCategory(category);
-      setProducts(products);
-    } catch (error) {
-      console.error(`Error fetching products for category ${category}:`, error);
-    }
-  };
+    fetchProducts();
+  }, [searchKeyword, category]);
 
   const fetchFilteredProducts = async (minPrice, maxPrice) => {
     try {
@@ -76,13 +73,14 @@ const ProductMain = () => {
     setSelectedCategory(category);
     setMinPrice("");
     setMaxPrice("");
+    navigate(`/product/${category}`);
   };
 
   const handleFilterChange = (minPrice, maxPrice) => {
     setSelectedCategory("");
     setMinPrice(minPrice);
     setMaxPrice(maxPrice);
-    fetchFilteredProducts(minPrice, maxPrice); // Trigger filtered products fetching
+    fetchFilteredProducts(minPrice, maxPrice);
   };
 
   return (
