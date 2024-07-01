@@ -27,6 +27,7 @@ const OrderManagement = ({ sellerId }) => {
         );
         // Filter products where interestStatus is true
         const interestedProducts = response.data.filter(product => product.isInterested);
+        console.log(interestedProducts);
         setProducts(interestedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -77,7 +78,9 @@ const OrderManagement = ({ sellerId }) => {
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>Price</TableCell>
+                <TableCell>Buyer</TableCell>
                 <TableCell>Status</TableCell>
+              
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -86,6 +89,7 @@ const OrderManagement = ({ sellerId }) => {
                 <TableRow key={product._id}>
                   <TableCell>{product.name}</TableCell>
                   <TableCell>{product.price - product.discount}</TableCell>
+                  <TableCell>{product.cartUser}</TableCell>
                   <TableCell>
                     {product.status ? "Sold" : "Not Sold"}
                   </TableCell>

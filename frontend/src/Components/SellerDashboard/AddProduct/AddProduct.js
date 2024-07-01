@@ -28,8 +28,10 @@ const AddProduct = () => {
     if (!name) errors.name = "ProductName is required";
     if (!description) {
       errors.description = "Description is required";
-    } else if (description.length < 400 || description.length > 800) {
-      errors.description = "Description must be between 400 and 800 characters";
+    } else if (description.length < 400  ) {
+      errors.description = "Description must be above 400 characters ";
+    }else if(description.length > 800){
+      errors.description = "Description must be below 800 characters";
     }
     if (!price || isNaN(price) || price <= 0)
       errors.price = "Valid price is required and must be greater than zero";

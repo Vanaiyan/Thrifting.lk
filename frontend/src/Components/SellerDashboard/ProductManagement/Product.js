@@ -26,7 +26,6 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
   const [editDescription, setEditDescription] = useState(description);
   const [editDiscount, setEditDiscount] = useState(discount);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deleteReason, setDeleteReason] = useState("");
 
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) =>
@@ -114,7 +113,6 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
         message: "Product deleted successfully",
         severity: "success"
       });
-      console.log(`Deleting product with id ${id} for reason: ${deleteReason}`);
     } catch (error) {
       console.error("Error deleting product:", error.response ? error.response.data : error.message);
       setSnackbar({
@@ -127,7 +125,6 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
 
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false);
-    setDeleteReason("");
   };
   return (
     <>
@@ -260,18 +257,8 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this product? Please provide a
-            reason for deletion.
+            Are you sure you want to delete this product?
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Reason for deletion"
-            type="text"
-            fullWidth
-            value={deleteReason}
-            onChange={(e) => setDeleteReason(e.target.value)}
-          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCancel} color="primary">
