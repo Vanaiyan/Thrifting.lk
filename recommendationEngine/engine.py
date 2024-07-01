@@ -23,37 +23,50 @@ products_data = list(collection.find(
 # Convert dataset to DataFrame
 products_df = pd.DataFrame(products_data)
 
-# Verify the columns
-print(products_df.columns)
-
-# Ensure the 'description' and 'category' columns exist
-if 'description' in products_df.columns and 'category' in products_df.columns:
-    # Convert description to string and handle NaN values
+# Ensure the 'name', 'description', and 'category' columns exist
+if all(col in products_df.columns for col in ['name', 'description', 'category']):
+    # Convert name, description, and category to strings and handle NaN values
+    products_df['name'] = products_df['name'].astype(str).fillna('')
     products_df['description'] = products_df['description'].astype(
         str).fillna('')
     # Convert category array to a single string
     products_df['category'] = products_df['category'].apply(
         lambda x: ' '.join(x))
-    # Create a new column 'text' by concatenating 'description' and 'category'
-    products_df['text'] = products_df['description'] + \
-        ' ' + products_df['category']
 else:
     raise KeyError(
-        "Columns 'description' and/or 'category' not found in products_df")
+        "Columns 'name', 'description', and/or 'category' not found in products_df")
 
 # Normalize the price feature
 scaler = MinMaxScaler()
 products_df['price_normalized'] = scaler.fit_transform(products_df[['price']])
 
-# Create TF-IDF vectorizer
-tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+# Create TF-IDF vectorizers
+tfidf_vectorizer_name = TfidfVectorizer(stop_words='english')
+tfidf_vectorizer_desc = TfidfVectorizer(stop_words='english')
+tfidf_vectorizer_cat = TfidfVectorizer(stop_words='english')
 
-# Fit and transform the product descriptions along with categories
-tfidf_matrix = tfidf_vectorizer.fit_transform(products_df['text'])
+# Fit and transform the name, description, and category separately
+tfidf_matrix_name = tfidf_vectorizer_name.fit_transform(products_df['name'])
+tfidf_matrix_desc = tfidf_vectorizer_desc.fit_transform(
+    products_df['description'])
+tfidf_matrix_cat = tfidf_vectorizer_cat.fit_transform(products_df['category'])
 
-# Concatenate TF-IDF matrix with normalized price feature
+# Define weights
+weight_name = 2.0
+weight_cat = 3.5
+weight_desc = 0.5
+
+# Apply weights to the TF-IDF matrices
+weighted_matrix_name = tfidf_matrix_name * weight_name
+weighted_matrix_desc = tfidf_matrix_desc * weight_desc
+weighted_matrix_cat = tfidf_matrix_cat * weight_cat
+
+# Concatenate the weighted matrices along with the normalized price feature
 combined_matrix = pd.concat(
-    [pd.DataFrame(tfidf_matrix.toarray()), products_df[['price_normalized']]], axis=1)
+    [pd.DataFrame(weighted_matrix_name.toarray()),
+     pd.DataFrame(weighted_matrix_desc.toarray()),
+     pd.DataFrame(weighted_matrix_cat.toarray()),
+     products_df[['price_normalized']]], axis=1)
 
 # Calculate cosine similarity matrix
 cosine_sim_matrix = cosine_similarity(combined_matrix, combined_matrix)

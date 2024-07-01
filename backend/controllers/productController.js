@@ -22,10 +22,8 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   });
 
   // Apply search, filter, and pagination
-  const apiFeatures = new APIFeatures(baseQuery, req.query)
-    .search()
-    .filter()
-    // .paginate(resPerPage);
+  const apiFeatures = new APIFeatures(baseQuery, req.query).search().filter();
+  // .paginate(resPerPage);
 
   const products = await apiFeatures.query;
 
@@ -245,7 +243,7 @@ exports.pushInteractedProduct = catchAsyncError(async (req, res, next) => {
     user.interactedProducts.push(productId);
 
     // If the array exceeds 10 items, remove the oldest one (first in the array)
-    if (user.interactedProducts.length > 5) {
+    if (user.interactedProducts.length > 3) {
       user.interactedProducts.shift(); // Remove the first element
     }
 
