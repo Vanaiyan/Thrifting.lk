@@ -12,7 +12,7 @@ const Dashboard = ({ sellerId }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/myproducts/${sellerId}`
+          `http://localhost:8000/api/myproducts/${sellerId}`, { withCredentials: true },
         );
 
         const soldItem = response.data.filter((product) => product.status);
