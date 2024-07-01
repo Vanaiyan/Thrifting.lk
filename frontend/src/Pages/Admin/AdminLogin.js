@@ -9,7 +9,10 @@ import {
   Alert,
   Paper,
   Divider,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import theme from "../../Styles/Theme";
 import NavLogin from "../../Components/Navigation bar/nav-login";
@@ -24,6 +27,7 @@ const AdminLoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -46,6 +50,14 @@ const AdminLoginPage = () => {
       console.error(error);
       showSnackbar("An error occurred. Please try again.");
     }
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -105,13 +117,27 @@ const AdminLoginPage = () => {
                   />
                   <TextField
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     fullWidth
                     margin="normal"
                     required
                     sx={{ fontSize: "14px", marginBottom: "20px" }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
 
                   <Button

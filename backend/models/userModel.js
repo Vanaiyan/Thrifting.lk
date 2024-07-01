@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema({
     maxlength: 5, // Limiting the array length to 5
   },
   // New field for cart items
-  cartItems: [CartItemSchema],
+  cartItems: [CartItemSchema], //
   resetPasswordToken: String,
   resetPasswordTokenExpire: Date,
   createdAt: {

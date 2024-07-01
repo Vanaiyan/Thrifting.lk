@@ -27,38 +27,6 @@ exports.registerAdmin = catchAsyncError(async (req, res, next) => {
 
 
 
-// server/controllers/adminController.js
-
-
-// exports.registerAdmin = async (req, res, next) => {
-//   const { firstName, lastName, email, password } = req.body;
-
-//   try {
-//     // Check if admin with email already exists
-//     const existingAdmin = await Admin.findOne({ email });
-
-//     if (existingAdmin) {
-//       return res.status(400).json({ message: 'Admin with this email already exists.' });
-//     }
-
-//     // Create new admin
-//     const admin = await Admin.create({
-//       firstName,
-//       lastName,
-//       email,
-//       password, // Ensure password is hashed before saving to DB
-//     });
-
-//     // Optionally, generate and send JWT token for authentication
-
-//     res.status(201).json({ success: true, admin });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error. Please try again.' });
-//   }
-// };
-
-
-
 exports.loginAdmin = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -78,6 +46,8 @@ exports.loginAdmin = catchAsyncError(async (req, res, next) => {
 
   sendToken(user, 201, res);
 });
+
+
 
 // All function to Admin Dashboard page
 
@@ -507,7 +477,6 @@ exports.getApprovedSellersToAdmin = async (req, res, next) => {
 };
 
 // Function to delete seller
-
 exports.deleteSeller = async (req, res, next) => {
   try {
     const seller = await Seller.findById(req.params.id);
@@ -518,6 +487,9 @@ exports.deleteSeller = async (req, res, next) => {
 
     const sellerEmail = seller.email; // Capture seller email before deleting
     const sellerName = `${seller.firstName} ${seller.lastName}`; // Capture seller name before deleting
+
+    // Delete all products associated with the seller
+    await Product.deleteMany({ seller: req.params.id });
 
     await seller.deleteOne();
 
@@ -538,7 +510,7 @@ exports.deleteSeller = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: "Seller deleted successfully",
+      message: "Seller and their products deleted successfully",
       seller,
     });
   } catch (err) {
@@ -549,6 +521,7 @@ exports.deleteSeller = async (req, res, next) => {
     });
   }
 };
+
 
 //Function to search seller
 exports.searchSellers = async (req, res) => {

@@ -131,7 +131,7 @@ export const NavSellerDesktop = () => {
                     },
                   }}
                 >
-                  SignUp
+                  SIGNUP
                 </Typography>{" "}
               </NavLink>
             </>
