@@ -25,7 +25,7 @@ const ChangePasswordForm = ({ seller }) => {
       // Validate current password
       const validateResponse = await axios.put(`http://localhost:8000/api/profile/validatePassword/${seller._id}`, {
         currentPassword
-      });
+      }, { withCredentials: true },);
 
       console.log("Validate:", validateResponse.data);
       if (!validateResponse.data.valid) {
@@ -37,7 +37,7 @@ const ChangePasswordForm = ({ seller }) => {
       // Update the password
       const response = await axios.put(`http://localhost:8000/api/profile/editPassword/${seller._id}`, {
         newPassword
-      });
+      }, { withCredentials: true },);
 
       console.log("Password changed successfully:", response);
       setSnackbarMessage("Password changed successfully");

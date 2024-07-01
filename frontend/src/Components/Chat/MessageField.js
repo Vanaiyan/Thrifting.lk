@@ -41,13 +41,12 @@ const MessageField = () => {
 
   const handleNewMessage = (message) => {
     const { senderId } = message;
-    console.log("test100");
+    // console.log("test100");
     dispatch(setUnreadMessages({ userId: senderId, count: 1 }));
     dispatch(setMessages([...messages, message]));
   };
 
   useEffect(() => {
-    console.log("asdfgh");
     if (!currentUser || !user) {
       return;
     }
@@ -56,10 +55,9 @@ const MessageField = () => {
       currentUser._id > user._id
         ? currentUser._id + user._id
         : user._id + currentUser._id;
-    console.log("ssss");
-    console.log("Current user to get msg : ", currentUser._id);
-    console.log("login user  to get msg : ", user._id);
-    console.log("ChatID user  to get msg : ", newChatId);
+    // console.log("Current user to get msg : ", currentUser._id);
+    // console.log("login user  to get msg : ", user._id);
+    // console.log("ChatID user  to get msg : ", newChatId);
     dispatch(setChatId(newChatId));
 
     const unsubscribe = getMessagesForChat(
@@ -87,7 +85,6 @@ const MessageField = () => {
         position: "relative",
         width: "100%",
         height: "100%",
-        margin: "10px",
         borderRadius: "25px",
         backgroundColor: "white",
         height: "85vh",
@@ -97,7 +94,11 @@ const MessageField = () => {
         borderColor: Colors.chatdark,
       }}
     >
-      <ChTitle userFirstName={currentUser.firstName} />
+      <ChTitle
+        userFirstName={currentUser.firstName}
+        profilePicture={currentUser.profilePicture}
+        role={currentUser.role}
+      />
       <Box
         sx={{
           position: "absolute",

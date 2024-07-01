@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "../firebase";
+import { encryptMessage, decryptMessage } from "./encrypt";
 
 export const getMessagesForChat = async (
   chatId,
@@ -30,6 +31,12 @@ export const getMessagesForChat = async (
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
+      const chatData = docSnap.data();
+
+      // Check if loginUser is authorized
+      if (!chatData.AuthorizedId.includes(loginUser)) {
+        throw new Error("User not authorized to access this chat.");
+      }
       const messagesCollectionRef = collection(docRef, "messages");
       const messagesQuery = query(messagesCollectionRef, orderBy("timestamp"));
 
@@ -37,14 +44,17 @@ export const getMessagesForChat = async (
       const messagesSnapshot = await getDocs(messagesQuery);
       const oldMessages = messagesSnapshot.docs.map((doc) => {
         const data = doc.data();
+        // Decrypt the message text
+        const decryptedText = decryptMessage(data.text);
         return {
           ...data,
+          text: decryptedText,
           timestamp: data.timestamp ? data.timestamp.toMillis() : null, // Handle null timestamp
         };
       });
 
       // Log old messages
-      console.log("Old Messages:", oldMessages);
+      console.log("Old Messages:", decryptMessage);
 
       // Use the callback to provide old messages to the frontend
       callback(oldMessages);
@@ -53,8 +63,11 @@ export const getMessagesForChat = async (
       const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
         const updatedMessages = snapshot.docs.map((doc) => {
           const data = doc.data();
+          // Decrypt the message text
+          const decryptedText = decryptMessage(data.text);
           return {
             ...data,
+            text: decryptedText,
             timestamp: data.timestamp ? data.timestamp.toMillis() : null, // Handle null timestamp
           };
         });
@@ -89,6 +102,9 @@ export const getMessagesForChat = async (
 export const addMessageToChat = async (chatId, userId, text, imageUrl) => {
   const db = getFirestore(app);
 
+  // Encrypt the message text
+  const encryptedText = encryptMessage(text);
+
   // Reference to the chat document
   const chatDocRef = doc(db, "chats", chatId);
 
@@ -96,7 +112,7 @@ export const addMessageToChat = async (chatId, userId, text, imageUrl) => {
     // Add a new message document to the "messages" subcollection
     await addDoc(collection(chatDocRef, "messages"), {
       senderId: userId,
-      text: text,
+      text: encryptedText,
       imageUrl: imageUrl,
       timestamp: serverTimestamp(),
     });

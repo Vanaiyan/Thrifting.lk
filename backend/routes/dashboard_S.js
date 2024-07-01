@@ -1,34 +1,36 @@
 const express = require("express");
 const router = express.Router();
+const {isAuthenticatedUser, authorizeRoles} = require('../middlewares/authenticate');
 
-const path = require("path");
 const Dashboard_S = require("../controllers/sellerDashboardController");
 
 router
-  .route("/seller/authenticate/:sellerId")
-  .patch(Dashboard_S.authenticateSeller);
-
-router.route("/myproducts/:sellerId").get(Dashboard_S.getProductsBySellerId);
+  .route("/authenticate/:sellerId")
+  .get(Dashboard_S.authenticateSeller);
 
 router
-  .route("/myproduct")
-  .get(Dashboard_S.getProductsBySellerId);
+  .route("/myproducts/:sellerId")
+  .get(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.getProductsBySellerId);
 
 router
-  .route("/myproducts/:productId")
-  .put(Dashboard_S.changeProductStatus);
+  .route("/myproducts/changeSoldStatus/:productId")
+  .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.changeSoldProductStatus);
+
+router
+  .route("/myproducts/changeNotSoldStatus/:productId")
+  .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.changeNotSoldProductStatus);
 
 router
   .route("/profile/:sellerId")
-  .get(Dashboard_S.getSellerProfile)
-  .put(Dashboard_S.updateSellerProfile);
+  .get(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.getSellerProfile)
+  .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.updateSellerProfile);
 
 router
   .route("/profile/editPassword/:sellerId")
-  .put(Dashboard_S.updateSellerPassword);
+  .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.updateSellerPassword);
 
 router
   .route("/profile/validatePassword/:sellerId")
-  .put(Dashboard_S.validateSellerPassword);
+  .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.validateSellerPassword);
 
 module.exports = router;

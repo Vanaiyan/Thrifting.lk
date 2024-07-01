@@ -85,11 +85,11 @@ const Form1 = ({
             required
             error={!!errors.gender}
           >
-            <InputLabel>Gender</InputLabel>
+            <InputLabel>Targetted User</InputLabel>
             <Select
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              label="Gender"
+              label="Targetted User"
               sx={{ fontSize: "14px", marginBottom: "10px" }}
             >
               <MenuItem value="men">Men</MenuItem>
