@@ -1,11 +1,8 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
 import { CardActions } from "@mui/material";
-//import {Box } from '@mui/material';
 import { IconButton } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useState } from "react";
@@ -20,6 +17,15 @@ export default function ProductCards({ title, price, onAddToCartClick }) {
     setIsWishlist(!isWishlist);
   };
 
+  // Function to truncate the title to a specified length
+  const truncateTitle = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    } else {
+      return text;
+    }
+  };
+
   return (
     <Card
       sx={{
@@ -27,7 +33,6 @@ export default function ProductCards({ title, price, onAddToCartClick }) {
         height: { lg: "350px", md: "340px", sm: "340px", xs: "340px" },
         borderRadius: "20px",
         padding: "0",
-        //margin: "30px 10px",
         margin: {
           lg: "1.5vw 0.5vw",
           md: "3vw 1vw 3vw 6vw",
@@ -41,13 +46,12 @@ export default function ProductCards({ title, price, onAddToCartClick }) {
         },
       }}
     >
-      {/* <CardMedia sx={{ height: 200 }} image={image} title={title} />  */}
       <CardContent
         sx={{
           border: "1px #DEE2E7",
           height: 120,
           marginBottom: "10px",
-          transition: "background-color 0.4s ease-in", // Increased transition time to 2 seconds
+          transition: "background-color 0.4s ease-in",
           "&:hover": {
             bgcolor: "#D9D9D9",
           },
@@ -56,9 +60,17 @@ export default function ProductCards({ title, price, onAddToCartClick }) {
         <Typography
           fontSize="14px"
           component="div"
-          sx={{ fontWeight: 600, position: "absolute", top: "210px" }}
+          sx={{
+            fontWeight: 600,
+            position: "absolute",
+            top: "210px",
+            width: "100%",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
         >
-          {title} Original Beats Solo Pro
+          {truncateTitle(title, 50)} {/* Limit title to 50 characters */}
         </Typography>
         <Typography
           fontSize="14px"
@@ -66,7 +78,7 @@ export default function ProductCards({ title, price, onAddToCartClick }) {
           sx={{ position: "absolute", top: "280px" }}
         >
           Price: {price}
-        </Typography>
+        </Typography
 
         <CardActions
           sx={{ display: "flex", alignItems: "flex-end", margin: 0 }}

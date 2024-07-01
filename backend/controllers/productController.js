@@ -7,7 +7,7 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const axios = require("axios");
 
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-  const resPerPage = 16;
+  // const resPerPage = 8;
   let userId = null;
   if (req.user && req.user._id) {
     userId = req.user._id; // Get the current user ID
@@ -25,7 +25,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   const apiFeatures = new APIFeatures(baseQuery, req.query)
     .search()
     .filter()
-    .paginate(resPerPage);
+    // .paginate(resPerPage);
 
   const products = await apiFeatures.query;
 
