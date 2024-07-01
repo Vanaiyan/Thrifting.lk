@@ -5,6 +5,7 @@ import {
   authFailure,
   logout,
 } from "../Reducers/authSlice";
+import { setLoginUser } from "../Reducers/userSlice";
 
 export const loginUser = (email, password) => {
   return async (dispatch) => {
@@ -34,7 +35,7 @@ export const loginUser = (email, password) => {
 
       return data; // Return the entire response if needed
     } catch (error) {
-      console.error("Login Error:", error);
+      // console.error("Login Error:", error);
       dispatch(authFailure(error.message)); // Dispatch failure action if login fails
       throw error; // Rethrow the error to handle it in the component
     }
@@ -52,6 +53,7 @@ export const getUserAction = (userData) => {
       const user = response.data;
       // console.log("Logged in user : ", user);
       dispatch(authSuccess({ user }));
+      dispatch(setLoginUser(user));
     } catch (error) {
       // console.error("Error fetching user data:", error);
       dispatch(authFailure(error.message)); // Dispatch failure action if login fails
@@ -122,4 +124,43 @@ export const registerUser = (
       setErrorMessage(error.response.data.message || "An error occurred");
     }
   };
+};
+
+export const sendResetPasswordLink = async (email) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8000/api/password/forgot",
+      { email }
+    );
+    return { success: true, message: response.data.message };
+  } catch (err) {
+    console.error("Error:", err.response);
+
+    return {
+      success: false,
+      error:
+        err.response?.data?.message || "An error occurred. Please try again.",
+    };
+  }
+};
+
+// Function to reset password
+export const resetPassword = async (token, password) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:8000/api/password/reset/${token}`,
+      {
+        password,
+      }
+    );
+    return { success: true, message: response.data.message };
+  } catch (err) {
+    console.error("Error:", err);
+
+    return {
+      success: false,
+      error:
+        err.response?.data?.message || "An error occurred. Please try again.",
+    };
+  }
 };

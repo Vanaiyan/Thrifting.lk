@@ -24,11 +24,7 @@ const addressSchema = new mongoose.Schema({
     },
   },
 });
-const imageSchema = new mongoose.Schema({
-  name: String,
-  type: String,
-  data: Buffer,
-});
+
 //To store who interested in Products of this seller
 const interestedUserSchema = new mongoose.Schema({
   productId: {
@@ -42,7 +38,6 @@ const interestedUserSchema = new mongoose.Schema({
     required: true,
   },
   timestamp: {
-    
     type: Date,
     default: Date.now,
   },
@@ -98,17 +93,23 @@ const sellerSchema = new mongoose.Schema({
     type: String,
   },
 
-  frontImage: imageSchema,
-  backImage: imageSchema,
+  frontImage: {
+    type: String,
+    required: true,
+  },
+  backImage: {
+    type: String,
+    required: true,
+  },
   rating: {
     type: Number,
     min: 0,
     max: 10,
-    default :0
+    default: 0,
   },
   authenticated: {
     type: Boolean,
-    default:false,
+    default: false,
   },
   warnings: [
     {

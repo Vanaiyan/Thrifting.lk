@@ -169,8 +169,15 @@ exports.getRecommendations = async (req, res) => {
     // 2. Handle empty interactedProducts and unauthenticated users
     if (!interactedProducts || !userId || !interactedProducts.length > 0) {
       const randomProducts = await Product.aggregate([
-        { $sample: { size: 50 } },
+        { $sample: { size: 50 } }, // Sample 50 random products
+        {
+          $match: {
+            status: { $ne: true }, // Exclude products where status is true (sold)
+            inCart: { $ne: true }, // Exclude products in any cart
+          },
+        },
       ]);
+      // randomProducts now contains 50 random products that meet the specified conditions
 
       res.status(200).json(randomProducts);
       return;
@@ -187,6 +194,7 @@ exports.getRecommendations = async (req, res) => {
     const products = await Product.find({
       _id: { $in: recommendedProductIds }, // Include recommended products
       $or: [
+        { status: false }, //status means soldStatus(if status true = sold)
         { inCart: false }, // Exclude products in any cart
         { cartUser: { $ne: userId } }, // Exclude products in current user's cart
       ],

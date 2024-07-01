@@ -3,34 +3,31 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import WishlistIconButton from "../WishList/WishListIcon";
 import { Box } from "@mui/material";
 import AddToCartButton from "../Cart/AddtoCartBtn";
 import { pushInteractedProduct } from "../../Actions/homeProductActions"; // Adjust path as necessary
+import { useDispatch } from "react-redux";
 
 export default function ProductCardsm({ id, title, price, imageSrc }) {
   const [recommendations, setRecommendations] = useState([]);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleCardClick = async () => {
     try {
-      await pushInteractedProduct(id)();
-      console.log("Successfully added in interacted product");
+      navigate(`/productDetail/${id}`);
+      await dispatch(pushInteractedProduct(id));
     } catch (error) {
       console.error("Error pushing interacted product:", error);
       // Handle error as needed
     }
   };
 
-  const handleButtonClick = async (event) => {
+  const handleButtonClick = (event) => {
     // Prevent the card click event from being triggered
     event.stopPropagation();
-  };
-
-  const handleCardNavigation = () => {
-    navigate(`/productDetail/${id}`);
   };
 
   return (
@@ -50,7 +47,7 @@ export default function ProductCardsm({ id, title, price, imageSrc }) {
           boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.3)",
         },
       }}
-      onClick={handleCardNavigation} // Call pushInteractedProduct on card click
+      onClick={handleCardClick} // Call handleCardClick on card click
     >
       <CardMedia sx={{ height: 170 }} image={imageSrc} title={title} />
       <CardContent>

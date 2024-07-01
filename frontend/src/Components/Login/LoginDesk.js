@@ -27,7 +27,7 @@ const LoginDesk = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch =useDispatch();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -49,8 +49,8 @@ const LoginDesk = () => {
         showSnackbar(response.data.message);
       }
     } catch (error) {
-      console.error(error);
-      showSnackbar("An error occurred. Please try again.");
+      // console.error(error);
+      showSnackbar(error.response.data.message);
     }
   };
 
@@ -125,7 +125,10 @@ const LoginDesk = () => {
                   required
                   sx={{ fontSize: "14px", marginBottom: "20px" }}
                 />
-
+                <NavLink to="/forgot-password" exact activeClassName="active">
+                  ForgotPassword
+                </NavLink>
+                <br />
                 <Button
                   type="submit"
                   variant="contained"

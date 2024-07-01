@@ -64,7 +64,7 @@ export const getRecommendations = (user) => async (dispatch) => {
     console.log("User from action rec : ", user);
     const response = await axios.post(
       `${BASE_URL}/recommendations`,
-      { user },
+      { user: user },
       {
         withCredentials: true, // Ensure credentials are sent if using cookies for authentication
       }

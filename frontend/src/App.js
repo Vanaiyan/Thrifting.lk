@@ -28,14 +28,16 @@ import EditProfile from "./Components/SellerDashboard/Profile/EditProfile";
 import { getUserAction } from "./Actions/userAction";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
+import UserProfile from "./Pages/User/UserProfile";
 import { SellerProtectedRoute } from "./ProtectedRoutes";
-import {AdminProtectedRoute} from "./ProtectedRoutes";
+import { AdminProtectedRoute } from "./ProtectedRoutes";
 import { finishLoading } from "./Reducers/authSlice";
-
+import ForgotPassword from "./Pages/User/ForgotPassword";
+import PasswordReset from "./Pages/User/PasswordReset";
 function App() {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
-  const user  = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,71 +66,108 @@ function App() {
           <Route path="/signup" Component={SignUp} />
           <Route path="/demo" Component={Demo} />
           <Route path="/chat/:chatId" Component={ChatPage} />
-          <Route path="/productDetail/:productId" Component={ProductDetailPage} />
-          <Route path="/product" Component={ProductMain} />
+          <Route
+            path="/productDetail/:productId"
+            Component={ProductDetailPage}
+          />
+          <Route path="/product/:category" Component={ProductMain} />
+          <Route path="/product" element={<ProductMain />} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/wishlist" Component={WishlistPage} />
           <Route path="/orders" Component={MyPurchasesPage} />
+          <Route path="/user/profile" Component={UserProfile} />
+          <Route path="/forgot-password" Component={ForgotPassword} />
+          <Route path="/password/reset/:token" Component={PasswordReset} />
 
           {/* Protected Routes for Sellers */}
           <Route path="/seller">
             <Route index Component={SellerPage} />
             <Route path="register" Component={Register_S} />
-            <Route path="dashboard" Component={() => (
-              <SellerProtectedRoute>
-                <Dashboard_S />
-              </SellerProtectedRoute>
-            )} />
-            <Route path="dashboard/addProduct" Component={() => (
-              <SellerProtectedRoute>
-                <AddProduct />
-              </SellerProtectedRoute>
-            )} />
-            <Route path="profile/edit/:sellerId" Component={() => (
-              <SellerProtectedRoute>
-                <EditProfile />
-              </SellerProtectedRoute>
-            )} />
+            <Route
+              path="dashboard"
+              Component={() => (
+                <SellerProtectedRoute>
+                  <Dashboard_S />
+                </SellerProtectedRoute>
+              )}
+            />
+            <Route
+              path="dashboard/addProduct"
+              Component={() => (
+                <SellerProtectedRoute>
+                  <AddProduct />
+                </SellerProtectedRoute>
+              )}
+            />
+            <Route
+              path="profile/edit/:sellerId"
+              Component={() => (
+                <SellerProtectedRoute>
+                  <EditProfile />
+                </SellerProtectedRoute>
+              )}
+            />
             <Route path="login" Component={SellerLoginPage} />
           </Route>
 
           {/* Protected Routes for Admin */}
           <Route path="/admin">
-            <Route path="AllProducts" Component={() => (
-              <AdminProtectedRoute>
-                <AllProductsPage />
-              </AdminProtectedRoute>
-            )} />
-            <Route path="Sellers" Component={() => (
-              <AdminProtectedRoute>
-                <AllSellersPage />
-              </AdminProtectedRoute>
-            )} />
-            <Route path="Buyers" Component={() => (
-              <AdminProtectedRoute>
-                <AllUsersPage />
-              </AdminProtectedRoute>
-            )} />
-            <Route path="OrderList" Component={() => (
-              <AdminProtectedRoute>
-                <OrderList />
-              </AdminProtectedRoute>
-            )} />
-            <Route path="SellerApproval" Component={() => (
-              <AdminProtectedRoute>
-                <SellerApproval />
-              </AdminProtectedRoute>
-            )} />
-            <Route path="Dashboard" Component={() => (
-              <AdminProtectedRoute>
-                <AdminDashboard />
-              </AdminProtectedRoute>
-            )} />
-            <Route path="ReportFeedback" Component={() => (
-              <AdminProtectedRoute>
-                <FeedbackReport />
-              </AdminProtectedRoute>
-            )} />
+            <Route
+              path="AllProducts"
+              Component={() => (
+                <AdminProtectedRoute>
+                  <AllProductsPage />
+                </AdminProtectedRoute>
+              )}
+            />
+            <Route
+              path="Sellers"
+              Component={() => (
+                <AdminProtectedRoute>
+                  <AllSellersPage />
+                </AdminProtectedRoute>
+              )}
+            />
+            <Route
+              path="Buyers"
+              Component={() => (
+                <AdminProtectedRoute>
+                  <AllUsersPage />
+                </AdminProtectedRoute>
+              )}
+            />
+            <Route
+              path="OrderList"
+              Component={() => (
+                <AdminProtectedRoute>
+                  <OrderList />
+                </AdminProtectedRoute>
+              )}
+            />
+            <Route
+              path="SellerApproval"
+              Component={() => (
+                <AdminProtectedRoute>
+                  <SellerApproval />
+                </AdminProtectedRoute>
+              )}
+            />
+            <Route
+              path="Dashboard"
+              Component={() => (
+                <AdminProtectedRoute>
+                  <AdminDashboard />
+                </AdminProtectedRoute>
+              )}
+            />
+            <Route
+              path="ReportFeedback"
+              Component={() => (
+                <AdminProtectedRoute>
+                  <FeedbackReport />
+                </AdminProtectedRoute>
+              )}
+            />
             <Route path="login" Component={AdminLoginPage} />
           </Route>
         </Routes>

@@ -11,6 +11,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Stack from "@mui/material/Stack";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Divider from "@mui/material/Divider";
+import AddToCartLongButton from "../Cart/AddtoCartLongBtn";
+import WishlistLongButton from "../WishList/WishListLongBtn";
 
 const labels = {
   0.5: "1.0",
@@ -156,21 +158,15 @@ const ProductDetailBox = ({ product }) => {
       </Box>{" "}
       <br />
       <Stack direction="row" spacing={2}>
-        <Button
+        {/* <Button
           variant="contained"
           startIcon={<AddShoppingCartIcon />}
           sx={{ height: "35px", width: "180px" }}
         >
           Add to Cart
-        </Button>
-        <Button
-          variant="outlined"
-          startIcon={saved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          onClick={handleSaveToggle}
-          sx={{ height: "35px", width: "180px" }}
-        >
-          Save for later
-        </Button>
+        </Button> */}
+        <AddToCartLongButton productId={product._id} />
+        <WishlistLongButton productId={product._id} />
       </Stack>
     </Box>
   );

@@ -3,6 +3,13 @@ import { Card, CardHeader, CardContent, CardActions, IconButton, Menu, MenuItem,
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { deleteProduct } from '../../Actions/adminActions';
 
+const truncateText = (text, maxLength) => {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return text.substring(0, maxLength) + '...';
+};
+
 const ProductCard = ({ product }) => {
   const { _id, name, image, description, seller } = product; // Added _id for product identification
   const [anchorEl, setAnchorEl] = useState(null);
@@ -34,7 +41,9 @@ const ProductCard = ({ product }) => {
   return (
     <Card style={{ maxWidth: '400px', height: '200px' }}>
       <CardHeader
-        avatar={<Avatar src={image} />}
+        avatar={<Avatar src={ product.pictures && product.pictures.length > 0
+          ? product.pictures[0].image
+          : ""} />}
         action={
           <IconButton onClick={handleClick}>
             <MoreVertIcon />
@@ -45,7 +54,7 @@ const ProductCard = ({ product }) => {
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {description}
+          {truncateText(description, 200)} {/* Truncate the description to 200 characters */}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

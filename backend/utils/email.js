@@ -1,15 +1,15 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 const sendEmail = async (options) => {
-  var transport = nodemailer.createTransport({
+  const transport = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "39b7a50f66bb7d",
-      pass: "a0577e3af365be"
-    }
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
   });
-
 
   const message = {
     from: '"vanai" <vanaiyan@gmail.com>',

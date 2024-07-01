@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 const ProductManagement = ({ sellerId }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Add state for authentication status
+  const [isAuthenticated, setIsAuthenticated] = useState(false); 
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -52,7 +52,8 @@ const ProductManagement = ({ sellerId }) => {
           `http://localhost:8000/api/authenticate/${sellerId}`, 
           { withCredentials: true }
         );
-        setIsAuthenticated(authResponse.data);
+        console.log(authResponse.data.authenticatedStatus);
+        setIsAuthenticated(authResponse.data.authenticatedStatus);
 
         setLoading(false);
       } catch (error) {
@@ -140,6 +141,7 @@ const ProductManagement = ({ sellerId }) => {
           variant="contained"
           color="primary"
           onClick={handleAddProduct}
+          disabled={null}
         >
           Add Product
         </Button>

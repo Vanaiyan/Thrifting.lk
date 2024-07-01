@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NavChat from "../../Components/Chat/Navchat";
 import ChatUserPanel from "../../Components/Chat/ChatUserPanel";
@@ -8,11 +8,10 @@ import { getUsers } from "../../Actions/chatActions";
 import { getUserProfile } from "../../Actions/chatActions";
 import ChatSearch from "../../Components/Chat/ChatSearch";
 import MessageField from "../../Components/Chat/MessageField";
-import ChLoginUser from "../../Components/Chat/ChLoginUser";
 import { setCurrentUser, setLoginUser } from "../../Reducers/userSlice";
 import { getSortedUsers } from "../../Actions/chatFirebase";
 import { Colors } from "../../Styles/Theme";
-
+import Chat_img from "../../Assets/Images/chat/Chat_img.png";
 const ChatPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -102,7 +101,8 @@ const ChatPage = () => {
         container
         width={"100%"}
         sx={{
-          padding: "0px 20px 0 0",
+          padding: "10px",
+          gap: "10px",
           backgroundColor: "aliceblue",
         }}
       >
@@ -113,8 +113,8 @@ const ChatPage = () => {
           sm={5}
           xs={12}
           sx={{
+            // margin: "10px",
             borderRadius: "20px ",
-            margin: "10px",
             backgroundColor: Colors.chatdark,
           }}
         >
@@ -136,7 +136,29 @@ const ChatPage = () => {
         </Grid>
 
         <Grid item lg md sm xs>
-          <MessageField />
+          {currentUser._id ? (
+            <MessageField />
+          ) : (
+            <Paper
+              elevation={0}
+              sx={{
+                position: "relative",
+                width: "100%",
+                height: "85vh",
+                borderRadius: "25px",
+                backgroundColor: "white",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "1px solid",
+                borderColor: Colors.chatdark,
+              }}
+            >
+              <Box sx={{ width: "60%" }}>
+                <img src={Chat_img} style={{ width: "100%", height: "auto" }} />
+              </Box>
+            </Paper>
+          )}
         </Grid>
       </Grid>
     </div>

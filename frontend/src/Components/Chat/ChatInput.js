@@ -15,7 +15,7 @@ const ChatInput = ({ onSend }) => {
   const [newMessage, setNewMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null); // New state for image preview
-  const { userPRender } = useSelector((state) => state.messages);
+  const { user } = useSelector((state) => state.auth);
 
   const handleSend = async () => {
     // Check if the newMessage and selectedFile are not empty
@@ -30,7 +30,7 @@ const ChatInput = ({ onSend }) => {
 
     try {
       // Send the message to the chat
-      await addMessageToChat(chatId, loginUser._id, newMessage, imageUrl);
+      await addMessageToChat(chatId, user._id, newMessage, imageUrl);
 
       // Clear the input fields
       setNewMessage("");
