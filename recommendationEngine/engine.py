@@ -121,8 +121,8 @@ def get_suggestions():
     print("Suggestion engine running in Python server")
     wishlist_ids = request.json.get('wishlist_ids', [])
     cart_ids = request.json.get('cart_ids', [])
-    num_newest_products = request.json.get('num_newest_products', 5)
-    num_recommendations = request.json.get('num_recommendations', 10)
+    num_newest_products = request.json.get('num_newest_products', 25)
+    num_recommendations = request.json.get('num_recommendations', 25)
 
     product_ids = wishlist_ids + cart_ids
     product_ids = [ObjectId(pid) for pid in product_ids]

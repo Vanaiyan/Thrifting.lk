@@ -323,7 +323,7 @@ exports.getSuggestions = async (req, res) => {
 
       // Fetch 50 random products if Flask server is not available or throws error
       const randomProducts = await Product.aggregate([
-        { $sample: { size: 20 } },
+        { $sample: { size: 40 } },
         {
           $match: {
             status: { $ne: true }, // Exclude products where status is true (sold)
@@ -345,7 +345,10 @@ exports.getSuggestions = async (req, res) => {
 
     res.status(200).json(products);
   } catch (error) {
-    console.error("Error fetching recommendations:", error.message);
+    console.error(
+      "Error fetching Suggestions _______________________________:",
+      error.message
+    );
     res.status(500).json({
       message: "Error fetching recommendations",
       error: error.message, // Consider sanitizing error message for security

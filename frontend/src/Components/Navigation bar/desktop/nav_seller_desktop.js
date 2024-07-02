@@ -87,7 +87,7 @@ export const NavSellerDesktop = () => {
       >
         <ButtonContainer>
           {isAuthenticated && role === "Seller" ? (
-            <NavLink to="/seller/dashboard" exact activeClassName="active">
+            <NavLink to="/seller/dashboard" exact="true">
               <Typography
                 sx={{
                   textDecoration: "none",
@@ -107,10 +107,10 @@ export const NavSellerDesktop = () => {
             </NavLink>
           ) : (
             <>
-              <NavLink to="/seller/login" exact activeClassName="active">
+              <NavLink to="/seller/login" exact="true">
                 <NavListItemText>Log In</NavListItemText>
               </NavLink>
-              <NavLink to="/seller/register" exact activeClassName="active">
+              <NavLink to="/seller/register" exact="true">
                 <Typography
                   sx={{
                     textDecoration: "none",

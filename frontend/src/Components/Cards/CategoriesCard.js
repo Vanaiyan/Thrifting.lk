@@ -1,9 +1,9 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Colors } from "../../Styles/Theme";
-import { Grid } from "@mui/material";
+import { Grid, Avatar } from "@mui/material";
+import { grey } from "@mui/material/colors";
 
 export default function CategoryCard({
   categoryName,
@@ -13,13 +13,15 @@ export default function CategoryCard({
   const handleClick = () => {
     onClick(categoryName); // Pass the category name to the parent handler
   };
+
   return (
     <Card
       sx={{
         width: { lg: "250px", md: "200px", sm: "150px", xs: "150px" },
-        height: { lg: "60px", md: "50px", sm: "40px", xs: "40px" },
+        // height: { lg: "100px", md: "90px", sm: "80px", xs: "80px" },
         borderRadius: "10px",
         padding: "0",
+        backgroundColor: grey[300],
         transition: "box-shadow 0.3s ease-in",
         "&:hover": {
           boxShadow: "0px 10px 33px rgba(0, 0, 0, 0.2)",
@@ -29,17 +31,19 @@ export default function CategoryCard({
     >
       <Grid
         container
+        direction="row"
+        alignItems="center"
+        gap={2}
         sx={{
-          display: "flex",
-          alignItems: "center",
+          height: "100%",
+          padding: "0px",
         }}
       >
-        <Grid
-          item
+        <Avatar
           sx={{
-            display: "flex",
-            alignItems: "center",
-            height: { lg: "60px", md: "50px", sm: "40px", xs: "40px" },
+            bgcolor: grey[300],
+            width: "60px",
+            height: "60px",
           }}
         >
           {categorySymbol && (
@@ -47,26 +51,23 @@ export default function CategoryCard({
               component="span"
               sx={{
                 fontSize: 24,
-                marginRight: "10px",
                 color: Colors.primary,
               }}
             >
               {categorySymbol}
             </Typography>
           )}
-        </Grid>
-
-        <Grid item>
-          <Typography
-            sx={{
-              fontSize: { lg: 16, md: 15, sm: 14, xs: 14 },
-              fontWeight: 500,
-              // width: "140px",
-            }}
-          >
-            {categoryName}
-          </Typography>
-        </Grid>
+        </Avatar>
+        <Typography
+          variant="body1"
+          sx={{
+            textAlign: "center",
+            fontSize: { lg: 16, md: 15, sm: 14, xs: 14 },
+            fontWeight: 500,
+          }}
+        >
+          {categoryName}
+        </Typography>
       </Grid>
     </Card>
   );
