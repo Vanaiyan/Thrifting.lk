@@ -385,19 +385,17 @@ exports.deleteProducts = async (req, res, next) => {
       // Reduce the seller's rating by 1
       seller.rating -= 1;
       await seller.save();
-      console.log("suki");
+      console.log("Rating updated for seller:", seller.email);
     } else {
       // Send an email to the seller
-
-      console.log(seller.email);
+      console.log("Sending email to seller:", seller.email);
       const mailOptions = {
         to: seller.email,
         subject: "Product Deletion Notification",
-        text: `Dear ${seller.firstName} ${seller.lastName},\n\nWe are writing to inform you that the product you have added to our platform,"${product.name}" has been removed from our listing.\n\nAfter careful consideration, we regret to inform you that we are not confident in the product you have added, and therefore, we have decided to delete it from our platform. We understand that this may be disappointing news, and we apologize for any inconvenience this may cause.\n\nIf you have any questions or require further information, please do not hesitate to contact our support team at [Support Email Address] or [Support Phone Number].\n\nBest regards,\nThrifting.lk`,
+        text: `Dear ${seller.firstName} ${seller.lastName},\n\nWe are writing to inform you that the product you have added to our platform, "${product.name}" has been removed from our listing.\n\nAfter careful consideration, we regret to inform you that we are not confident in the product you have added, and therefore, we have decided to delete it from our platform. We understand that this may be disappointing news, and we apologize for any inconvenience this may cause.\n\nIf you have any questions or require further information, please do not hesitate to contact our support team at [Support Email Address] or [Support Phone Number].\n\nBest regards,\nThrifting.lk`,
       };
-      console.log("data");
       await sendEmail(mailOptions);
-      console.log("hello");
+      console.log("Email sent successfully");
     }
 
     await product.deleteOne();
@@ -414,6 +412,7 @@ exports.deleteProducts = async (req, res, next) => {
     });
   }
 };
+
 
 //Function to search product
 exports.searchProducts = async (req, res) => {

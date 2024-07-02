@@ -154,7 +154,7 @@ const ProductMain = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [productsToShow, setProductsToShow] = useState(10); // Number of products to show initially
+  const [productsToShow, setProductsToShow] = useState(30); // Number of products to show initially
   const navigate = useNavigate();
   const { category } = useParams();
   const location = useLocation();

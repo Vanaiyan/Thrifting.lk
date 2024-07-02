@@ -8,6 +8,7 @@ const {
   createProduct,
   getRecommendations,
   pushInteractedProduct,
+  getSuggestions,
 } = require("../controllers/productController");
 const router = express.Router();
 const {
@@ -38,5 +39,6 @@ router
     pushInteractedProduct
   );
 router.route("/recommendations").post(getRecommendations);
+router.route("/suggestion").post(getSuggestions);
 
 module.exports = router;

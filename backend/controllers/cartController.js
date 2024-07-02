@@ -69,7 +69,9 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(userId).populate("cartItems.productId");
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     // Create an object to store products grouped by seller ID
@@ -106,8 +108,10 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
     // Fetch the name of the seller for each seller ID
     for (const sellerId of Object.keys(productsBySeller)) {
       const seller = await Seller.findById(sellerId);
-      const sellerName = seller ? `${seller.firstName} ${seller.lastName}` : "Unknown Seller";
-      
+      const sellerName = seller
+        ? `${seller.firstName} ${seller.lastName}`
+        : "Unknown Seller";
+
       productsBySeller[sellerId].forEach((product) => {
         product.sellerName = sellerName;
       });

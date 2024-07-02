@@ -205,8 +205,8 @@ const CartCard = ({
                 </Stack>
                 <ConfirmPurchaseButton
                   seller={seller}
-                  productName={productName}
                   productId={productId}
+                  productName={productName}
                 />
               </Stack>
             ) : (

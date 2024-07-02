@@ -48,8 +48,7 @@ const ConfirmPurchaseButton = ({ seller, productId, productName }) => {
     const result = await dispatch(soldConfirmBySellerAction(productId));
 
     // Handle the feedback submission logic here
-    console.log("Rating:", rating);
-    console.log("Review:", review);
+
     const issueCategory = "null";
     const feedbackresult = await postFeedbackAction(
       seller,
