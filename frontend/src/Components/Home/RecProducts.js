@@ -48,6 +48,7 @@ const RecProducts = () => {
               ? product.pictures[0].image
               : ""
           }
+          discount={product.discount}
         />
       ))}
     </Box>

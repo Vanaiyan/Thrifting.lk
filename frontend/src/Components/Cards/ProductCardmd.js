@@ -20,7 +20,13 @@ const truncateTitle = (text, maxLength) => {
   }
 };
 
-export default function ProductCardmd({ id, title, price, imageSrc }) {
+export default function ProductCardmd({
+  id,
+  title,
+  price,
+  imageSrc,
+  discount,
+}) {
   const [recommendations, setRecommendations] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -71,13 +77,41 @@ export default function ProductCardmd({ id, title, price, imageSrc }) {
         >
           {truncateTitle(title, 40)}
         </Typography>
-        <Typography
-          fontSize="14px"
-          color="text.secondary"
-          sx={{ position: "absolute", top: "210px" }}
-        >
-          Price: {price}
-        </Typography>
+        {discount ? (
+          <Box sx={{ display: "flex" }}>
+            <Typography
+              fontSize="14px"
+              color="text.secondary"
+              sx={{
+                position: "absolute",
+                top: "210px",
+                textDecoration: "line-through", // Use "line-through" for strike-through
+                color: "red", // Adjust color for strike-through text
+              }}
+            >
+              LKR {price}
+            </Typography>
+            <Typography
+              fontSize="14px"
+              color="text.secondary"
+              sx={{
+                position: "absolute",
+                top: "230px", // Adjust top position for discount label
+              }}
+            >
+              LKR {price - discount}
+            </Typography>
+          </Box>
+        ) : (
+          <Typography
+            fontSize="14px"
+            color="text.secondary"
+            sx={{ position: "absolute", top: "210px" }}
+          >
+            LKR {price}
+          </Typography>
+        )}
+
         {recommendations.length > 0 && (
           <Typography fontSize="12px" sx={{ marginTop: "30px" }}>
             <strong>Recommended:</strong> {recommendations.join(", ")}

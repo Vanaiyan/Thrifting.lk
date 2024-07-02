@@ -72,7 +72,7 @@ export default function ProductCardsm({ id, title, price, imageSrc }) {
           color="text.secondary"
           sx={{ position: "absolute", top: "210px" }}
         >
-          Price: {price}
+          LKR {price}
         </Typography>
         {recommendations.length > 0 && (
           <Typography fontSize="12px" sx={{ marginTop: "30px" }}>
