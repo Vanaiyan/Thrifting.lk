@@ -5,7 +5,8 @@ import { authSuccess } from "../Reducers/authSlice";
 
 export const getCounts = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/admin/count');
+    const response = await axios.get('http://localhost:8000/api/admin/count', 
+      {withCredentials: true,});
     console.log(response.data)
     return response.data;
   } catch (error) {
@@ -17,7 +18,8 @@ export const getCounts = async () => {
 
 export const getBestSeller = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/admin/bestsellers');
+    const response = await axios.get('http://localhost:8000/api/admin/bestsellers',
+       {withCredentials: true,});
     console.log(response.data)
     return response.data;
   } catch (error) {
@@ -149,6 +151,7 @@ export const getApprovedSellers = async (page = 1, limit = 30) => {
         page,
         limit,
       },
+      withCredentials: true,
     });
     console.log("Sellers from Actions", response.data);
     return response.data;
@@ -181,6 +184,7 @@ export const searchSellers = async (searchQuery, page = 1, limit = 30) => {
         page,
         limit,
       },
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -201,6 +205,7 @@ export const getUsers = async (page = 1, limit = 30) => {
         page,
         limit,
       },
+      withCredentials: true,
     });
     console.log("Users from Actions",response.data)
 
@@ -220,7 +225,8 @@ export const getUsers = async (page = 1, limit = 30) => {
 export const getOrderList = async (page, limit) => {
   try {
     const response = await axios.get('http://localhost:8000/api/admin/orders', {
-      params: { page, limit }
+      params: { page, limit },
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -241,6 +247,7 @@ export const getOrderList = async (page, limit) => {
           page,
           limit,
         },
+        withCredentials: true,
       });
   
       console.log("Sellers from Actions", response.data);
@@ -254,7 +261,8 @@ export const getOrderList = async (page, limit) => {
 
 export const approveSeller = async (sellerId) => {
   try {
-    const response = await axios.put(`http://localhost:8000/api/admin/approveSeller/${sellerId}`);
+    const response = await axios.put(`http://localhost:8000/api/admin/approveSeller/${sellerId}`,
+       {withCredentials: true,});
     return response.data;
   } catch (error) {
     console.error("Error approving seller:", error);
@@ -264,7 +272,8 @@ export const approveSeller = async (sellerId) => {
 
 export const rejectSeller = async (sellerId) => {
   try {
-    const response = await axios.delete(`http://localhost:8000/api/admin/rejectSeller/${sellerId}`);
+    const response = await axios.delete(`http://localhost:8000/api/admin/rejectSeller/${sellerId}`,
+       {withCredentials: true,});
     return response.data;
   } catch (error) {
     console.error("Error rejecting seller:", error);
@@ -279,7 +288,8 @@ export const rejectSeller = async (sellerId) => {
 export const toDeleteSeller = async (page, limit) => {
   try {
     const response = await axios.get('http://localhost:8000/api/admin/todeleteseller', {
-      params: { page, limit }
+      params: { page, limit },
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -293,7 +303,8 @@ export const toDeleteSeller = async (page, limit) => {
 export const toWarnSeller = async (page, limit) => {
   try {
     const response = await axios.get('http://localhost:8000/api/admin/towarnseller', {
-      params: { page, limit }
+      params: { page, limit },
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -306,7 +317,8 @@ export const toWarnSeller = async (page, limit) => {
 
 export const warnSeller = async (sellerId) => {
   try {
-    const response = await axios.post(`http://localhost:8000/api/admin/warnseller`);
+    const response = await axios.post(`http://localhost:8000/api/admin/warnseller`,
+       {withCredentials: true,});
     return response.data;
   } catch (error) {
     console.error('Error sending warning email:', error);
@@ -318,7 +330,8 @@ export const warnSeller = async (sellerId) => {
 
 export const getMonthlyOrderSummary = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/order-count-last-six-months');
+    const response = await axios.get('http://localhost:8000/api/order-count-last-six-months',
+       {withCredentials: true,});
     return response.data;
   } catch (error) {
     console.error('Error fetching monthly order summary:', error);

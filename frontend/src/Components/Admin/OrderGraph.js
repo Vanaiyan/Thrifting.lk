@@ -11,10 +11,10 @@ const OrderGraph = () => {
     const fetchData = async () => {
       try {
         if (selectedInterval === 'Monthly') {
-          const response = await axios.get('http://localhost:8000/api/order-count-last-six-months');
+          const response = await axios.get('http://localhost:8000/api/order-count-last-six-months', {withCredentials: true,});
           setData(response.data);
         } else if (selectedInterval === 'Weekly') {
-          const response = await axios.get('http://localhost:8000/api/order-count-last-six-weeks');
+          const response = await axios.get('http://localhost:8000/api/order-count-last-six-weeks', {withCredentials: true,});
           setData(response.data);
         }
       } catch (error) {
