@@ -28,6 +28,7 @@ const AdminLoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // State to manage snackbar severity
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -38,17 +39,20 @@ const AdminLoginPage = () => {
 
       if (response.data.success) {
         console.log("Success:", response.data);
+        setSnackbarSeverity("success");
         showSnackbar("Login successful!");
 
         setTimeout(() => {
           navigate("/admin/dashboard");
         }, 1000);
       } else {
+        setSnackbarSeverity("error");
         showSnackbar(response.data.message);
       }
     } catch (error) {
       console.error(error);
-      showSnackbar("An error occurred. Please try again.");
+      setSnackbarSeverity("error");
+      showSnackbar(error.response.data.message);
     }
   };
 
@@ -161,7 +165,7 @@ const AdminLoginPage = () => {
                   onClose={handleSnackbarClose}
                   anchorOrigin={{ vertical: "center", horizontal: "left" }}
                 >
-                  <Alert onClose={handleSnackbarClose} severity="success">
+                  <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
                     {successMessage}
                   </Alert>
                 </Snackbar>

@@ -37,11 +37,11 @@ exports.loginAdmin = catchAsyncError(async (req, res, next) => {
   const user = await Admin.findOne({ email }).select("+password");
 
   if (!user) {
-    return next(new ErrorHandler("Invalid Seller username or password"));
+    return next(new ErrorHandler("Invalid Admin username or password"));
   }
 
   if (!(await user.isValidPassword(password))) {
-    return next(new ErrorHandler("Invalid Seller email or password"));
+    return next(new ErrorHandler("Invalid Admin email or password"));
   }
 
   sendToken(user, 201, res);

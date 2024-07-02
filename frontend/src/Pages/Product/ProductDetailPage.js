@@ -9,6 +9,7 @@ import ProductDescriptionBox from "../../Components/ProductdetailPage/ProductDes
 import ProductSellerDetailBox from "../../Components/ProductdetailPage/ProductSellerDetailBox";
 import { fetchProductDetails } from "../../Actions/homeProductActions";
 import { useParams } from "react-router-dom";
+import MoreProductBox from "../../Components/ProductdetailPage/MoreProductBox";
 
 const ProductDetailPage = () => {
   const { productId } = useParams(); // Get productId from URL params
@@ -59,7 +60,7 @@ const ProductDetailPage = () => {
             gap={4}
             padding={4}
             borderRadius={1}
-            height={1080}
+            height={1000}
             sx={{
               bgcolor: "##FFFFFF",
               border: "1px solid gray",
@@ -79,9 +80,16 @@ const ProductDetailPage = () => {
             <Box>
               <ProductSellerDetailBox sellerId={product.seller} />
             </Box>
+
           </Box>
+          
         </Container>
       </div>
+
+      <Box>
+        <MoreProductBox sellerId={product.seller} />
+      </Box>
+
     </div>
   );
 };
