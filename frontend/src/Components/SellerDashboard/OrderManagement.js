@@ -22,12 +22,14 @@ const OrderManagement = ({ sellerId }) => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/myproducts/${sellerId}`,
+          `http://localhost:8000/api/myproducts/orderManage/${sellerId}`,
           { withCredentials: true }
         );
-        const interestedProducts = response.data.filter(product => product.isInterested);
-        console.log(interestedProducts);
-        setProducts(interestedProducts);
+        const productsWithBuyers = response.data.map(product => ({
+          ...product,
+          buyer: `${product.buyer.firstName} ${product.buyer.lastName}`
+        }));
+        setProducts(productsWithBuyers);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -85,7 +87,9 @@ const OrderManagement = ({ sellerId }) => {
                 <TableRow key={product._id}>
                   <TableCell>{product.name}</TableCell>
                   <TableCell>{product.price - product.discount}</TableCell>
-                  <TableCell>{product.cartUser}</TableCell>
+                  <TableCell>
+                    {product.buyer }
+                  </TableCell>
                   <TableCell>
                     {product.status ? "Sold" : "Not Sold"}
                   </TableCell>
