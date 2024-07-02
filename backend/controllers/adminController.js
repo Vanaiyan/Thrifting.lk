@@ -159,6 +159,7 @@ exports.getTotalOrdersLastSixMonths = async (req, res) => {
 };
 
 
+
 // Utility function to get the last six weeks
 const getLastSixFullWeeks = () => {
   const weeks = [];
@@ -188,12 +189,15 @@ exports.getTotalOrdersLastSixWeeks = async (req, res) => {
 
     const weeklyResults = await Promise.all(
       lastSixWeeks.map(async (week, index) => {
+        const endOfWeekInclusive = new Date(week.endOfWeek);
+        endOfWeekInclusive.setDate(endOfWeekInclusive.getDate() + 1); // Include the endOfWeek in the range
+
         const results = await Order.aggregate([
           {
             $match: {
               timestamp: {
                 $gte: week.startOfWeek,
-                $lt: week.endOfWeek
+                $lt: endOfWeekInclusive
               }
             }
           },
@@ -225,49 +229,80 @@ exports.getTotalOrdersLastSixWeeks = async (req, res) => {
 
 
 
-// Function to get monthly product counts
-exports. getMonthlyProductCounts = async (req, res)  => {
+// Helper function to get the last six full months
+
+const getLastSixMonths = () => {
+  const months = [];
+  const date = new Date();
+  // Start from the previous month
+  date.setMonth(date.getMonth() - 1);
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth() - i, 1));
+    months.push({ month: d.getUTCMonth() + 1, year: d.getUTCFullYear() });
+  }
+  return months;
+};
+
+exports.getTotalProductPriceLastSixMonths = async (req, res) => {
   try {
-    const productCounts = await Product.aggregate([
+    const lastSixMonths = getLastSixMonths();
+
+    // Aggregate orders to get the total product prices per month
+    const results = await Order.aggregate([
       {
-        $addFields: {
-          createdAt: {
-            $dateFromString: {
-              dateString: { $toString: "$createdAt" }
-            }
+        $match: {
+          timestamp: {
+            $gte: new Date(Date.UTC(lastSixMonths[0].year, lastSixMonths[0].month - 1, 1)),
+            $lt: new Date(Date.UTC(lastSixMonths[lastSixMonths.length - 1].year, lastSixMonths[lastSixMonths.length - 1].month, 1))
           }
         }
       },
       {
+        $lookup: {
+          from: "products",
+          localField: "productId",
+          foreignField: "_id",
+          as: "productDetails"
+        }
+      },
+      {
+        $unwind: "$productDetails"
+      },
+      {
         $group: {
-          _id: {
-            year: { $year: "$createdAt" },
-            month: { $month: "$createdAt" }
-          },
-          count: { $sum: 1 }
+          _id: { year: { $year: "$timestamp" }, month: { $month: "$timestamp" } },
+          totalPrice: { $sum: "$productDetails.price" }
         }
       },
       {
-        $sort: {
-          "_id.year": 1,
-          "_id.month": 1
-        }
-      },
-      {
-        $project: {
-          year: "$_id.year",
-          month: "$_id.month",
-          count: 1,
-          _id: 0
-        }
+        $sort: { "_id.year": 1, "_id.month": 1 }
       }
     ]);
-    res.status(200).json(productCounts);
+
+    const monthlyTotals = lastSixMonths.reduce((acc, month) => {
+      acc[`${month.year}-${month.month}`] = { month: month.month, year: month.year, total: 0 };
+      return acc;
+    }, {});
+
+    results.forEach(result => {
+      const key = `${result._id.year}-${result._id.month}`;
+      if (monthlyTotals[key]) {
+        monthlyTotals[key].total += result.totalPrice;
+      }
+    });
+
+    const data = Object.values(monthlyTotals).map(month => ({
+      name: `${month.month}/${month.year}`,
+      total: month.total
+    }));
+
+    res.json(data);
   } catch (error) {
-    console.error('Error in getMonthlyProductCounts:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Error fetching product price totals:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
-}
+};
+
 
 
 
@@ -590,6 +625,10 @@ exports.getUsersToAdmin = async (req, res, next) => {
     });
   }
 };
+
+
+
+
 
 //All funtion to Order List page
 
@@ -986,3 +1025,57 @@ exports.warnSeller = async (req, res, next) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+// // Function to get monthly product counts
+// exports. getMonthlyProductCounts = async (req, res)  => {
+//   try {
+//     const productCounts = await Product.aggregate([
+//       {
+//         $addFields: {
+//           createdAt: {
+//             $dateFromString: {
+//               dateString: { $toString: "$createdAt" }
+//             }
+//           }
+//         }
+//       },
+//       {
+//         $group: {
+//           _id: {
+//             year: { $year: "$createdAt" },
+//             month: { $month: "$createdAt" }
+//           },
+//           count: { $sum: 1 }
+//         }
+//       },
+//       {
+//         $sort: {
+//           "_id.year": 1,
+//           "_id.month": 1
+//         }
+//       },
+//       {
+//         $project: {
+//           year: "$_id.year",
+//           month: "$_id.month",
+//           count: 1,
+//           _id: 0
+//         }
+//       }
+//     ]);
+//     res.status(200).json(productCounts);
+//   } catch (error) {
+//     console.error('Error in getMonthlyProductCounts:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// }

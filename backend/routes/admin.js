@@ -20,6 +20,7 @@ const { getAllProductsToAdmin,
     getMonthlyProductCounts,
     getTotalProductsLastSixMonths,
     getTotalOrdersLastSixWeeks,
+    getTotalProductPriceLastSixMonths,
    } = require("../controllers/adminController");
    const {
     isAuthenticatedUser,
@@ -31,6 +32,7 @@ router.route("/admin/count").get(isAuthenticatedUser,authorizeRoles("Admin"),get
 router.route('/order-count-last-six-months').get(isAuthenticatedUser,authorizeRoles("Admin"),getTotalOrdersLastSixMonths);
 router.route('/product-count-last-six-months').get(isAuthenticatedUser,authorizeRoles("Admin"),getTotalProductsLastSixMonths);
 router.route('/order-count-last-six-weeks').get(isAuthenticatedUser,authorizeRoles("Admin"),getTotalOrdersLastSixWeeks);
+router.route('/price-count-last-six-months').get(getTotalProductPriceLastSixMonths);
 // router.get('/order-count-last-six-months', getOrderCountLastSixMonths);
 router.route("/admin/bestsellers").get(getBestSeller);
 
@@ -40,7 +42,7 @@ router.route("/admin/login").post(loginAdmin);
 router.route("/admin/products").get(isAuthenticatedUser,authorizeRoles("Admin"),getAllProductsToAdmin);
 router.route("/admin/product/:id").delete(isAuthenticatedUser,authorizeRoles("Admin"),deleteProducts);
 router.route("/admin/product/search").get(isAuthenticatedUser,authorizeRoles("Admin"),searchProducts);
-router.route("/admin/total").get(isAuthenticatedUser,authorizeRoles("Admin"),getMonthlyProductCounts);
+// router.route("/admin/total").get(isAuthenticatedUser,authorizeRoles("Admin"),getMonthlyProductCounts);
 
 
 // Admin Approved Sellers
