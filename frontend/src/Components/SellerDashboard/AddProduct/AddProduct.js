@@ -27,8 +27,8 @@ const AddProduct = () => {
     let errors = {};
     if (!name) {
       errors.name = "ProductName is required";
-    }else if(name.length > 100){
-      errors.name = "ProductName must be below 100 characters";
+    }else if(name.length > 250){
+      errors.name = "ProductName must be below 250 characters";
     }
     if (!description) {
       errors.description = "Description is required";
