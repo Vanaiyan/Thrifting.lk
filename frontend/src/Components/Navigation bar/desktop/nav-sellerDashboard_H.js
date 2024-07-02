@@ -13,7 +13,6 @@ import { logoutUser } from "../../../Actions/userAction";
 import { useDispatch } from "react-redux";
 
 const NavSellerDashboard_H = ({ sellerId }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [seller, setSeller] = useState(null);
   const navigate = useNavigate();
@@ -49,7 +48,6 @@ const NavSellerDashboard_H = ({ sellerId }) => {
     navigate("/seller/register");
   };
   const handleLogout = () => {
-    setIsLoggedIn(false);
     handleMenuClose();
     dispatch(logoutUser());
     navigate("/");
@@ -60,10 +58,10 @@ const NavSellerDashboard_H = ({ sellerId }) => {
       container
       spacing={2}
       alignItems="center"
-      sx={{ padding: { md: "0 2vw", lg: "2vw 11vw" } }}
+      sx={{ padding: { md: "0 2vw", lg: "2vw 11vw" } ,height:"100px"}}
     >
       <Grid item md={11} lg={11} xs={11}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center" ,padding:" 0 5px"}}>
         <Link to="/" style={{ textDecoration: "none" }}>
           <NavTitle sx={{ color: "#ff5003", mr: 1 }}>Thrifting.lk</NavTitle>
           </Link>
