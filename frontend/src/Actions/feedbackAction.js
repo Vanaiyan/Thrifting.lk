@@ -8,18 +8,18 @@ export const postFeedbackAction = async (
   review
 ) => {
   try {
-    // console.log(
-    //   "seller",
-    //   sellerId,
-    //   "prod Id",
-    //   productId,
-    //   "issueCategory",
-    //   issueCategory,
-    //   "rating",
-    //   rating,
-    //   "review",
-    //   review
-    // );
+    console.log(
+      "seller",
+      sellerId,
+      "prod Id",
+      productId,
+      "issueCategory",
+      issueCategory,
+      "rating",
+      rating,
+      "review",
+      review
+    );
     const response = await axios.post(
       `http://localhost:8000/api/feedback`,
       {

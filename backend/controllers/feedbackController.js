@@ -41,7 +41,9 @@ exports.createFeedback = catchAsyncError(async (req, res, next) => {
 
   try {
     // Fetch product information
-    const product = await Product.findById(productId);
+    console.log("Product", productId);
+    console.log("Seller", sellerId);
+    const product = await Product.findById(sellerId);
 
     if (!product) {
       return next(new ErrorHandler("Product not found", 404));
@@ -51,7 +53,7 @@ exports.createFeedback = catchAsyncError(async (req, res, next) => {
     // Check if issueCategory is "no_response" and product.isInterested is true
     if (issueCategory === "no_response" && product.isInterested) {
       // Fetch seller information
-      const seller = await Seller.findById(sellerId);
+      const seller = await Seller.findById(productId);
       if (!seller) {
         return next(new ErrorHandler("Seller not found", 404));
       }
