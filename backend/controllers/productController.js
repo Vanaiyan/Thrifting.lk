@@ -8,7 +8,6 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const axios = require("axios");
 
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-  // const resPerPage = 8;
   let userId = null;
   if (req.user && req.user._id) {
     userId = req.user._id; // Get the current user ID
@@ -16,8 +15,9 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 
   // Build the base query
   let baseQuery = Product.find({
+    status: false, // Include products that are not sold
+    inCart: false, // Include products that are not in any cart
     $or: [
-      { inCart: false }, // Include products that are not in any cart
       { cartUser: userId }, // Include products that are in the cart of the current user
     ],
   });
@@ -337,11 +337,8 @@ exports.getSuggestions = async (req, res) => {
     // 4. Fetch recommended products with additional conditions
     const products = await Product.find({
       _id: { $in: productIds }, // Include recommended products
-      $or: [
-        { status: false }, // Exclude products where status is true (sold)
-        { inCart: false }, // Exclude products in any cart
-        { cartUser: { $ne: userId } }, // Exclude products in current user's cart
-      ],
+      status: false, // Include products that are not sold
+      inCart: false, // Include products that are not in any cart
     });
 
     res.status(200).json(products);
