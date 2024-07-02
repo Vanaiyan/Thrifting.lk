@@ -49,7 +49,7 @@ const ProductCard = ({ product }) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={name}
+        title={truncateText(name,70)} // Truncate the title to 50 characters
         subheader={`Seller: ${sellerName}`} 
       />
       <CardContent>

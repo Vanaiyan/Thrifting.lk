@@ -64,3 +64,12 @@ router.route("/admin/warnseller").post(warnSeller);
 
 
 module.exports = router;
+
+
+
+// SMTP_HOST = sandbox.smtp.mailtrap.io
+// SMTP_PORT = 2525
+// SMTP_USER = cf7a42dfc2b7fc
+// SMTP_PASS = 24219035531cc0
+// SMTP_FROM_NAME = vanai
+// SMTP_FROM_EMAIL = vanaiyan@gmail.com
