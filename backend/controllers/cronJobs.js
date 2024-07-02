@@ -144,7 +144,7 @@ const calculateSellerRatings = async () => {
 };
 
 // Schedule the script to run every Sunday at midnight
-cron.schedule("0 0 * * 0", async () => {
+cron.schedule("* * * * *", async () => {
   console.log("Running script to calculate and update seller ratings...");
   await calculateSellerRatings();
 });

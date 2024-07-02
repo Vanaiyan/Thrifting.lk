@@ -51,8 +51,8 @@ const ConfirmPurchaseButton = ({ seller, productId, productName }) => {
 
     const issueCategory = "null";
     const feedbackresult = await postFeedbackAction(
-      seller,
       productId,
+      seller,
       issueCategory,
       rating,
       review
