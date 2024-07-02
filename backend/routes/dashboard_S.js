@@ -13,6 +13,10 @@ router
   .get(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.getProductsBySellerId);
 
 router
+  .route("/myproducts/orderManage/:sellerId")
+  .get(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.getProductOrderDetails);
+
+router
   .route("/myproducts/changeSoldStatus/:productId")
   .put(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.changeSoldProductStatus);
 

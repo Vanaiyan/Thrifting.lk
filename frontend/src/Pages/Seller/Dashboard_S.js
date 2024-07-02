@@ -31,14 +31,14 @@ const Dashboard_S = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12} paddingBottom={3}>
+      <Grid item xs={12} paddingBottom={3} sx={{height:"15vh"}}>
         <NavDashboard_H sellerId={sellerId} />
       </Grid>
 
       <Grid item xs={12} paddingBottom={3}>
         <NavDashboard_V sellerId={sellerId} />
       </Grid>
-      <FloatingButton />
+      <FloatingButton/>
     </Grid>
   );
 };

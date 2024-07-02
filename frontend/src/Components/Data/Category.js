@@ -19,6 +19,7 @@ const categories = [
       "Hotplates",
       "Built-in ovens",
       "Built-in dishwashers",
+      "Home Decor"
     ],
   },
   {

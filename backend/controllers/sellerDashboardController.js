@@ -37,20 +37,37 @@ const getProductsBySellerId = async (req, res) => {
   }
 };
 
-// const getProductsBySellerId = async (req, res) => {
-//   try {
-//     const id = req.params.sellerId;
-//     const seller = await Seller.findById(id);
-//     if (!seller) {
-//       return res.status(404).json({ message: "Seller not found" });
-//     }
-//     // Populate cartUser field with user details
-//     const products = await Product.find({ seller: id }).populate('cartUser', 'firstName');
-//     res.json(products);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+const getProductOrderDetails = async (req, res) => {
+  try {
+    const id = req.params.sellerId;
+    const seller = await Seller.findById(id);
+    if (!seller) {
+      return res.status(404).json({ message: "Seller not found" });
+    }
+    // Find products where the seller is the given ID and isInterested is true
+    const products = await Product.find({ seller: id, isInterested: true });
+
+    // Collect unique buyer IDs from products
+    const buyerIds = [...new Set(products.map(product => product.cartUser))];
+
+    // Fetch buyer details based on buyerIds
+    const buyers = await Promise.all(buyerIds.map(async (buyerId) => {
+      const buyer = await User.findById(buyerId);
+      return buyer;
+    }));
+
+    // Prepare response with products and buyer details
+    const productsWithBuyers = products.map(product => ({
+      ...product.toObject(),
+      buyer: buyers.find(buyer => buyer._id.equals(product.cartUser)) || null
+    }));
+
+    res.json(productsWithBuyers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 const getSellerProfile = async (req, res) => {
   try {
@@ -225,6 +242,7 @@ const changeSoldProductStatus = async (req, res, next) => {
 module.exports = {
   authenticateSeller,
   getProductsBySellerId,
+  getProductOrderDetails,
   getSellerProfile,
   updateSellerProfile,
   changeSoldProductStatus,
