@@ -8,6 +8,7 @@ import axios from "axios";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Footer from "../../Components/Footer/Footer";
 
 const ProductMain = () => {
   const [products, setProducts] = useState([]);
@@ -153,7 +154,7 @@ const ProductMain = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          margin: "20px 8vw",
+          margin: "50px 8vw",
           gap: "10px",
         }}
       >
@@ -179,7 +180,7 @@ const ProductMain = () => {
             paddingY: "2px",
             paddingX: "8px",
             border: "1px solid",
-            borderColor: "primary.main",
+            borderColor: "black",
             borderRadius: "4px", // Makes it square
             margin: "0 8px",
           }}
@@ -202,7 +203,7 @@ const ProductMain = () => {
           <ArrowForwardIcon />
         </IconButton>
       </Box>
-      {/* <Footer style={{ width: "100%" }} /> */}
+      <Footer style={{ width: "100%" }} />
     </Box>
   );
 };

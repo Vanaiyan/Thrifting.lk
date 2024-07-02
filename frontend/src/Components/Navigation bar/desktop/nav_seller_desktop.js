@@ -12,9 +12,10 @@ import { Link, NavLink } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { Divider, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import SearchItem from "../../Home/SearchItem";
 
 const scrollToFooter = () => {
-  document.getElementById('footer').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById("footer").scrollIntoView({ behavior: "smooth" });
 };
 
 export const NavSellerDesktop = () => {
@@ -57,7 +58,7 @@ export const NavSellerDesktop = () => {
           <NavLink to="/product" exact activeClassName="active">
             <NavListItemText>CATEGORIES</NavListItemText>
           </NavLink>
-          <a onClick={scrollToFooter} style={{ cursor: 'pointer' }}>
+          <a onClick={scrollToFooter} style={{ cursor: "pointer" }}>
             <NavListItemText>ABOUT</NavListItemText>
           </a>
         </NavList>
@@ -72,10 +73,7 @@ export const NavSellerDesktop = () => {
           justifyContent: "flex-end",
         }}
       >
-        <SearchContainer>
-          <SearchIcon />
-          <SearchInput placeholder="Search" />
-        </SearchContainer>
+        <SearchItem />
       </Grid>
 
       <Grid

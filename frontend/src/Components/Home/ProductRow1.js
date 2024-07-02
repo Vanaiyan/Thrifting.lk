@@ -132,7 +132,7 @@ const ProductRow = () => {
       <Slider {...settings}>
         {products.map((product) => (
           <ProductCardsm
-            key={product.id}
+            key={product._id}
             id={product._id}
             title={product.name}
             price={product.price}
