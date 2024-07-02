@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 const ProductManagement = ({ sellerId }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -49,7 +49,7 @@ const ProductManagement = ({ sellerId }) => {
         setProducts(availableProducts);
 
         const authResponse = await axios.get(
-          `http://localhost:8000/api/authenticate/${sellerId}`, 
+          `http://localhost:8000/api/authenticate/${sellerId}`,
           { withCredentials: true }
         );
         console.log(authResponse.data.authenticatedStatus);
@@ -57,7 +57,10 @@ const ProductManagement = ({ sellerId }) => {
 
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching products or checking authentication:", error);
+        console.error(
+          "Error fetching products or checking authentication:",
+          error
+        );
         setLoading(false);
       }
     };
@@ -71,6 +74,27 @@ const ProductManagement = ({ sellerId }) => {
 
   return (
     <div>
+      <Grid
+        item
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: 100,
+          width: 200,
+          borderRadius: 10,
+          cursor: "pointer",
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddProduct}
+          disabled={null}
+        >
+          Add Product
+        </Button>
+      </Grid>
       {loading ? (
         <Box
           sx={{
@@ -112,7 +136,9 @@ const ProductManagement = ({ sellerId }) => {
                     id={product._id}
                     name={product.name}
                     price={product.price}
-                    imageSrcs={product.pictures?.map((picture) => picture.image)}
+                    imageSrcs={product.pictures?.map(
+                      (picture) => picture.image
+                    )}
                     description={product.description}
                     discount={product.discount}
                     setProducts={setProducts}
@@ -124,28 +150,6 @@ const ProductManagement = ({ sellerId }) => {
           )}
         </>
       )}
-
-      <Grid
-        item
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: 100,
-          width: 200,
-          borderRadius: 10,
-          cursor: "pointer",
-        }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddProduct}
-          disabled={null}
-        >
-          Add Product
-        </Button>
-      </Grid>
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
