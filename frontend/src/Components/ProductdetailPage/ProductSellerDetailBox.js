@@ -25,6 +25,7 @@ const ProductSellerDetailBox = ({ sellerId }) => {
     const loadSellerDetails = async () => {
       try {
         const data = await fetchSellerDetails(sellerId);
+        console.log(data.seller);
         setSellerDetails(data.seller);
         setLoading(false);
       } catch (error) {
@@ -47,7 +48,7 @@ const ProductSellerDetailBox = ({ sellerId }) => {
   return (
     <Box
       id="Four"
-      height={350}
+      height={210}
       width={430}
       borderRadius={1}
       sx={{
@@ -84,7 +85,7 @@ const ProductSellerDetailBox = ({ sellerId }) => {
             <Rating
               name="seller-rating"
               size="small"
-              value={sellerDetails?.rating || 0}
+              value={sellerDetails?.rating / 2}
               readOnly
               precision={0.5}
               emptyIcon={
@@ -131,9 +132,10 @@ const ProductSellerDetailBox = ({ sellerId }) => {
           color: "#FF9017",
           marginBottom: "10px",
         }}
-      ></Box>
+      >
+      </Box>
 
-      <Button
+      {/* <Button
         variant="contained"
         startIcon={<MessageIcon />}
         sx={{
@@ -158,7 +160,7 @@ const ProductSellerDetailBox = ({ sellerId }) => {
         sx={{ height: "32px", width: "390px", marginBottom: "15px" }}
       >
         View more from this Seller
-      </Button>
+      </Button> */}
     </Box>
   );
 };

@@ -10,7 +10,7 @@ router
 
 router
   .route("/myproducts/:sellerId")
-  .get(isAuthenticatedUser,authorizeRoles("Seller"),Dashboard_S.getProductsBySellerId);
+  .get(isAuthenticatedUser,authorizeRoles("Seller", "User"),Dashboard_S.getProductsBySellerId);
 
 router
   .route("/myproducts/changeSoldStatus/:productId")
