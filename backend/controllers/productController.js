@@ -12,7 +12,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   if (req.user && req.user._id) {
     userId = req.user._id; // Get the current user ID
   }
-
+  const resPerPage = 20;
   // Build the base query
   let baseQuery = Product.find({
     status: false, // Include products that are not sold
@@ -23,8 +23,10 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   });
 
   // Apply search, filter, and pagination
-  const apiFeatures = new APIFeatures(baseQuery, req.query).search().filter();
-  // .paginate(resPerPage);
+  const apiFeatures = new APIFeatures(baseQuery, req.query)
+    .search()
+    .filter()
+    .paginate(resPerPage);
 
   const products = await apiFeatures.query;
 

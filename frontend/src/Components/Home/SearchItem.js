@@ -1,9 +1,8 @@
-// src/Components/SearchItem.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, TextField, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import { Search as SearchIcon } from "@mui/icons-material";
-import { fetchProductsByKeyword } from "../../Actions/homeProductActions";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const StyledTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -20,22 +19,27 @@ const StyledTextField = styled(TextField)({
 
 const SearchItem = () => {
   const [keyword, setKeyword] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const keywordParam = searchParams.get("keyword");
+    if (keywordParam) {
+      setKeyword(keywordParam);
+    }
+  }, [location.search]);
 
   const handleSearchChange = (event) => {
     setKeyword(event.target.value);
   };
 
-  const handleSearch = async () => {
-    try {
-      const products = await fetchProductsByKeyword(keyword);
-      navigateToProductMain(keyword);
-    } catch (error) {
-      console.error("Error searching products:", error);
-    }
+  const handleSearch = () => {
+    navigateToProductMain(keyword);
   };
 
   const navigateToProductMain = (keyword) => {
-    window.location.href = `/product?keyword=${encodeURIComponent(keyword)}`;
+    navigate(`/product?keyword=${encodeURIComponent(keyword)}&page=1`);
   };
 
   const handleKeyPress = (event) => {
