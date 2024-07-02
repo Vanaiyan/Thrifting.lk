@@ -9,7 +9,7 @@ const ProductGraph = () => {
 
   const fetchProductCount = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/product-count-last-six-months');
+      const response = await axios.get('http://localhost:8000/api/product-count-last-six-months', {withCredentials: true,});
       setData(response.data);
     } catch (error) {
       console.error('Error fetching product count:', error);
