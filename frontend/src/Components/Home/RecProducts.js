@@ -32,6 +32,10 @@ const RecProducts = () => {
         flexWrap: "wrap",
         gap: "15px 5px",
         margin: { lg: "0 7vw", md: "0 2vw", sm: "0 0.5vw", xs: "0 0.3vw" },
+        display: "grid",
+        gridTemplateColumns: "repeat(5, 1fr)", // 5 products per row
+        // gap: "16px", // Gap between grid items
+        
       }}
     >
       {suggestProducts.map((product) => (

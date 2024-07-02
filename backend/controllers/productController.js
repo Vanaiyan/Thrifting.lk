@@ -171,7 +171,7 @@ exports.getRecommendations = async (req, res) => {
 
       // Fetch 50 random products
       const randomProducts = await Product.aggregate([
-        { $sample: { size: 50 } },
+        { $sample: { size: 20 } },
         {
           $match: {
             status: { $ne: true }, // Exclude products where status is true (sold)
@@ -198,7 +198,7 @@ exports.getRecommendations = async (req, res) => {
 
       // Fetch 50 random products if Flask server is not available or throws error
       const randomProducts = await Product.aggregate([
-        { $sample: { size: 50 } },
+        { $sample: { size: 20 } },
         {
           $match: {
             status: { $ne: true }, // Exclude products where status is true (sold)
@@ -321,7 +321,7 @@ exports.getSuggestions = async (req, res) => {
 
       // Fetch 50 random products if Flask server is not available or throws error
       const randomProducts = await Product.aggregate([
-        { $sample: { size: 50 } },
+        { $sample: { size: 20 } },
         {
           $match: {
             status: { $ne: true }, // Exclude products where status is true (sold)
