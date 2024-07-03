@@ -29,6 +29,8 @@ export const addToCart = (item) => async (dispatch) => {
 export const getCartProducts = () => async (dispatch) => {
   try {
     // Make API request to get cart products
+    const tokenCheck = localStorage.getItem("token");
+    console.log("TOKEN >>>",tokenCheck);
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND}/api/getcart`,
       {
