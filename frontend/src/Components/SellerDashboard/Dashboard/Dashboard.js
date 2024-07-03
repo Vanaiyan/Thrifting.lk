@@ -117,8 +117,7 @@ const Dashboard = ({ sellerId }) => {
           <Box
             padding={2}
             sx={{
-              minHeight: "60vh",
-              maxHeight: "calc(100vh - 200px)",
+              height: "58vh",
               overflowY: "auto",
               borderRadius:"20px",
               //   ffff80 ffdccd ff9668
