@@ -221,6 +221,9 @@ const LoginDesk = () => {
                     deals, personalized delights, and a treasure trove of
                     Thrifting.lk await you
                   </Typography>
+                  <NavLink to="/admin/login" exact activeClassName="active">
+                    Admin
+                  </NavLink>
                 </Grid>
               </Grid>
             </Grid>
