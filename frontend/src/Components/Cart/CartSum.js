@@ -25,9 +25,8 @@ const CartSum = (products) => {
 
   useEffect(() => {
     const { totalSum, totalDiscount, amountToPay } = calculateTotals();
-    console.log("products  dd");
-    console.log(products.products);
-    console.log(amountToPay);
+    // console.log(products.products);
+    // console.log(amountToPay);
     // Update state or perform any other actions based on new totals
   }, [products]);
 

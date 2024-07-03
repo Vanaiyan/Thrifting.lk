@@ -240,7 +240,7 @@ exports.interestedProduct = catchAsyncError(async (req, res, next) => {
     }
 
     await seller.save();
-    console.log("Seller's interestedUsers updated");
+    // console.log("Seller's interestedUsers updated");
 
     res.status(200).json({
       success: true,

@@ -2,6 +2,20 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+const UserProtectedRoute = ({ children }) => {
+  const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
+
+  if (loading) {
+    return <div>Loading...</div>; // or any loading spinner
+  }
+
+  if (!isAuthenticated || user?.role !== "User") {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
 const SellerProtectedRoute = ({ children }) => {
   const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
 
@@ -30,4 +44,4 @@ const AdminProtectedRoute = ({ children }) => {
   return children;
 };
 
-export { SellerProtectedRoute, AdminProtectedRoute };
+export { SellerProtectedRoute, AdminProtectedRoute, UserProtectedRoute };

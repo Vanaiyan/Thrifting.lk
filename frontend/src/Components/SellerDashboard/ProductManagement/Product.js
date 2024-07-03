@@ -18,7 +18,16 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import axios from "axios";
 import { BlurOverlay } from "./../../../Styles/SellerPage/ProductManageStyle";
 
-const Product = ({ id, name, price, imageSrcs, description, discount, setProducts, setSnackbar }) => {
+const Product = ({
+  id,
+  name,
+  price,
+  imageSrcs,
+  description,
+  discount,
+  setProducts,
+  setSnackbar,
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -56,7 +65,7 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
       setSnackbar({
         open: true,
         message: "Discount cannot be greater than or equal to the price",
-        severity: "error"
+        severity: "error",
       });
       return;
     }
@@ -69,29 +78,36 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
       };
 
       // Send the updated product details in the request body
-      const response = await axios.put(`http://localhost:8000/api/products/${id}`, updatedProduct, { withCredentials: true });
+      const response = await axios.put(
+        `http://localhost:8000/api/products/${id}`,
+        updatedProduct,
+        { withCredentials: true }
+      );
 
       // Update products state
-      setProducts(prevProducts =>
-        prevProducts.map(product =>
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
           product._id === id ? { ...product, ...updatedProduct } : product
         )
       );
 
-      console.log("Product updated successfully");
-      console.log(response.data.product);
+      // console.log("Product updated successfully");
+      // console.log(response.data.product);
       setSnackbar({
         open: true,
         message: "Product updated successfully",
-        severity: "success"
+        severity: "success",
       });
       setEditMode(false);
     } catch (error) {
-      console.error("Error updating product:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error updating product:",
+        error.response ? error.response.data : error.message
+      );
       setSnackbar({
         open: true,
         message: "Error updating product",
-        severity: "error"
+        severity: "error",
       });
     }
   };
@@ -107,22 +123,29 @@ const Product = ({ id, name, price, imageSrcs, description, discount, setProduct
     setDeleteDialogOpen(true);
   };
 
-  const handleDeleteConfirm = async() => {
+  const handleDeleteConfirm = async () => {
     setDeleteDialogOpen(false);
     try {
-      await axios.delete(`http://localhost:8000/api/products/${id}`, { withCredentials: true });
-      setProducts(prevProducts => prevProducts.filter(product => product._id !== id));
+      await axios.delete(`http://localhost:8000/api/products/${id}`, {
+        withCredentials: true,
+      });
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product._id !== id)
+      );
       setSnackbar({
         open: true,
         message: "Product deleted successfully",
-        severity: "success"
+        severity: "success",
       });
     } catch (error) {
-      console.error("Error deleting product:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error deleting product:",
+        error.response ? error.response.data : error.message
+      );
       setSnackbar({
         open: true,
         message: "Error deleting product",
-        severity: "error"
+        severity: "error",
       });
     }
   };

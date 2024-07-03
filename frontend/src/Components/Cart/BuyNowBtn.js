@@ -53,26 +53,22 @@ const BuyNowBtn = ({ seller, productName, productId }) => {
   const handleAgree = async () => {
     setOpenDialog(false);
 
-    console.log("ProductName", productName);
-    console.log("ProductId", productId);
-    console.log("ProductSeller", seller);
-
     await dispatch(showIntersted(productId));
 
     if (!currentUser || !loginUser) {
-      console.log("User or seller profiles not available");
+      // console.log("User or seller profiles not available");
       return;
     }
 
-    console.log("CurrentUser", currentUser);
-    console.log("loginUser", loginUser);
+    // console.log("CurrentUser", currentUser);
+    // console.log("loginUser", loginUser);
 
     const newChatId =
       currentUser._id > loginUser._id
         ? currentUser._id + loginUser._id
         : loginUser._id + currentUser._id;
 
-    console.log("ChatId in Cart", chatId);
+    // console.log("ChatId in Cart", chatId);
 
     dispatch(setChatId(newChatId));
 
@@ -81,7 +77,7 @@ const BuyNowBtn = ({ seller, productName, productId }) => {
       currentUser._id,
       loginUser._id,
       (messages) => {
-        console.log("Messages fetched");
+        // console.log("Messages fetched");
         dispatch(setMessages(messages));
       }
     );

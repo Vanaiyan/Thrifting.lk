@@ -26,7 +26,7 @@ const ProductMain = () => {
     const searchParams = new URLSearchParams(location.search);
     const keywordParam = searchParams.get("keyword");
     if (keywordParam) {
-      console.log("Keyword from URL:", keywordParam);
+      // console.log("Keyword from URL:", keywordParam);
       setKeyword(keywordParam);
     } else {
       setKeyword("");
@@ -57,7 +57,7 @@ const ProductMain = () => {
         }
 
         const response = await axios.get(url);
-        console.log("Fetched products:", response.data.products);
+        // console.log("Fetched products:", response.data.products);
         setProducts(response.data.products);
 
         if (response.data.products.length === 0 && currentPage > 1) {

@@ -20,9 +20,6 @@ const FeedbackDialog = ({ open, onClose, seller, productId }) => {
   const dispatch = useDispatch();
 
   const handleSubmitFeedback = async () => {
-    // Handle the feedback submission logic here
-    console.log("Rating:", rating);
-    console.log("Review:", review);
     const issueCategory = "null";
     await postFeedbackAction(productId, seller, issueCategory, rating, review);
 

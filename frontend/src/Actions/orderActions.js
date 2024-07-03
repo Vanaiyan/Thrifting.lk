@@ -5,7 +5,7 @@ export const getOrdersByUserId = async (userId) => {
     const response = await axios.get(`http://localhost:8000/api/orders`, {
       withCredentials: true,
     });
-    console.log(response.data.orders);
+    // console.log(response.data.orders);
     return response.data.orders;
   } catch (error) {
     throw new Error(

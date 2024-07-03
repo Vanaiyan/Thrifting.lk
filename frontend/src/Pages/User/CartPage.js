@@ -19,7 +19,7 @@ const CartPage = () => {
   }, [dispatch]);
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  console.log("CartItems : ", cartItems);
+  // console.log("CartItems : ", cartItems);
 
   return (
     <>

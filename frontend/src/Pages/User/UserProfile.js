@@ -239,7 +239,7 @@ const UserProfile = () => {
 
     try {
       const downloadURL = await uploadProfilePicture(file, (progress) => {
-        console.log(`Upload is ${progress}% done`);
+        // console.log(`Upload is ${progress}% done`);
       });
       setProfilePictureUrl(downloadURL);
       setUploading(false);

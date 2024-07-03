@@ -19,7 +19,7 @@ const ChatUserPanel = ({ users }) => {
   }, [users]);
 
   useEffect(() => {
-    console.log("New message notify");
+    // console.log("New message notify");
   }, [unreadMessages]);
 
   const handleUserClick = (user) => {

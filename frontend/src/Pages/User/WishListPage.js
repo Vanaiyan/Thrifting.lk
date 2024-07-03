@@ -13,7 +13,7 @@ const WishlistPage = () => {
   const wishlistItems = useSelector(
     (state) => state.wishlist.wishlistItems.products
   );
-  console.log("wishItems in page", wishlistItems);
+  // console.log("wishItems in page", wishlistItems);
 
   useEffect(() => {
     dispatch(getWishlistItems()); // Fetch wishlist items when the component mounts

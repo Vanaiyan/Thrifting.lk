@@ -12,8 +12,8 @@ const AddToCartButton = ({ productId }) => {
 
   const handleAddToCartClick = () => {
     if (authenticated) {
-      console.log("ProductId");
-      console.log(productId);
+      // console.log("ProductId");
+      // console.log(productId);
       dispatch(addToCart({ productId }));
     } else {
       setModalOpen(true);

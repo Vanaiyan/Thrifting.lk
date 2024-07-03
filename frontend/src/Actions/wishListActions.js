@@ -31,9 +31,9 @@ export const removeFromWishlist = (productId) => async (dispatch) => {
 
     // Dispatch action to update the wishlist in the Redux store
     dispatch(removeFromWishlistRedux(productId));
-    console.log("Deleted item", response.data);
+    // console.log("Deleted item", response.data);
   } catch (error) {
-    console.log("error", error);
+    // console.log("error", error);
   }
 };
 
@@ -42,7 +42,7 @@ export const getWishlistItems = () => async (dispatch) => {
     const response = await axios.get("http://localhost:8000/api/wishlist", {
       withCredentials: true,
     });
-    console.log("WishlistItems", response.data.wishlistItems);
+    // console.log("WishlistItems", response.data.wishlistItems);
     dispatch(getWishlistItemsSuccess(response.data.wishlistItems));
   } catch (error) {
     console.error(error);
