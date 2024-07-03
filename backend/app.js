@@ -21,10 +21,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://thrifting-lk-fe.onrender.com" || "http://localhost:3000",
+    origin: "https://thrifting-lk-fe.onrender.com",
     credentials: true,
   })
 );
+app.use((req, res, next) => {
+  console.log('Cookies:', req.cookies);
+  next();
+});
 
 app.use("/api", products);
 app.use("/api", auth);
