@@ -28,7 +28,8 @@ export const loginUser = (email, password) => {
       const user = response.data.user;
 
       // Set the token in cookie (example)
-      document.cookie = `token=${token}; path=/`; // Adjust the cookie name and path as needed
+      // document.cookie = `token=${token}; path=/`; // Adjust the cookie name and path as needed
+      document.cookie = `token=${token}; path=/; HttpOnly; Secure; SameSite=Strict`;
 
       // Dispatch success action to update Redux state
       dispatch(authSuccess({ isAuthenticated: true, user }));
