@@ -44,7 +44,7 @@ const ImageSection = () => {
       <Paper elevation={4} sx={{ display: 'inline-block' }}>
         <Box
           component="img"
-          src="/images/admin.jpg"
+          src="https://firebasestorage.googleapis.com/v0/b/thrifting-f4411.appspot.com/o/images%2FAdmin.jpg?alt=media&token=048ce6ee-d07c-4188-a378-7f0666d186dd"
           alt="Welcome"
           sx={{ maxWidth: '100%', height: '430px', display: 'block' }}
         />
