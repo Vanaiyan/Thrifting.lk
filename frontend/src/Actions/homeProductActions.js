@@ -4,8 +4,7 @@ import {
   fetchProductsSuccess,
   fetchProductsFailure,
 } from "../Reducers/productSlice";
-
-const BASE_URL = "http://localhost:8000/api"; // Replace with your actual backend API URL
+const BASE_URL = `${process.env.REACT_APP_BACKEND}/api`; // Replace with your actual backend API URL
 
 // Thunk action to fetch products
 export const fetchProducts = () => async (dispatch) => {
@@ -89,7 +88,9 @@ export const fetchProductDetails = async (productId) => {
 
 export const fetchProductsAll = async () => {
   try {
-    const response = await axios.get("http://localhost:8000/api/products");
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/products`
+    );
     return response.data.products;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -99,9 +100,12 @@ export const fetchProductsAll = async () => {
 
 export const fetchProductsByCategory = async (category) => {
   try {
-    const response = await axios.get("http://localhost:8000/api/products", {
-      params: { category },
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/products`,
+      {
+        params: { category },
+      }
+    );
     return response.data.products;
   } catch (error) {
     console.error(`Error fetching products for category ${category}:`, error);
@@ -111,7 +115,7 @@ export const fetchProductsByCategory = async (category) => {
 
 export const fetchProductsByFilter = async (minPrice, maxPrice) => {
   try {
-    let url = "http://localhost:8000/api/products";
+    let url = `${process.env.REACT_APP_BACKEND}/api/products`;
 
     if (minPrice && maxPrice) {
       url += `?price[gt]=${minPrice}&price[lt]=${maxPrice}`;
@@ -132,7 +136,7 @@ export const fetchProductsByFilter = async (minPrice, maxPrice) => {
 export const fetchProductsByKeyword = async (keyword) => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/products?keyword=${keyword}`
+      `${process.env.REACT_APP_BACKEND}/api/products?keyword=${keyword}`
     );
     // console.log("PRODUCT SEARCH : ", response.data.products);
     return response.data.products;
@@ -145,9 +149,11 @@ export const fetchProductsByKeyword = async (keyword) => {
 // Thunk action to get recommendations
 export const getSuggestionAction = (user) => async () => {
   try {
+    console.log("Backend");
+    console.log(process.env.REACT_APP_BACKEND);
     // console.log("User from action rec : ", user);
     const response = await axios.post(
-      `{process.env.BACKEND}/suggestion`,
+      `${process.env.REACT_APP_BACKEND}/api/suggestion`,
       { user: user },
       {
         withCredentials: true, // Ensure credentials are sent if using cookies for authentication
