@@ -28,7 +28,7 @@ app.use(
 );
 
 // Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, 'frontend/build')));
+app.use(express.static(path.join(__dirname, 'frontend/public')));
 
 app.use("/api", products);
 app.use("/api", auth);
