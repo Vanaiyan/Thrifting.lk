@@ -46,7 +46,7 @@ app.set("trust proxy", 1);
 
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
+  res.sendFile(path.join(__dirname, 'frontend/public/index.html'));
 });
 
 // Initialize cron jobs
