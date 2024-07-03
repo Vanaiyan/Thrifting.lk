@@ -35,22 +35,22 @@ const RecProducts = () => {
         display: "grid",
         gridTemplateColumns: "repeat(5, 1fr)", // 5 products per row
         // gap: "16px", // Gap between grid items
-        
       }}
     >
-      {suggestProducts.map((product) => (
-        <ProductCardmd
-          key={product._id}
-          id={product._id}
-          title={product.name}
-          price={product.price}
-          imageSrc={
-            product.pictures && product.pictures.length > 0
-              ? product.pictures[0].image
-              : ""
-          }
-        />
-      ))}
+      {suggestProducts &&
+        suggestProducts.map((product) => (
+          <ProductCardmd
+            key={product._id}
+            id={product._id}
+            title={product.name}
+            price={product.price}
+            imageSrc={
+              product.pictures && product.pictures.length > 0
+                ? product.pictures[0].image
+                : ""
+            }
+          />
+        ))}
     </Box>
   );
 };

@@ -147,13 +147,13 @@ export const getSuggestionAction = (user) => async () => {
   try {
     console.log("User from action rec : ", user);
     const response = await axios.post(
-      `${BASE_URL}/suggestion`,
+      `{process.env.BACKEND}/suggestion`,
       { user: user },
       {
         withCredentials: true, // Ensure credentials are sent if using cookies for authentication
       }
     );
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching recommendations:", error);
