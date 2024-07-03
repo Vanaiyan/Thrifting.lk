@@ -17,7 +17,7 @@ const getTokenFromCookies = () => {
 
   if (cookieToken) {
     const token = cookieToken.split("=")[1]; // Extract token value
-    console.log("Token:", token);
+    console.log("Token:", token); 
     return token;
   } else {
     console.error("Token not found in cookies.");
