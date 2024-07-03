@@ -39,7 +39,7 @@ const SignUpMobile = () => {
 
       const data = response.data;
 
-      console.log("Success:", data);
+      // console.log("Success:", data);
       // Handle success, e.g., redirect to another page
     } catch (error) {
       console.error("Error:", error.response.data);

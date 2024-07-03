@@ -6,7 +6,6 @@ import theme from "./Styles/Theme";
 import SignUp from "./Pages/User/SignUpMain";
 import Login from "./Pages/User/LoginMain";
 import { HomePage } from "./Pages/User/HomePage";
-import { Demo } from "./Components/demo";
 import Register_S from "./Pages/Seller/Register_S";
 import ChatPage from "./Pages/User/ChatPage";
 import CartPage from "./Pages/User/CartPage";
@@ -29,7 +28,7 @@ import { getUserAction } from "./Actions/userAction";
 import AdminLoginPage from "./Pages/Admin/AdminLogin";
 import AddProduct from "./Components/SellerDashboard/AddProduct/AddProduct";
 import UserProfile from "./Pages/User/UserProfile";
-import { SellerProtectedRoute } from "./ProtectedRoutes";
+import { SellerProtectedRoute, UserProtectedRoute } from "./ProtectedRoutes";
 import { AdminProtectedRoute } from "./ProtectedRoutes";
 import { finishLoading } from "./Reducers/authSlice";
 import ForgotPassword from "./Pages/User/ForgotPassword";
@@ -64,7 +63,6 @@ function App() {
           <Route path="/" Component={HomePage} />
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={SignUp} />
-          <Route path="/demo" Component={Demo} />
           <Route path="/chat/:chatId" Component={ChatPage} />
           <Route
             path="/productDetail/:productId"
@@ -72,12 +70,41 @@ function App() {
           />
           <Route path="/product/:category" Component={ProductMain} />
           <Route path="/product" element={<ProductMain />} />
-          <Route path="/cart" Component={CartPage} />
-          <Route path="/wishlist" Component={WishlistPage} />
-          <Route path="/orders" Component={MyPurchasesPage} />
-          <Route path="/user/profile" Component={UserProfile} />
           <Route path="/forgot-password" Component={ForgotPassword} />
           <Route path="/password/reset/:token" Component={PasswordReset} />
+
+          <Route
+            path="/cart"
+            Component={() => (
+              <UserProtectedRoute>
+                <CartPage />
+              </UserProtectedRoute>
+            )}
+          />
+          <Route
+            path="/wishlist"
+            Component={() => (
+              <UserProtectedRoute>
+                <WishlistPage />
+              </UserProtectedRoute>
+            )}
+          />
+          <Route
+            path="/orders"
+            Component={() => (
+              <UserProtectedRoute>
+                <MyPurchasesPage />
+              </UserProtectedRoute>
+            )}
+          />
+          <Route
+            path="/user/profile"
+            Component={() => (
+              <UserProtectedRoute>
+                <UserProfile />
+              </UserProtectedRoute>
+            )}
+          />
 
           {/* Protected Routes for Sellers */}
           <Route path="/seller">

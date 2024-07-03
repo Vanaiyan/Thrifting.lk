@@ -40,7 +40,7 @@ const LoginDesk = () => {
       const response = await dispatch(loginUser(email, password));
 
       if (response.data.success) {
-        console.log("Success:", response.data);
+        // console.log("Success:", response.data);
 
         setSnackbarSeverity("success");
         showSnackbar("Login successful!");
@@ -181,7 +181,10 @@ const LoginDesk = () => {
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: "center", horizontal: "left" }}
               >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
+                <Alert
+                  onClose={handleSnackbarClose}
+                  severity={snackbarSeverity}
+                >
                   {successMessage}
                 </Alert>
               </Snackbar>

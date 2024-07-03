@@ -37,7 +37,7 @@ const LoginMobile = () => {
       const data = await loginUser(email, password);
 
       if (data.success) {
-        console.log("Success:", data);
+        // console.log("Success:", data);
         showSnackbar("Login successful!");
       } else {
         showSnackbar(data.message);

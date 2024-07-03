@@ -10,7 +10,7 @@ const authenticateSeller = async (req, res) => {
     const seller = await Seller.findById(id);
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
-    }  
+    }
     authenticatedStatus = seller.authenticated;
     res.json({
       message: "Seller authenticated successfully",
@@ -48,18 +48,20 @@ const getProductOrderDetails = async (req, res) => {
     const products = await Product.find({ seller: id, isInterested: true });
 
     // Collect unique buyer IDs from products
-    const buyerIds = [...new Set(products.map(product => product.cartUser))];
+    const buyerIds = [...new Set(products.map((product) => product.cartUser))];
 
     // Fetch buyer details based on buyerIds
-    const buyers = await Promise.all(buyerIds.map(async (buyerId) => {
-      const buyer = await User.findById(buyerId);
-      return buyer;
-    }));
+    const buyers = await Promise.all(
+      buyerIds.map(async (buyerId) => {
+        const buyer = await User.findById(buyerId);
+        return buyer;
+      })
+    );
 
     // Prepare response with products and buyer details
-    const productsWithBuyers = products.map(product => ({
+    const productsWithBuyers = products.map((product) => ({
       ...product.toObject(),
-      buyer: buyers.find(buyer => buyer._id.equals(product.cartUser)) || null
+      buyer: buyers.find((buyer) => buyer._id.equals(product.cartUser)) || null,
     }));
 
     res.json(productsWithBuyers);
@@ -147,7 +149,7 @@ const updateSellerPassword = async (req, res) => {
 const changeNotSoldProductStatus = async (req, res, next) => {
   try {
     const productId = req.params.productId;
-    console.log("Received productId:", productId);
+    // console.log("Received productId:", productId);
 
     const product = await Product.findById(productId);
     if (!product) {
@@ -194,7 +196,7 @@ const changeSoldProductStatus = async (req, res, next) => {
     }
 
     const userId = product.cartUser;
-    console.log("UserId", product.cartUser);
+    // console.log("UserId", product.cartUser);
 
     // Update product status
     product.status = status;
@@ -222,7 +224,7 @@ const changeSoldProductStatus = async (req, res, next) => {
       });
 
       await newOrder.save();
-      console.log("New order created:", newOrder);
+      // console.log("New order created:", newOrder);
     }
 
     return res.status(200).json({

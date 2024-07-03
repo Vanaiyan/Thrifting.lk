@@ -8,6 +8,7 @@ import axios from "axios";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Footer from "../../Components/Footer/Footer";
 
 const ProductMain = () => {
   const [products, setProducts] = useState([]);
@@ -25,7 +26,7 @@ const ProductMain = () => {
     const searchParams = new URLSearchParams(location.search);
     const keywordParam = searchParams.get("keyword");
     if (keywordParam) {
-      console.log("Keyword from URL:", keywordParam);
+      // console.log("Keyword from URL:", keywordParam);
       setKeyword(keywordParam);
     } else {
       setKeyword("");
@@ -56,7 +57,7 @@ const ProductMain = () => {
         }
 
         const response = await axios.get(url);
-        console.log("Fetched products:", response.data.products);
+        // console.log("Fetched products:", response.data.products);
         setProducts(response.data.products);
 
         if (response.data.products.length === 0 && currentPage > 1) {
@@ -145,6 +146,7 @@ const ProductMain = () => {
                 ? product.pictures[0].image
                 : ""
             }
+            discount={product.discount}
           />
         ))}
       </Box>
@@ -153,7 +155,7 @@ const ProductMain = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          margin: "20px 8vw",
+          margin: "50px 8vw",
           gap: "10px",
         }}
       >
@@ -179,7 +181,7 @@ const ProductMain = () => {
             paddingY: "2px",
             paddingX: "8px",
             border: "1px solid",
-            borderColor: "primary.main",
+            borderColor: "black",
             borderRadius: "4px", // Makes it square
             margin: "0 8px",
           }}
@@ -202,7 +204,7 @@ const ProductMain = () => {
           <ArrowForwardIcon />
         </IconButton>
       </Box>
-      {/* <Footer style={{ width: "100%" }} /> */}
+      <Footer style={{ width: "100%" }} />
     </Box>
   );
 };

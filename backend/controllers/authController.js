@@ -60,8 +60,8 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 
   const resetToken = user.getResetToken();
   const ReceiverEmail = user.email;
-  console.log("Reset : ", resetToken);
-  console.log("Email : ", ReceiverEmail);
+  // console.log("Reset : ", resetToken);
+  // console.log("Email : ", ReceiverEmail);
 
   try {
     await user.save();

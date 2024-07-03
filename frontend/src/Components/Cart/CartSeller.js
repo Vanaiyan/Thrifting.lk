@@ -5,7 +5,7 @@ import CartSum from "./CartSum";
 
 const CartSeller = ({ cartItems }) => {
   useEffect(() => {
-    console.log("products list", cartItems);
+    // console.log("products list", cartItems);
   }, [cartItems]);
 
   // Check if cartItems is defined and an array before filtering

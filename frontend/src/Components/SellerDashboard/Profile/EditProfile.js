@@ -12,7 +12,9 @@ const EditProfile = ({ seller }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const firstLetter_firstName = seller.firstName ? seller.firstName.charAt(0) : "";
+  const firstLetter_firstName = seller.firstName
+    ? seller.firstName.charAt(0)
+    : "";
   const firstLetter_lastName = seller.lastName ? seller.lastName.charAt(0) : "";
 
   const handleSnackbarClose = () => {
@@ -50,9 +52,10 @@ const EditProfile = ({ seller }) => {
     try {
       const response = await axios.put(
         `http://localhost:8000/api/profile/${editableSeller._id}`,
-        editableSeller, { withCredentials: true },
+        editableSeller,
+        { withCredentials: true }
       );
-      console.log("Seller details updated successfully:", response.data);
+      // console.log("Seller details updated successfully:", response.data);
       setEditMode(false);
       setSnackbarMessage("Seller details updated successfully");
       setSnackbarSeverity("success");

@@ -75,7 +75,6 @@ export const loginSeller = (email, password) => {
       const user = response.data.user;
       // console.log("Login Seller check1");
       // console.log("res", response);
-      console.log("res.data", response.data);
       // console.log("token", response.data.token);
 
       //To remove any existing tokens
