@@ -8,28 +8,10 @@ import {
 import { updatesoldConfirmedSellerReducer } from "../Reducers/cartSlice";
 import axios from "axios";
 
-// Function to retrieve token from cookies
-const getTokenFromCookies = () => {
-  const cookies = document.cookie.split(";");
-  const cookieToken = cookies.find((cookie) =>
-    cookie.trim().startsWith("token=")
-  );
-
-  if (cookieToken) {
-    const token = cookieToken.split("=")[1]; // Extract token value
-    console.log("Token:", token); 
-    return token;
-  } else {
-    console.error("Token not found in cookies.");
-    return null;
-  }
-};
-
 // Example usage
 export const addToCart = (item) => async (dispatch) => {
   try {
-    const token = getTokenFromCookies();
-    console.log("TOKENNNN : ", token);
+
     // Make API request to add item to cart
     const response = await axios.post(
       `${process.env.REACT_APP_BACKEND}/api/addToCart`,
