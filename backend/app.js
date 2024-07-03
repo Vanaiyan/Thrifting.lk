@@ -26,6 +26,9 @@ app.use(
   })
 );
 
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+
 app.use("/api", products);
 app.use("/api", auth);
 app.use("/api", chat);
@@ -39,6 +42,11 @@ app.use("/api", orderRoutes);
 
 app.use(errorMiddleware);
 app.set("trust proxy", 1);
+
+// Anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
+});
 
 // Initialize cron jobs
 cronJobs;
