@@ -5,6 +5,7 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const nodemailer = require("nodemailer");
 const sendEmail = require("../utils/email");
+
 // Get all feedbacks for a specific product
 exports.getFeedbacksByProduct = catchAsyncError(async (req, res, next) => {
   const { productId } = req.params;

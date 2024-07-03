@@ -29,6 +29,7 @@ const MyPurchasesPage = ({ userId }) => {
     const fetchOrders = async () => {
       try {
         const ordersData = await getOrdersByUserId(userId);
+        console.log(ordersData);
         setOrders(ordersData);
       } catch (err) {
         setError(err.message);
