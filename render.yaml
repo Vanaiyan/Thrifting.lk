@@ -15,5 +15,5 @@ services:
   - type: web
     name: thrifting-frontend
     env: static
-    staticPublishPath: frontend/public
+    staticPublishPath: frontend/build
     buildCommand: npm run install-client && npm run build
