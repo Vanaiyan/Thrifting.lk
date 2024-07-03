@@ -27,7 +27,7 @@ import { logoutUser } from "../../../Actions/userAction"; // Adjust the path as 
 import SearchItem from "../../Home/SearchItem";
 
 const scrollToFooter = () => {
-  document.getElementById('footer').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById("footer").scrollIntoView({ behavior: "smooth" });
 };
 
 export const NavDesktopAuthorized = () => {
@@ -83,16 +83,16 @@ export const NavDesktopAuthorized = () => {
         }}
       >
         <NavList type="row">
-          <NavLink to="/" exact activeClassName="active">
+          <NavLink to="/" exact="true">
             <NavListItemText>Home</NavListItemText>
           </NavLink>
-          <NavLink to="/seller" exact activeClassName="active">
+          <NavLink to="/seller" exact="true">
             <NavListItemText>SELL</NavListItemText>
           </NavLink>
-          <NavLink to="/product" exact activeClassName="active">
+          <NavLink to="/product" exact="true">
             <NavListItemText>CATEGORIES</NavListItemText>
           </NavLink>
-          <a onClick={scrollToFooter} style={{ cursor: 'pointer' }}>
+          <a onClick={scrollToFooter} style={{ cursor: "pointer" }}>
             <NavListItemText>ABOUT</NavListItemText>
           </a>
         </NavList>
@@ -161,10 +161,13 @@ export const NavDesktopAuthorized = () => {
             horizontal: "right",
           }}
         >
-          <MenuItem sx={{ paddingY: 0, paddingX: 5 }} onClick={() => {
-            handleNavigate("/user/profile");
-            handleMenuClose();
-          }}>
+          <MenuItem
+            sx={{ paddingY: 0, paddingX: 5 }}
+            onClick={() => {
+              handleNavigate("/user/profile");
+              handleMenuClose();
+            }}
+          >
             My Profile
           </MenuItem>
           <Divider />

@@ -88,7 +88,7 @@ export const showNotInterested = (productId) => async () => {
   }
 };
 
-export const soldConfirmBySellerAction = (productId) => async (dispatch) => {
+export const soldConfirmByBuyerAction = (productId) => async (dispatch) => {
   try {
     // console.log("Reached show interested in Actions");
 
@@ -108,6 +108,7 @@ export const soldConfirmBySellerAction = (productId) => async (dispatch) => {
         soldConfirmedBuyer: true,
       })
     );
+    dispatch(removeFromCart(productId));
 
     return data;
   } catch (error) {

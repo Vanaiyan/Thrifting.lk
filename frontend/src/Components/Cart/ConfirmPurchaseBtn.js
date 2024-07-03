@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { postFeedbackAction } from "../../Actions/feedbackAction";
-import { soldConfirmBySellerAction } from "../../Actions/cartActions";
+import { soldConfirmByBuyerAction } from "../../Actions/cartActions";
 
 const ConfirmPurchaseButton = ({ seller, productId, productName }) => {
   const [openFirstDialog, setOpenFirstDialog] = useState(false);
@@ -45,7 +45,7 @@ const ConfirmPurchaseButton = ({ seller, productId, productName }) => {
   };
 
   const handleSubmitFeedback = async () => {
-    const result = await dispatch(soldConfirmBySellerAction(productId));
+    const result = await dispatch(soldConfirmByBuyerAction(productId));
 
     // Handle the feedback submission logic here
 

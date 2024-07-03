@@ -31,13 +31,13 @@ const Banner = () => {
         <br />
         <Typo3>Buy, Sell, and Embrace Second-Hand Fashion</Typo3>
         <br />
-        <Button
+        {/* <Button
           variant="contained"
           size={useMediaQuery(theme.breakpoints.down("md")) ? "small" : "large"}
           sx={{ borderRadius: "17px" }}
         >
           {"Learn More "}
-        </Button>
+        </Button> */}
       </TextContainer>
       <ImageContainer1>
         <img src={imgBlur} style={{ height: "80%" }} />

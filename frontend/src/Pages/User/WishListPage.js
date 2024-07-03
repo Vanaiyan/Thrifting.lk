@@ -6,6 +6,7 @@ import { Colors } from "../../Styles/Theme";
 import { getWishlistItems } from "../../Actions/wishListActions"; // Import the action to fetch wishlist items
 import WishlistCard from "../../Components/WishList/WishListCard";
 import { removeFromWishlist } from "../../Actions/wishListActions";
+import Footer from "../../Components/Footer/Footer";
 
 const WishlistPage = () => {
   const dispatch = useDispatch();
@@ -28,36 +29,39 @@ const WishlistPage = () => {
   };
 
   return (
-    <Box
-      bgcolor={Colors.bg}
-      sx={{ width: "100vw", height: "100vh", overflowX: "hidden" }}
-    >
-      <NavigationAuth />
-      <h2 style={{ margin: "5vh 7vw 0 7vw" }}>WishList</h2>
-      <Divider sx={{ margin: "2vh 7vw" }} />
+    <>
       <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(400px, 0fr))",
-          gap: "1rem",
-          padding: "0 7vw",
-          justifyContent: "space-around",
-        }}
+        bgcolor={Colors.bg}
+        sx={{ width: "100vw", height: "100vh", overflowX: "hidden" }}
       >
-        {wishlistItems &&
-          wishlistItems.map((wishlistItem) => (
-            <WishlistCard
-              key={wishlistItem._id}
-              productId={wishlistItem._id}
-              productName={wishlistItem.name}
-              price={wishlistItem.price}
-              description={wishlistItem.description}
-              image={wishlistItem.pictures[0].image}
-              onRemove={() => handleRemoveFromWishlist(wishlistItem._id)}
-            />
-          ))}
+        <NavigationAuth />
+        <h2 style={{ margin: "5vh 7vw 0 7vw" }}>WishList</h2>
+        <Divider sx={{ margin: "2vh 7vw" }} />
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(400px, 0fr))",
+            gap: "1rem",
+            padding: "0 7vw",
+            justifyContent: "space-around",
+          }}
+        >
+          {wishlistItems &&
+            wishlistItems.map((wishlistItem) => (
+              <WishlistCard
+                key={wishlistItem._id}
+                productId={wishlistItem._id}
+                productName={wishlistItem.name}
+                price={wishlistItem.price}
+                description={wishlistItem.description}
+                image={wishlistItem.pictures[0].image}
+                onRemove={() => handleRemoveFromWishlist(wishlistItem._id)}
+              />
+            ))}
+        </Box>
       </Box>
-    </Box>
+      <Footer />
+    </>
   );
 };
 
