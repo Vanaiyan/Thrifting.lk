@@ -83,6 +83,9 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
       // console.log("CartItem")
       // console.log("CartItem product",product)
       if (product) {
+        if (product.soldConfirmedBuyer == true) {
+          return;
+        }
         if (!productsBySeller[product.seller]) {
           productsBySeller[product.seller] = [];
         }
@@ -94,7 +97,7 @@ exports.getCartProduct = catchAsyncError(async (req, res, next) => {
           discount: product.discount,
           description: product.description,
           seller: product.seller,
-          cartTimestamp: cartItem.createdAt, // assuming there's a timestamp on the cartItem
+          cartTimestamp: product.cartTimestamp,
           isInterested: product.isInterested,
           soldConfirmedBuyer: product.soldConfirmedBuyer,
           interestedTimestamp: product.interestedTimestamp,
@@ -237,7 +240,7 @@ exports.interestedProduct = catchAsyncError(async (req, res, next) => {
     }
 
     await seller.save();
-    console.log("Seller's interestedUsers updated");
+    // console.log("Seller's interestedUsers updated");
 
     res.status(200).json({
       success: true,

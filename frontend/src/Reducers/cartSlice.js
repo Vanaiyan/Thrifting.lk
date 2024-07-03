@@ -20,6 +20,12 @@ const cartSlice = createSlice({
       if (itemIndex === -1) {
         // Add new item if it doesn't exist
         existingSeller.push(newItem);
+      } else {
+        // Update the existing item
+        existingSeller[itemIndex] = {
+          ...existingSeller[itemIndex],
+          ...newItem, // Merge new item details (if necessary)
+        };
       }
 
       // Update the state

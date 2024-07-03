@@ -15,7 +15,7 @@ const ChatUser = ({ user, onClick, unreadCount }) => {
   };
 
   useEffect(() => {
-    console.log(unreadCount);
+    // console.log(unreadCount);
   }, []);
 
   return (

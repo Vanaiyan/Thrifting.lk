@@ -5,6 +5,7 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const nodemailer = require("nodemailer");
 const sendEmail = require("../utils/email");
+
 // Get all feedbacks for a specific product
 exports.getFeedbacksByProduct = catchAsyncError(async (req, res, next) => {
   const { productId } = req.params;
@@ -28,7 +29,7 @@ exports.getFeedbacksByProduct = catchAsyncError(async (req, res, next) => {
 exports.createFeedback = catchAsyncError(async (req, res, next) => {
   const { productId, sellerId, rating, review, issueCategory } = req.body;
   const userId = req.user._id;
-  console.log(productId, sellerId, rating, review, issueCategory);
+  // console.log(productId, sellerId, rating, review, issueCategory);
   // Create the feedback object
   let feedbackData = {
     userId,
@@ -41,8 +42,8 @@ exports.createFeedback = catchAsyncError(async (req, res, next) => {
 
   try {
     // Fetch product information
-    console.log("Product", productId);
-    console.log("Seller", sellerId);
+    // console.log("Product", productId);
+    // console.log("Seller", sellerId);
     const product = await Product.findById(productId);
 
     if (!product) {

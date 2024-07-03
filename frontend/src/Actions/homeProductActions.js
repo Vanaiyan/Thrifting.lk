@@ -37,7 +37,7 @@ export const fetchSellerDetails = async (sellerId) => {
 export const pushInteractedProduct = (productId) => async () => {
   try {
     // Make POST request to the backend endpoint
-    console.log("Pushing interacted product:", productId);
+    // console.log("Pushing interacted product:", productId);
     const response = await axios.post(
       `${BASE_URL}/users/interact`,
       { productId },
@@ -47,7 +47,7 @@ export const pushInteractedProduct = (productId) => async () => {
     );
 
     // Log success message
-    console.log("Successfully pushed interacted product:", response.data);
+    // console.log("Successfully pushed interacted product:", response.data);
 
     return response.data;
   } catch (error) {
@@ -61,7 +61,7 @@ export const pushInteractedProduct = (productId) => async () => {
 export const getRecommendations = (user) => async (dispatch) => {
   dispatch(fetchProductsStart());
   try {
-    console.log("User from action rec : ", user);
+    // console.log("User from action rec : ", user);
     const response = await axios.post(
       `${BASE_URL}/recommendations`,
       { user: user },
@@ -69,7 +69,7 @@ export const getRecommendations = (user) => async (dispatch) => {
         withCredentials: true, // Ensure credentials are sent if using cookies for authentication
       }
     );
-    console.log(response.data);
+    // console.log(response.data);
     dispatch(fetchProductsSuccess(response.data));
   } catch (error) {
     console.error("Error fetching recommendations:", error);
@@ -134,7 +134,7 @@ export const fetchProductsByKeyword = async (keyword) => {
     const response = await axios.get(
       `http://localhost:8000/api/products?keyword=${keyword}`
     );
-    console.log("PRODUCT SEARCH : ", response.data.products);
+    // console.log("PRODUCT SEARCH : ", response.data.products);
     return response.data.products;
   } catch (error) {
     console.error(`Error fetching products for keyword ${keyword}:`, error);
@@ -145,7 +145,7 @@ export const fetchProductsByKeyword = async (keyword) => {
 // Thunk action to get recommendations
 export const getSuggestionAction = (user) => async () => {
   try {
-    console.log("User from action rec : ", user);
+    // console.log("User from action rec : ", user);
     const response = await axios.post(
       `{process.env.BACKEND}/suggestion`,
       { user: user },

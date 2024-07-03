@@ -15,7 +15,8 @@ const RecProducts = () => {
         const response = await dispatch(
           getSuggestionAction(user ? user._id : "")
         );
-        setSuggestProducts(response); // Assuming getSuggestionAction returns the products array
+        const reversedProducts = response.slice().reverse().slice(0, 15);
+        setSuggestProducts(reversedProducts);
       } catch (error) {
         console.error("Error fetching recommendations:", error);
       }
@@ -37,20 +38,19 @@ const RecProducts = () => {
         // gap: "16px", // Gap between grid items
       }}
     >
-      {suggestProducts &&
-        suggestProducts.map((product) => (
-          <ProductCardmd
-            key={product._id}
-            id={product._id}
-            title={product.name}
-            price={product.price}
-            imageSrc={
-              product.pictures && product.pictures.length > 0
-                ? product.pictures[0].image
-                : ""
-            }
-          />
-        ))}
+      {suggestProducts.map((product) => (
+        <ProductCardmd
+          key={product._id}
+          id={product._id}
+          title={product.name}
+          price={product.price}
+          imageSrc={
+            product.pictures && product.pictures.length > 0
+              ? product.pictures[0].image
+              : ""
+          }
+        />
+      ))}
     </Box>
   );
 };

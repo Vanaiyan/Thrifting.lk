@@ -40,7 +40,14 @@ const MoreProductBox = ({ sellerId }) => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -52,6 +59,7 @@ const MoreProductBox = ({ sellerId }) => {
         products.map((product) => (
           <Box key={product.id} sx={{ minWidth: 200 }}>
             <ProductCardsm
+              key={product._id}
               id={product._id}
               title={product.name}
               price={product.price}
@@ -64,7 +72,7 @@ const MoreProductBox = ({ sellerId }) => {
           </Box>
         ))
       ) : (
-        <Typography variant="h6" sx={{ margin: '0 auto' }}>
+        <Typography variant="h6" sx={{ margin: "0 auto" }}>
           No products available from this seller.
         </Typography>
       )}

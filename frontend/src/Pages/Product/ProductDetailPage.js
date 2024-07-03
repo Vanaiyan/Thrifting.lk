@@ -80,16 +80,13 @@ const ProductDetailPage = () => {
             <Box>
               <ProductSellerDetailBox sellerId={product.seller} />
             </Box>
-
           </Box>
-          
         </Container>
       </div>
 
       <Box>
         <MoreProductBox sellerId={product.seller} />
       </Box>
-
     </div>
   );
 };
