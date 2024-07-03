@@ -19,6 +19,7 @@ const categories = [
       "Hotplates",
       "Built-in ovens",
       "Built-in dishwashers",
+      "Kettles",
       "Home Decor"
     ],
   },
@@ -28,7 +29,7 @@ const categories = [
   },
   {
     name: "Clothing",
-    subcategories: ["Men", "Women", "Kids", "Casuals", "Officewear"],
+    subcategories: ["Men", "Women", "Kids", "Casuals", "Officewear","Partywear","Traditionalwear"],
   },
   {
     name: "Shoes",
