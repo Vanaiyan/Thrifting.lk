@@ -7,6 +7,7 @@ const Admin = require("../models/adminModel");
 
 exports.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const { token } = req.cookies;
+  console.log("TokenCheck"0;
   console.log("Token : ", token);
   if (!token) {
     return next(new ErrorHandler("Login First to Access", 401));
