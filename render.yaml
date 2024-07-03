@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: thrifting-backend
+    env: node
+    buildCommand: npm run install-server
+    startCommand: npm run start-server
+    envVars:
+      - key: NODE_ENV
+        value: production
+    routes:
+      - type: rewrite
+        source: '/*'
+        destination: /index.html
+
+  - type: web
+    name: thrifting-frontend
+    env: static
+    staticPublishPath: frontend/build
+    buildCommand: npm run install-client && npm run build
