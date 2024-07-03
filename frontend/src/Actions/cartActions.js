@@ -32,7 +32,7 @@ export const getCartProducts = () => async (dispatch) => {
     const response = await axios.get("http://localhost:8000/api/getcart", {
       withCredentials: true,
     });
-    console.log("get cart : ", response.data.productsBySeller);
+    // console.log("get cart : ", response.data.productsBySeller);
 
     // Dispatch action to update state upon success
     dispatch(getCartSuccess(response.data.productsBySeller));
@@ -56,7 +56,7 @@ export const removeItem = (productId) => async (dispatch) => {
     dispatch(removeFromCart(productId));
   } catch (error) {
     // Handle error
-    console.log("error", error);
+    // console.log("error", error);
   }
 };
 
@@ -68,7 +68,7 @@ export const showIntersted = (productId) => async () => {
       {},
       { withCredentials: true }
     );
-    console.log("Interst in product successfully", productId);
+    // console.log("Interst in product successfully", productId);
   } catch (error) {
     console.error("Error updating interst in product:", error);
   }

@@ -96,10 +96,10 @@ export const registerUser = (
           },
         }
       );
-      console.log("response", response);
+      // console.log("response", response);
       const data = response.data;
       if (data.success) {
-        console.log("Success:", data);
+        // console.log("Success:", data);
         const token = data.token;
         const user = data.user;
 

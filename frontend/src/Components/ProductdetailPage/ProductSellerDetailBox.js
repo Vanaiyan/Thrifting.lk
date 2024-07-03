@@ -25,7 +25,7 @@ const ProductSellerDetailBox = ({ sellerId }) => {
     const loadSellerDetails = async () => {
       try {
         const data = await fetchSellerDetails(sellerId);
-        console.log(data.seller);
+        // console.log(data.seller);
         setSellerDetails(data.seller);
         setLoading(false);
       } catch (error) {
@@ -132,8 +132,7 @@ const ProductSellerDetailBox = ({ sellerId }) => {
           color: "#FF9017",
           marginBottom: "10px",
         }}
-      >
-      </Box>
+      ></Box>
 
       {/* <Button
         variant="contained"

@@ -52,7 +52,7 @@ const ProductManagement = ({ sellerId }) => {
           `http://localhost:8000/api/authenticate/${sellerId}`,
           { withCredentials: true }
         );
-        console.log(authResponse.data.authenticatedStatus);
+        // console.log(authResponse.data.authenticatedStatus);
         setIsAuthenticated(authResponse.data.authenticatedStatus);
 
         setLoading(false);

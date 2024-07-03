@@ -154,22 +154,22 @@ exports.createProduct = async (req, res, next) => {
 };
 
 exports.getRecommendations = async (req, res) => {
-  console.log("Recommendation Process starting");
+  // console.log("Recommendation Process starting");
 
   try {
     // 1. Fetch user data (if authenticated)
     let interactedProducts = null;
     const userId = req.body.user ? req.body.user : null; // Handle unauthenticated users
-    console.log("User Id of rec user : ", userId);
+    // console.log("User Id of rec user : ", userId);
     if (userId) {
       const user = await User.findById(userId).exec();
       interactedProducts = user.interactedProducts || [];
-      console.log("Interacted Products:", interactedProducts);
+      // console.log("Interacted Products:", interactedProducts);
     }
 
     // 2. Handle empty interactedProducts and unauthenticated users
     if (!interactedProducts || !userId || !interactedProducts.length > 0) {
-      console.log("Fetching random products");
+      // console.log("Fetching random products");
 
       // Fetch 50 random products
       const randomProducts = await Product.aggregate([
@@ -196,7 +196,7 @@ exports.getRecommendations = async (req, res) => {
       recommendedProductIds = response.data;
     } catch (error) {
       console.error("Error from Flask server:", error.message);
-      console.log("Fetching random products due to Flask server error");
+      // console.log("Fetching random products due to Flask server error");
 
       // Fetch 50 random products if Flask server is not available or throws error
       const randomProducts = await Product.aggregate([
@@ -285,12 +285,12 @@ exports.pushInteractedProduct = catchAsyncError(async (req, res, next) => {
 });
 
 exports.getSuggestions = async (req, res) => {
-  console.log("Suggestion Process starting");
+  // console.log("Suggestion Process starting");
 
   try {
     // 1. Fetch user data (if authenticated)
     const userId = req.body.user ? req.body.user : null; // Handle unauthenticated users
-    console.log("User Id of rec user : ", userId);
+    // console.log("User Id of rec user : ", userId);
 
     // 2. Fetch wishlist and cart items IDs
     const wishlistItems = await Wishlist.findOne({ user: userId })
@@ -305,8 +305,8 @@ exports.getSuggestions = async (req, res) => {
       ? wishlistItems.products.map((product) => product._id)
       : [];
 
-    console.log("Wishlist IDs:", wishlistIds);
-    console.log("Cart IDs:", cartIds);
+    // console.log("Wishlist IDs:", wishlistIds);
+    // console.log("Cart IDs:", cartIds);
 
     // 3. Call Flask server with wishlistIds and cartIds
     let productIds = [];
@@ -316,10 +316,10 @@ exports.getSuggestions = async (req, res) => {
         cart_ids: cartIds,
       });
       productIds = response.data;
-      console.log("Response from Flask:", productIds);
+      // console.log("Response from Flask:", productIds);
     } catch (error) {
       console.error("Error from Flask server:", error.message);
-      console.log("Fetching random products due to Flask server error");
+      // console.log("Fetching random products due to Flask server error");
 
       // Fetch 50 random products if Flask server is not available or throws error
       const randomProducts = await Product.aggregate([

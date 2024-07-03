@@ -40,7 +40,7 @@ const LoginSellerPage = () => {
       const response = await dispatch(loginSeller(email, password));
 
       if (response.data.success) {
-        console.log("Success:", response.data);
+        // console.log("Success:", response.data);
 
         setSnackbarSeverity("success");
         showSnackbar("Login successful!");
@@ -173,7 +173,10 @@ const LoginSellerPage = () => {
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: "center", horizontal: "left" }}
               >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
+                <Alert
+                  onClose={handleSnackbarClose}
+                  severity={snackbarSeverity}
+                >
                   {successMessage}
                 </Alert>
               </Snackbar>

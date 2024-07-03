@@ -18,10 +18,18 @@ const getOrdersByUserId = async (req, res, next) => {
         const seller = await Seller.findById(order.sellerId);
 
         // Fetch feedback/rating for the product
-        const feedback = await Feedback.findOne({
+        const feedbacks = await Feedback.find({
           userId,
           productId: order.productId,
         });
+        // console.log(feedbacks);
+
+        // Check if any of the feedbacks have a rating
+        const feedbackRating = feedbacks.some(
+          (feedback) => feedback.rating != null
+        )
+          ? feedbacks.find((feedback) => feedback.rating != null).rating
+          : null;
 
         return {
           productId: order.productId,
@@ -29,7 +37,7 @@ const getOrdersByUserId = async (req, res, next) => {
           sellerName: seller.firstName + " " + seller.lastName,
           sellerId: seller._id,
           timestamp: order.timestamp,
-          feedback: feedback ? feedback.rating : null, // Assuming 'rating' is a field in the Feedback model
+          feedback: feedbackRating, // Set feedback rating if any feedback has a rating
         };
       })
     );

@@ -29,7 +29,7 @@ const WishlistIconButton = ({ productId }) => {
 
     try {
       const response = await addToWishlist(productId);
-      console.log(response);
+      // console.log(response);
       setIsWishlist(!isWishlist);
     } catch (error) {
       console.error(error.message);

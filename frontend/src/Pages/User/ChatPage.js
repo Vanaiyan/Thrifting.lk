@@ -27,14 +27,14 @@ const ChatPage = () => {
   const fetchSortedUsers = async () => {
     try {
       if (users.length > 0 && usersLoaded) {
-        console.log("all user list: ", users);
+        // console.log("all user list: ", users);
         const sortedUserIds = await getSortedUsers(user._id);
-        console.log("Sorted Users:", sortedUserIds);
+        // console.log("Sorted Users:", sortedUserIds);
         const sortedUserObjects = sortedUserIds.map((userId) =>
           users.find((user) => user._id === userId)
         );
         setSortedUsers(sortedUserObjects);
-        console.log("Sorted User Objects:", sortedUserObjects);
+        // console.log("Sorted User Objects:", sortedUserObjects);
       }
     } catch (error) {
       console.error("Error fetching sorted users:", error);
@@ -46,9 +46,9 @@ const ChatPage = () => {
       const usersList = await getUsers(keyword);
       if (usersList.success) {
         setUsers(usersList.users);
-        console.log("All users list", usersList.users);
+        // console.log("All users list", usersList.users);
       } else {
-        console.log("Error:", usersList?.message);
+        // console.log("Error:", usersList?.message);
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -60,10 +60,10 @@ const ChatPage = () => {
       const userProfile = await getUserProfile();
       if (userProfile) {
         dispatch(setLoginUser(userProfile.user));
-        console.log("login user", userProfile.user);
+        // console.log("login user", userProfile.user);
         setLoading(false);
       } else {
-        console.log("Error:", userProfile?.message);
+        // console.log("Error:", userProfile?.message);
       }
     } catch (error) {
       console.error("An error occurred:", error);

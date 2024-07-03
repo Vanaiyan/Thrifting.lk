@@ -6,7 +6,7 @@ const APIFeatures = require("../utils/apiFeatures");
 
 exports.getUsers = catchAsyncError(async (req, res, next) => {
   let query;
-  console.log(req.user.role);
+  // console.log(req.user.role);
 
   if (req.user.role == "User") {
     if (req.query) {

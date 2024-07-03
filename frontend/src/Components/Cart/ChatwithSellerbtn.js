@@ -40,7 +40,7 @@ const ChatWithSellerButton = ({ seller }) => {
         : loginUser._id + currentUser._id;
 
     dispatch(setChatId(newChatId));
-    console.log("chatId from Chat withseller component", newChatId);
+    // console.log("chatId from Chat withseller component", newChatId);
     const unsubscribe = getMessagesForChat(
       newChatId,
       currentUser._id,
