@@ -25,10 +25,6 @@ app.use(
     credentials: true,
   })
 );
-app.use((req, res, next) => {
-  console.log('Cookies:', req.cookies);
-  next();
-});
 
 app.use("/api", products);
 app.use("/api", auth);
