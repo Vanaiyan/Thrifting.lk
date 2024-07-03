@@ -23,9 +23,9 @@ export const NavList = styled(List)({
   display: "flex",
   flexDirection: "column",
   gap: "20px",
-  alignItems: "flex-start", // Align items to start
-  padding: "0", // Reset padding if needed
-  margin: "0",  // Reset margin if needed
+  alignItems: "flex-start",
+  padding: "0", 
+  margin: "0",  
   minWidth: "50px",
   maxWidth: "300px",
 });

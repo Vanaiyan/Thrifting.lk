@@ -10,8 +10,18 @@ import {
   ListItemText,
 } from "@mui/material";
 import axios from "axios";
-import FloatingButton from "../../Chat/floatingbutton";
 import categories from "../../Data/Category";
+
+const InfoBox = ({ title, value, color }) => {
+  return (
+    <Paper elevation={1} sx={{borderRadius:"20px"}}>
+      <Box padding={1} sx={{ backgroundColor: color, color:"#000",borderRadius:"20px",textAlign:"center" }}>
+        <Typography variant="h5">{title}</Typography>
+        <Typography variant="h4">{value}</Typography>
+      </Box>
+    </Paper>
+  );
+};
 
 const Dashboard = ({ sellerId }) => {
   const [products, setProducts] = useState([]);
@@ -39,7 +49,6 @@ const Dashboard = ({ sellerId }) => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [sellerId]);
 
@@ -60,37 +69,32 @@ const Dashboard = ({ sellerId }) => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={4} md={4}>
-        <Paper elevation={3}>
-          <Box padding={2} sx={{ backgroundColor: "#bcdb6d" }}>
-            <Typography variant="h6">My total Products</Typography>
-            <Typography variant="h4">
-              {products.length + soldProducts.length}
-            </Typography>
-          </Box>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} md={4}>
-        <Paper elevation={3}>
-          <Box padding={2} sx={{ backgroundColor: "#68cbfe" }}>
-            <Typography variant="h6">Available Products</Typography>
-            <Typography variant="h4">{products.length}</Typography>
-          </Box>
-        </Paper>
-      </Grid>
-      <Grid item xs={4} md={4}>
-        <Paper elevation={3}>
-          <Box padding={2} sx={{ backgroundColor: "#bc6cc9" }}>
-            <Typography variant="h6">Sold Products</Typography>
-            <Typography variant="h4">{soldProducts.length}</Typography>
-          </Box>
-        </Paper>
+      <Grid item xs={12} md={4}>
+        <InfoBox
+          title="My Total Products"
+          value={products.length + soldProducts.length}
+          color="#bcdb6d"
+        />
       </Grid>
       <Grid item xs={12} md={4}>
-        <Paper elevation={3}>
+        <InfoBox
+          title="Available Products"
+          value={products.length}
+          color="#68cbfe"
+        />
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <InfoBox
+          title="Sold Products"
+          value={soldProducts.length}
+          color="#bc6cc9"
+        />
+      </Grid>
+      <Grid item xs={6} md={4}>
+        <Paper elevation={3} sx={{borderRadius:"20px"}}>
           <Box
             padding={2}
-            sx={{ maxHeight: "60vh", backgroundColor: "#f1f1f1" }}
+            sx={{ maxHeight: "60vh", backgroundColor: "#ffdccd" , color:"#000",borderRadius:"20px"}}
           >
             <Typography variant="h5">Categories</Typography>
             <List>
@@ -108,41 +112,40 @@ const Dashboard = ({ sellerId }) => {
           </Box>
         </Paper>
       </Grid>
-      <Grid item xs={12} md={8}>
-        <Paper elevation={3}>
+      <Grid item xs={6} md={8}>
+        <Paper elevation={3} sx={{borderRadius:"20px"}}>
           <Box
             padding={2}
             sx={{
-              backgroundColor: "#f1f1f1",
-              minHeight: "60vh",
-              maxHeight: "calc(100vh - 200px)",
+              height: "58vh",
               overflowY: "auto",
+              borderRadius:"20px",
+              //   ffff80 ffdccd ff9668
+              backgroundColor: "#ffdccd"
             }}
           >
-            <Typography variant="h5">Products in {selectedCategory}</Typography>
+            <Typography variant="h5">Available Products in {selectedCategory}</Typography>
             {selectedCategory && (
-              <Grid sx={{padding:"20px"}}>
+              <Grid sx={{ padding: "20px" }}>
                 {products
                   .filter((product) => product.category[0] === selectedCategory)
                   .map((product) => (
-                    
-                      <Box
-                        key={product._id}
-                        marginBottom={2}
-                        sx={{ backgroundColor: "#fff" }}
-                      >
-                        <Paper sx={{height:"35px", padding:"0 10px "}}>
+                    <Box
+                      key={product._id}
+                      marginBottom={2}
+                      sx={{ backgroundColor: "#fff",borderRadius:"10px" }}
+                    >
+                      <Paper sx={{  padding: "10px 20px ",backgroundColor:"#ffff80",borderRadius:"10px" }}>
                         <Typography variant="body1">{product.name}</Typography>
-                        </Paper>
-                      </Box>
-                    
+                      </Paper>
+                    </Box>
                   ))}
-                <Box marginTop={2}>
+                <Box marginTop={2} sx={{backgroundColor:"#fff",padding:"10px 20px",backgroundColor:"#ffff80",borderRadius:"10px"}}>
                   <Typography variant="body1">
                     Total: {getProductCountByMainCategory(selectedCategory)}
                   </Typography>
                 </Box>
-                </Grid>
+              </Grid>
             )}
             {!selectedCategory && (
               <Typography variant="body1">

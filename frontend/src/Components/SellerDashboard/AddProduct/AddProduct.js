@@ -7,6 +7,7 @@ import Form1 from "./Form1";
 import Form2 from "./Form2";
 import Form3 from "./Form3";
 import { useSelector } from "react-redux";
+import { NavSeller } from "../../Navigation bar/desktop/nav-seller";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -39,7 +40,7 @@ const AddProduct = () => {
     }
     if (!price || isNaN(price) || price <= 0)
       errors.price = "Valid price is required and must be greater than zero";
-    if (!gender) errors.gender = "Gender is required";
+    if (!gender) errors.gender = "Targetted User is required";
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -130,6 +131,7 @@ const AddProduct = () => {
 
   return (
     <Box sx={{ padding: 4 }}>
+      <NavSeller />
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={12} sm={8} md={6}>
           {step === 1 && (
