@@ -9,7 +9,7 @@ export const postFeedbackAction = async (
 ) => {
   try {
     const response = await axios.post(
-      `http://localhost:8000/api/feedback`,
+      `${process.env.REACT_APP_BACKEND}/api/feedback`,
       {
         productId,
         sellerId,

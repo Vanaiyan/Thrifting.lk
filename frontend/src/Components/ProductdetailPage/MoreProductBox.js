@@ -12,7 +12,7 @@ const MoreProductBox = ({ sellerId }) => {
       try {
         // Fetch products
         const response = await axios.get(
-          `http://localhost:8000/api/myproducts/${sellerId}`,
+          `${process.env.REACT_APP_BACKEND}/api/myproducts/${sellerId}`,
           { withCredentials: true }
         );
         const availableProducts = response.data.filter(

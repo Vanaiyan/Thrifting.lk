@@ -27,14 +27,14 @@ const AddProduct = () => {
     let errors = {};
     if (!name) {
       errors.name = "ProductName is required";
-    }else if(name.length > 250){
+    } else if (name.length > 250) {
       errors.name = "ProductName must be below 250 characters";
     }
     if (!description) {
       errors.description = "Description is required";
-    } else if (description.length < 400  ) {
+    } else if (description.length < 400) {
       errors.description = "Description must be above 400 characters ";
-    }else if(description.length > 800){
+    } else if (description.length > 800) {
       errors.description = "Description must be below 800 characters";
     }
     if (!price || isNaN(price) || price <= 0)
@@ -88,8 +88,7 @@ const AddProduct = () => {
 
     try {
       await axios.post(
-
-        `http://localhost:8000/api/products/${user._id}`,
+        `${process.env.REACT_APP_BACKEND}/api/products/${user._id}`,
         productData,
         { withCredentials: true },
         {

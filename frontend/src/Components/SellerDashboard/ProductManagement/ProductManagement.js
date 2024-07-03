@@ -40,7 +40,7 @@ const ProductManagement = ({ sellerId }) => {
       try {
         // Fetch products
         const response = await axios.get(
-          `http://localhost:8000/api/myproducts/${sellerId}`,
+          `${process.env.REACT_APP_BACKEND}/api/myproducts/${sellerId}`,
           { withCredentials: true }
         );
         const availableProducts = response.data.filter(
@@ -49,7 +49,7 @@ const ProductManagement = ({ sellerId }) => {
         setProducts(availableProducts);
 
         const authResponse = await axios.get(
-          `http://localhost:8000/api/authenticate/${sellerId}`,
+          `${process.env.REACT_APP_BACKEND}/api/authenticate/${sellerId}`,
           { withCredentials: true }
         );
         // console.log(authResponse.data.authenticatedStatus);

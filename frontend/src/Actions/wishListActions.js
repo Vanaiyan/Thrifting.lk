@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 export const addToWishlist = async (productId) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/wishlist",
+      `${process.env.REACT_APP_BACKEND}/api/wishlist`,
       {
         productId,
       },
@@ -25,7 +25,7 @@ export const removeFromWishlist = (productId) => async (dispatch) => {
   try {
     // Send a DELETE request to the backend API endpoint to remove the item from the wishlist
     const response = await axios.delete(
-      `http://localhost:8000/api/wishlist/${productId}`,
+      `${process.env.REACT_APP_BACKEND}/api/wishlist/${productId}`,
       { withCredentials: true }
     );
 
@@ -39,9 +39,12 @@ export const removeFromWishlist = (productId) => async (dispatch) => {
 
 export const getWishlistItems = () => async (dispatch) => {
   try {
-    const response = await axios.get("http://localhost:8000/api/wishlist", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/wishlist`,
+      {
+        withCredentials: true,
+      }
+    );
     // console.log("WishlistItems", response.data.wishlistItems);
     dispatch(getWishlistItemsSuccess(response.data.wishlistItems));
   } catch (error) {

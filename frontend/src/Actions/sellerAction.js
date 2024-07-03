@@ -33,7 +33,7 @@ export const uploadImageToFirebase = async (file, onProgress) => {
 export const submitSeller = async (email, password) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/login",
+      `${process.env.REACT_APP_BACKEND}/api/login`,
       {
         email,
         password,
@@ -57,7 +57,7 @@ export const loginSeller = (email, password) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/seller/login",
+        `${process.env.REACT_APP_BACKEND}/api/seller/login`,
         {
           email,
           password,

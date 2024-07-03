@@ -11,7 +11,7 @@ export const loginUser = (email, password) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/login",
+        `${process.env.REACT_APP_BACKEND}/api/login`,
         {
           email,
           password,
@@ -46,9 +46,12 @@ export const getUserAction = (userData) => {
   return async (dispatch) => {
     try {
       // Make API call to fetch user data
-      const response = await axios.get("http://localhost:8000/api/user", {
-        withCredentials: true, // Ensure cookies are sent with request
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND}/api/user`,
+        {
+          withCredentials: true, // Ensure cookies are sent with request
+        }
+      );
       //console.log(response.data);
       const user = response.data;
       // console.log("Logged in user : ", user);
@@ -65,9 +68,12 @@ export const logoutUser = () => {
   return async (dispatch) => {
     try {
       // Make API call to fetch user data
-      const response = await axios.get("http://localhost:8000/api/logout", {
-        withCredentials: true, // Ensure cookies are sent with request
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND}/api/logout`,
+        {
+          withCredentials: true, // Ensure cookies are sent with request
+        }
+      );
 
       document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       dispatch(logout());
@@ -88,7 +94,7 @@ export const registerUser = (
   return async (dispatch) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/register",
+        `${process.env.REACT_APP_BACKEND}/api/register`,
         userData,
         {
           headers: {
@@ -129,7 +135,7 @@ export const registerUser = (
 export const sendResetPasswordLink = async (email) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/password/forgot",
+      `${process.env.REACT_APP_BACKEND}/api/password/forgot`,
       { email }
     );
     return { success: true, message: response.data.message };
@@ -148,7 +154,7 @@ export const sendResetPasswordLink = async (email) => {
 export const resetPassword = async (token, password) => {
   try {
     const response = await axios.post(
-      `http://localhost:8000/api/password/reset/${token}`,
+      `${process.env.REACT_APP_BACKEND}/api/password/reset/${token}`,
       {
         password,
       }

@@ -36,7 +36,7 @@ const ProductMain = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        let url = `http://localhost:8000/api/products?page=${currentPage}`;
+        let url = `${process.env.REACT_APP_BACKEND}/api/products?page=${currentPage}`;
 
         const queryParams = [];
         if (keyword) {

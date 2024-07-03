@@ -12,7 +12,7 @@ export const addToCart = (item) => async (dispatch) => {
   try {
     // Make API request to add item to cart
     const response = await axios.post(
-      "http://localhost:8000/api/addToCart",
+      `${process.env.REACT_APP_BACKEND}/api/addToCart`,
       item,
       { withCredentials: true }
     );
@@ -29,9 +29,12 @@ export const addToCart = (item) => async (dispatch) => {
 export const getCartProducts = () => async (dispatch) => {
   try {
     // Make API request to get cart products
-    const response = await axios.get("http://localhost:8000/api/getcart", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/getcart`,
+      {
+        withCredentials: true,
+      }
+    );
     // console.log("get cart : ", response.data.productsBySeller);
 
     // Dispatch action to update state upon success
@@ -46,7 +49,7 @@ export const removeItem = (productId) => async (dispatch) => {
   try {
     // Call API to remove item from cart
     const response = await axios.delete(
-      `http://localhost:8000/api/cart/${productId}`,
+      `${process.env.REACT_APP_BACKEND}/api/cart/${productId}`,
       {
         withCredentials: true,
       }
@@ -64,7 +67,7 @@ export const showIntersted = (productId) => async () => {
   try {
     // console.log("Reached show interested in Actions");
     await axios.put(
-      `http://localhost:8000/api/cart/interested/${productId}`,
+      `${process.env.REACT_APP_BACKEND}/api/cart/interested/${productId}`,
       {},
       { withCredentials: true }
     );
@@ -78,7 +81,7 @@ export const showNotInterested = (productId) => async () => {
   try {
     // console.log("Reached show interested in Actions");
     await axios.put(
-      `http://localhost:8000/api/cart/notinterested/${productId}`,
+      `${process.env.REACT_APP_BACKEND}/api/cart/notinterested/${productId}`,
       {},
       { withCredentials: true }
     );
@@ -93,7 +96,7 @@ export const soldConfirmByBuyerAction = (productId) => async (dispatch) => {
     // console.log("Reached show interested in Actions");
 
     const response = await axios.put(
-      `http://localhost:8000/api/cart/soldBuyer/${productId}`,
+      `${process.env.REACT_APP_BACKEND}/api/cart/soldBuyer/${productId}`,
       {},
       { withCredentials: true }
     );

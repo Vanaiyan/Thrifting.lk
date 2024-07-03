@@ -23,7 +23,7 @@ const Dashboard = ({ sellerId }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/myproducts/${sellerId}`,
+          `${process.env.REACT_APP_BACKEND}/api/myproducts/${sellerId}`,
           { withCredentials: true }
         );
 
@@ -121,28 +121,26 @@ const Dashboard = ({ sellerId }) => {
           >
             <Typography variant="h5">Products in {selectedCategory}</Typography>
             {selectedCategory && (
-              <Grid sx={{padding:"20px"}}>
+              <Grid sx={{ padding: "20px" }}>
                 {products
                   .filter((product) => product.category[0] === selectedCategory)
                   .map((product) => (
-                    
-                      <Box
-                        key={product._id}
-                        marginBottom={2}
-                        sx={{ backgroundColor: "#fff" }}
-                      >
-                        <Paper sx={{height:"35px", padding:"0 10px "}}>
+                    <Box
+                      key={product._id}
+                      marginBottom={2}
+                      sx={{ backgroundColor: "#fff" }}
+                    >
+                      <Paper sx={{ height: "35px", padding: "0 10px " }}>
                         <Typography variant="body1">{product.name}</Typography>
-                        </Paper>
-                      </Box>
-                    
+                      </Paper>
+                    </Box>
                   ))}
                 <Box marginTop={2}>
                   <Typography variant="body1">
                     Total: {getProductCountByMainCategory(selectedCategory)}
                   </Typography>
                 </Box>
-                </Grid>
+              </Grid>
             )}
             {!selectedCategory && (
               <Typography variant="body1">

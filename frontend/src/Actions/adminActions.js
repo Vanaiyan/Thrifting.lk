@@ -5,9 +5,12 @@ import { authSuccess } from "../Reducers/authSlice";
 
 export const getCounts = async () => {
   try {
-    const response = await axios.get("http://localhost:8000/api/admin/count", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/admin/count`,
+      {
+        withCredentials: true,
+      }
+    );
     // console.log(response.data)
     return response.data;
   } catch (error) {
@@ -20,7 +23,7 @@ export const getCounts = async () => {
 export const getBestSeller = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/admin/bestsellers",
+      `${process.env.REACT_APP_BACKEND}/api/admin/bestsellers`,
       { withCredentials: true }
     );
     // console.log(response.data)
@@ -36,7 +39,7 @@ export const loginAdmin = (email, password) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/admin/login",
+        `${process.env.REACT_APP_BACKEND}/api/admin/login`,
         {
           email,
           password,
@@ -81,7 +84,7 @@ export const registerAdmin = async ({
 }) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/admin/register",
+      `${process.env.REACT_APP_BACKEND}/api/admin/register`,
       {
         firstName,
         lastName,
@@ -107,7 +110,7 @@ export const registerAdmin = async ({
 export const getAllProducts = async (page = 1, limit = 6) => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/admin/products",
+      `${process.env.REACT_APP_BACKEND}/api/admin/products`,
       {
         params: { page, limit },
         withCredentials: true,
@@ -122,9 +125,12 @@ export const getAllProducts = async (page = 1, limit = 6) => {
 
 export const deleteProduct = async (productId) => {
   try {
-    await axios.delete(`http://localhost:8000/api/admin/product/${productId}`, {
-      withCredentials: true,
-    });
+    await axios.delete(
+      `${process.env.REACT_APP_BACKEND}/api/admin/product/${productId}`,
+      {
+        withCredentials: true,
+      }
+    );
     // console.log("Product deleted successfully", productId);
     return { success: true, productId };
   } catch (error) {
@@ -136,7 +142,7 @@ export const deleteProduct = async (productId) => {
 export const searchProducts = async (query, page = 1, limit = 30) => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/admin/product/search",
+      `${process.env.REACT_APP_BACKEND}/api/admin/product/search`,
       {
         params: { query, page, limit },
         withCredentials: true,
@@ -153,7 +159,7 @@ export const searchProducts = async (query, page = 1, limit = 30) => {
 export const getApprovedSellers = async (page = 1, limit = 30) => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/admin/sellers`,
+      `${process.env.REACT_APP_BACKEND}/api/admin/sellers`,
       {
         params: {
           page,
@@ -172,9 +178,12 @@ export const getApprovedSellers = async (page = 1, limit = 30) => {
 
 export const deleteSeller = async (sellerId) => {
   try {
-    await axios.delete(`http://localhost:8000/api/admin/seller/${sellerId}`, {
-      withCredentials: true,
-    });
+    await axios.delete(
+      `${process.env.REACT_APP_BACKEND}/api/admin/seller/${sellerId}`,
+      {
+        withCredentials: true,
+      }
+    );
     // console.log("Seller deleted successfully", sellerId);
     return { success: true, sellerId };
   } catch (error) {
@@ -186,7 +195,7 @@ export const deleteSeller = async (sellerId) => {
 export const searchSellers = async (searchQuery, page = 1, limit = 30) => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/admin/seller/search`,
+      `${process.env.REACT_APP_BACKEND}/api/admin/seller/search`,
       {
         params: {
           query: searchQuery,
@@ -206,13 +215,16 @@ export const searchSellers = async (searchQuery, page = 1, limit = 30) => {
 
 export const getUsers = async (page = 1, limit = 30) => {
   try {
-    const response = await axios.get("http://localhost:8000/api/admin/users", {
-      params: {
-        page,
-        limit,
-      },
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/admin/users`,
+      {
+        params: {
+          page,
+          limit,
+        },
+        withCredentials: true,
+      }
+    );
     // console.log("Users from Actions", response.data);
 
     return response.data;
@@ -227,10 +239,13 @@ export const getUsers = async (page = 1, limit = 30) => {
 
 export const getOrderList = async (page, limit) => {
   try {
-    const response = await axios.get("http://localhost:8000/api/admin/orders", {
-      params: { page, limit },
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/admin/orders`,
+      {
+        params: { page, limit },
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching orders:", error);
@@ -242,7 +257,7 @@ export const getOrderList = async (page, limit) => {
 export const getSellers = async (page = 1, limit = 40) => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/admin/sellerstoapproval",
+      `${process.env.REACT_APP_BACKEND}/api/admin/sellerstoapproval`,
       {
         params: {
           page,
@@ -263,7 +278,7 @@ export const getSellers = async (page = 1, limit = 40) => {
 export const approveSeller = async (sellerId) => {
   try {
     const response = await axios.put(
-      `http://localhost:8000/api/admin/approveSeller/${sellerId}`,
+      `${process.env.REACT_APP_BACKEND}/api/admin/approveSeller/${sellerId}`,
       { withCredentials: true }
     );
     return response.data;
@@ -276,7 +291,7 @@ export const approveSeller = async (sellerId) => {
 export const rejectSeller = async (sellerId) => {
   try {
     const response = await axios.delete(
-      `http://localhost:8000/api/admin/rejectSeller/${sellerId}`,
+      `${process.env.REACT_APP_BACKEND}/api/admin/rejectSeller/${sellerId}`,
       { withCredentials: true }
     );
     return response.data;
@@ -291,7 +306,7 @@ export const rejectSeller = async (sellerId) => {
 export const toDeleteSeller = async (page, limit) => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/admin/todeleteseller",
+      `${process.env.REACT_APP_BACKEND}/api/admin/todeleteseller`,
       {
         params: { page, limit },
         withCredentials: true,
@@ -307,7 +322,7 @@ export const toDeleteSeller = async (page, limit) => {
 export const toWarnSeller = async (page, limit) => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/admin/towarnseller",
+      `${process.env.REACT_APP_BACKEND}/api/admin/towarnseller`,
       {
         params: { page, limit },
         withCredentials: true,
@@ -323,7 +338,7 @@ export const toWarnSeller = async (page, limit) => {
 export const warnSeller = async (sellerId) => {
   try {
     const response = await axios.post(
-      `http://localhost:8000/api/admin/warnseller`,
+      `${process.env.REACT_APP_BACKEND}/api/admin/warnseller`,
       { withCredentials: true }
     );
     return response.data;
@@ -336,7 +351,7 @@ export const warnSeller = async (sellerId) => {
 export const getMonthlyOrderSummary = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/order-count-last-six-months",
+      `${process.env.REACT_APP_BACKEND}/api/order-count-last-six-months`,
       { withCredentials: true }
     );
     return response.data;

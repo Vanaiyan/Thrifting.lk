@@ -23,8 +23,8 @@ const NavSellerDashboard_H = ({ sellerId }) => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/profile/${sellerId}`,
-          { withCredentials: true },
+          `${process.env.REACT_APP_BACKEND}/api/profile/${sellerId}`,
+          { withCredentials: true }
         );
 
         setSeller(response.data);
@@ -58,12 +58,12 @@ const NavSellerDashboard_H = ({ sellerId }) => {
       container
       spacing={2}
       alignItems="center"
-      sx={{ padding: { md: "0 2vw", lg: "2vw 11vw" } ,height:"100px"}}
+      sx={{ padding: { md: "0 2vw", lg: "2vw 11vw" }, height: "100px" }}
     >
       <Grid item md={11} lg={11} xs={11}>
-        <Box sx={{ display: "flex", alignItems: "center" ,padding:" 0 5px"}}>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <NavTitle sx={{ color: "#ff5003", mr: 1 }}>Thrifting.lk</NavTitle>
+        <Box sx={{ display: "flex", alignItems: "center", padding: " 0 5px" }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <NavTitle sx={{ color: "#ff5003", mr: 1 }}>Thrifting.lk</NavTitle>
           </Link>
           <Divider orientation="vertical" flexItem />
         </Box>

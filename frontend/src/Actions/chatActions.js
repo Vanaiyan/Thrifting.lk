@@ -3,7 +3,7 @@ import axios from "axios";
 export const getUsers = async (keyword) => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/getusers?keyword=${keyword}`,
+      `${process.env.REACT_APP_BACKEND}/api/getusers?keyword=${keyword}`,
       { withCredentials: true }
     );
 
@@ -18,7 +18,7 @@ export const getUsers = async (keyword) => {
 export const searchUsers = async (keyword) => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/searchusers?keyword=${keyword}`
+      `${process.env.REACT_APP_BACKEND}/api/searchusers?keyword=${keyword}`
     );
 
     const data = response.data;
@@ -31,9 +31,12 @@ export const searchUsers = async (keyword) => {
 
 export const getUserProfile = async () => {
   try {
-    const response = await axios.get("http://localhost:8000/api/user-profile", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND}/api/user-profile`,
+      {
+        withCredentials: true,
+      }
+    );
 
     const data = response.data;
     return data;
@@ -48,7 +51,7 @@ export const getSellerProfileAction = async (sellerId) => {
     if (sellerId) {
       // console.log(sellerId);
       const response = await axios.get(
-        `http://localhost:8000/api/seller-profile/${sellerId}`,
+        `${process.env.REACT_APP_BACKEND}/api/seller-profile/${sellerId}`,
         {
           withCredentials: true,
         }

@@ -23,7 +23,7 @@ const SignUpMobile = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/register",
+        `${process.env.REACT_APP_BACKEND}/api/register`,
         {
           firstName,
           lastName,

@@ -79,7 +79,7 @@ const Product = ({
 
       // Send the updated product details in the request body
       const response = await axios.put(
-        `http://localhost:8000/api/products/${id}`,
+        `${process.env.REACT_APP_BACKEND}/api/products/${id}`,
         updatedProduct,
         { withCredentials: true }
       );
@@ -126,9 +126,12 @@ const Product = ({
   const handleDeleteConfirm = async () => {
     setDeleteDialogOpen(false);
     try {
-      await axios.delete(`http://localhost:8000/api/products/${id}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_BACKEND}/api/products/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product._id !== id)
       );

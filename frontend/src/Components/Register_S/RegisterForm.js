@@ -138,7 +138,7 @@ const RegisterForm = () => {
         const backImageUrl = await uploadNicImages(backImage);
 
         const response = await axios.post(
-          "http://localhost:8000/seller",
+          `${process.env.REACT_APP_BACKEND}/seller`,
           {
             firstName,
             lastName,
