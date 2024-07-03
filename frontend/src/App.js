@@ -33,6 +33,9 @@ import { AdminProtectedRoute } from "./ProtectedRoutes";
 import { finishLoading } from "./Reducers/authSlice";
 import ForgotPassword from "./Pages/User/ForgotPassword";
 import PasswordReset from "./Pages/User/PasswordReset";
+import ContactUs from "./Components/Footer/ContactUs";
+import Terms from "./Components/Footer/Terms";
+
 function App() {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
@@ -72,6 +75,8 @@ function App() {
           <Route path="/product" element={<ProductMain />} />
           <Route path="/forgot-password" Component={ForgotPassword} />
           <Route path="/password/reset/:token" Component={PasswordReset} />
+          <Route path="/contactUs" Component={ContactUs} />
+          <Route path="/terms" Component={Terms} />
 
           <Route
             path="/cart"
