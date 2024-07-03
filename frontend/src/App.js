@@ -77,7 +77,6 @@ function App() {
           <Route path="/password/reset/:token" Component={PasswordReset} />
           <Route path="/contactUs" Component={ContactUs} />
           <Route path="/terms" Component={Terms} />
-
           <Route
             path="/cart"
             Component={() => (

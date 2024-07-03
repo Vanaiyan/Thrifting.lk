@@ -1,4 +1,4 @@
-{
+const postalDistricts = {
 "Ampara":[
           {
                 "city": "Addalaichenai",
@@ -8002,3 +8002,4 @@
     }
 ]
 }
+export default postalDistricts

@@ -15,6 +15,7 @@ import {
 import { footerStyles } from "../../Styles/Footer/FooterStyle";
 import theme from "../../Styles/Theme";
 import contactImage from "../../Assets/Images/contactUs/contact.png";
+import { NavSeller } from "../Navigation bar/desktop/nav-seller";
 
 const ContactUs = () => {
   const [name, setName] = useState("");
@@ -64,6 +65,7 @@ const ContactUs = () => {
 
   return (
     <ThemeProvider theme={theme} sx={{ position: "relative" }}>
+      <NavSeller />
       <Grid container>
         <Hidden mdDown>
           <Grid item md={6}>
@@ -74,7 +76,7 @@ const ContactUs = () => {
                 md={12}
                 sx={{
                   display: "flex",
-                  marginTop: "10vh",
+                  marginTop: "1vh",
                   justifyContent: "center",
                 }}
               >
@@ -89,14 +91,14 @@ const ContactUs = () => {
           md={6}
           xs={12}
           bgcolor="#FF8841"
-          height="100vh"
+          height="80vh"
           boxShadow="10px 10px 30px rgba(0, 0, 0, 0.5)"
         >
           <Paper
             sx={{
               bgColor: "#fff",
-              padding: "2vh 2vw",
-              margin: "100px 7vw",
+              padding: "1vh 2vw",
+              margin: "100px 6vw",
               boxShadow: "10px 4px 30px rgba(0, 0, 0, 0.4)",
               borderRadius: "16px",
             }}
