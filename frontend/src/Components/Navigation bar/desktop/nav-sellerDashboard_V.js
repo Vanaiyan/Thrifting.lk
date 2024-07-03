@@ -5,9 +5,11 @@ import ProductManagement from "../../SellerDashboard/ProductManagement/ProductMa
 import Dashboard from "../../SellerDashboard/Dashboard/Dashboard";
 import OrderManagement from "../../SellerDashboard/OrderManagement";
 import Profile from "../../SellerDashboard/Profile/Profile_S";
+import SoldItems from "../../SellerDashboard/SoldItems";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ProductManagementIcon from '@mui/icons-material/Store';
 import OrderManagementIcon from '@mui/icons-material/ShoppingCart';
+import SellIcon from '@mui/icons-material/Sell';
 import ProfileIcon from '@mui/icons-material/AccountCircle';
 
 const NavSellerDashboard_V = ({ sellerId }) => {
@@ -34,6 +36,9 @@ const NavSellerDashboard_V = ({ sellerId }) => {
         break;
       case "orderManagement":
         setSelectedComponent(<OrderManagement sellerId={sellerId} />);
+        break;
+      case "soldItems":
+        setSelectedComponent(<SoldItems sellerId={sellerId} />);
         break;
       case "profile_S":
         setSelectedComponent(<Profile sellerId={sellerId} />);
@@ -77,6 +82,10 @@ const NavSellerDashboard_V = ({ sellerId }) => {
           <NavListItemText onClick={() => handleTabClick("orderManagement")} sx={{width:{sm:"150px",md:"250px" , xs:"50px"}}}>
             <OrderManagementIcon />
             {show && "Order Management"}
+          </NavListItemText>
+          <NavListItemText onClick={() => handleTabClick("soldItems")} sx={{width:{sm:"150px",md:"250px" , xs:"50px"}}}>
+            <SellIcon />
+            {show && "Sold Items"}
           </NavListItemText>
           <NavListItemText onClick={() => handleTabClick("profile_S")} sx={{width:{sm:"150px",md:"250px" , xs:"50px"}}}>
             <ProfileIcon />

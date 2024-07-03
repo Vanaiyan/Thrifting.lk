@@ -68,7 +68,6 @@ const getProductOrderDetails = async (req, res) => {
   }
 };
 
-
 const getSellerProfile = async (req, res) => {
   try {
     const id = req.params.sellerId;

@@ -23,6 +23,20 @@ exports.getFeedbacksByProduct = catchAsyncError(async (req, res, next) => {
   });
 });
 
+exports.getFeedbacksByProductId = catchAsyncError(async (req, res, next) => {
+  const productId = req.params.id;
+
+  const feedbacks = await Feedback.find({ productId });
+  if (!feedbacks) {
+    return next(new ErrorHandler("Feedbacks not found for this product", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    feedbacks,
+  });
+});
+
 // Post a new feedback
 
 exports.createFeedback = catchAsyncError(async (req, res, next) => {

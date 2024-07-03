@@ -140,7 +140,7 @@ const Dashboard = ({ sellerId }) => {
                       </Paper>
                     </Box>
                   ))}
-                <Box marginTop={2} sx={{backgroundColor:"#fff",padding:"10px 20px",backgroundColor:"#ffff80",borderRadius:"10px"}}>
+                <Box marginTop={2} sx={{padding:"10px 20px",backgroundColor:"#ffff80",borderRadius:"10px"}}>
                   <Typography variant="body1">
                     Total: {getProductCountByMainCategory(selectedCategory)}
                   </Typography>

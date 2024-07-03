@@ -104,7 +104,7 @@ export const NavSellerDesktop = () => {
                   minWidth: "60px",
                 }}
               >
-                Seller Dashboard
+                SELLER DASHBOARD
               </Typography>
             </NavLink>
           ) : (
