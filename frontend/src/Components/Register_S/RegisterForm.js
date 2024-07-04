@@ -15,6 +15,7 @@ import {
 import districts from "../Data/Districts";
 import axios from "axios";
 import { uploadNicImages } from "../../Actions/sellerAction";
+import postalDistricts from "../Data/PostalCode";
 
 const RegisterForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -32,7 +33,6 @@ const RegisterForm = () => {
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-
   const [errors, setErrors] = useState({});
   const [backErrors, setBackErrors] = useState({});
   const [openAlert, setOpenAlert] = useState(false);
@@ -52,82 +52,95 @@ const RegisterForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-
+  
     // Personal Information Validation
     if (!firstName.trim()) {
       newErrors.firstName = "First Name is required";
     }
-
+  
     if (!lastName.trim()) {
       newErrors.lastName = "Last Name is required";
     }
-
+  
     if (!email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email is invalid";
     }
-
+  
     if (!password.trim()) {
       newErrors.password = "Password is required";
     } else if (password.trim().length < 6) {
       newErrors.password = "Password must be at least 6 characters long";
     }
-
+  
     if (password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
-
+  
     if (!phoneNumber.trim()) {
       newErrors.phoneNumber = "Phone Number is required";
     } else if (!/^\d{10}$/.test(phoneNumber.trim())) {
       newErrors.phoneNumber = "Phone Number is invalid";
     }
-
+  
     // Address Information Validation
     if (!address.trim()) {
       newErrors.address = "Address is required";
     }
+  
     if (!city.trim()) {
       newErrors.city = "City is required";
     }
-
+  
     if (!district.trim()) {
       newErrors.district = "District is required";
     }
-
+  
     if (!postalCode.trim()) {
       newErrors.postalCode = "Postal Code is required";
     }
-
+  
+    // Validate city and postal code match the selected district
+    if (postalDistricts[district]) {
+      const cityData = postalDistricts[district].find(c => c.city === city);
+      if (!cityData) {
+        newErrors.city = `City ${city} is not valid for the selected district`;
+      } else if (cityData.code !== postalCode) {
+        newErrors.postalCode = `Postal Code ${postalCode} does not match the city ${city}`;
+      }
+    } else {
+      newErrors.district = "Selected district is not valid";
+    }
+  
     // Identity Verification Validation
     if (!nicName.trim()) {
       newErrors.nicName = "Name on NIC is required";
     }
-
+  
     if (!nicNumber.trim()) {
       newErrors.nicNumber = "NIC Number is required";
     } else if (
       !(nicNumber.trim().length === 12 && /^\d+$/.test(nicNumber.trim())) &&
       !(nicNumber.trim().length === 10 && /^\d{9}[Vv]$/.test(nicNumber.trim()))
     ) {
-      newErrors.nicNumber =
-        "NIC Number must be either 12 digits or 9 digits followed by 'V'";
+      newErrors.nicNumber = "NIC Number must be either 12 digits or 9 digits followed by 'V'";
     }
-
+  
     if (!frontImage || !frontImage.type.startsWith("image/")) {
       newErrors.frontImage = "Please select a valid front image file";
     }
-
+  
     if (!backImage || !backImage.type.startsWith("image/")) {
       newErrors.backImage = "Please select a valid back image file";
     }
-
+  
     setErrors(newErrors);
     setOpenAlert(Object.keys(newErrors).length > 0);
-
+  
     return Object.keys(newErrors).length === 0;
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

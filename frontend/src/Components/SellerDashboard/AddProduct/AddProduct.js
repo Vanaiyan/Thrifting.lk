@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Grid, Button, Box, Snackbar } from "@mui/material";
+import { useNavigate, Link } from "react-router-dom";
+import { Grid, Button, Box, Snackbar, Typography, Paper } from "@mui/material";
 import { Alert } from "@mui/material";
 import axios from "axios";
 import Form1 from "./Form1";
 import Form2 from "./Form2";
 import Form3 from "./Form3";
+import TouchAppIcon from "@mui/icons-material/TouchApp";
+import DescriptionIcon from "@mui/icons-material/Description";
+import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import { useSelector } from "react-redux";
-import { NavSeller } from "../../Navigation bar/desktop/nav-seller";
+import { NavTitle } from "../../../Styles/NavBar/nav01";
+import NavSellerDashboard_H from "../../Navigation bar/desktop/nav-sellerDashboard_H";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -28,14 +32,14 @@ const AddProduct = () => {
     let errors = {};
     if (!name) {
       errors.name = "ProductName is required";
-    }else if(name.length > 250){
+    } else if (name.length > 250) {
       errors.name = "ProductName must be below 250 characters";
     }
     if (!description) {
       errors.description = "Description is required";
-    } else if (description.length < 400  ) {
+    } else if (description.length < 400) {
       errors.description = "Description must be above 400 characters ";
-    }else if(description.length > 800){
+    } else if (description.length > 800) {
       errors.description = "Description must be below 800 characters";
     }
     if (!price || isNaN(price) || price <= 0)
@@ -71,6 +75,7 @@ const AddProduct = () => {
   const handlePrev = () => {
     setStep((prevStep) => prevStep - 1);
   };
+
   const handleBack = () => {
     navigate("/seller/dashboard");
   };
@@ -89,7 +94,6 @@ const AddProduct = () => {
 
     try {
       await axios.post(
-
         `http://localhost:8000/api/products/${user._id}`,
         productData,
         { withCredentials: true },
@@ -99,8 +103,6 @@ const AddProduct = () => {
           },
         }
       );
-
-      console.log("Product successfully submitted:");
       setSnackbarSeverity("success");
       setSnackbarMessage("Product successfully submitted");
       setSnackbarOpen(true);
@@ -129,11 +131,67 @@ const AddProduct = () => {
     setSnackbarOpen(false);
   };
 
+  const getIconColor = (currentStep) => {
+    return step === currentStep ? "primary" : "disabled";
+  };
+
   return (
     <Box sx={{ padding: 4 }}>
-      <NavSeller />
+      <NavSellerDashboard_H  sellerId={user._id}/>
       <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} sm={8} md={6}>
+        <Grid
+          item
+          xs={12}
+          md={6}
+        >
+          <Paper  sx={{
+            display: "flex",
+            padding: "40px 0px",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "20px",
+            backgroundColor:"#f1f1f1"
+          }}>
+          <Grid item md={4}>
+            <Box
+              sx={{
+                padding: "0 2vw",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <DescriptionIcon color={getIconColor(1)} />
+              <Typography color={getIconColor(1)}>Description</Typography>
+            </Box>
+          </Grid>
+          <Grid item md={4}>
+            <Box
+              sx={{
+                padding: "0 6vw",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <TouchAppIcon color={getIconColor(2)} />
+              <Typography color={getIconColor(2)}>Categories</Typography>
+            </Box>
+          </Grid>
+          <Grid item md={4}>
+            <Box
+              sx={{
+                padding: "0 8vw",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <InsertPhotoIcon color={getIconColor(3)} />
+              <Typography color={getIconColor(3)}>Photos</Typography>
+            </Box>
+          </Grid>
+          </Paper>
+         
+        </Grid>
+        <Grid item xs={12} sm={8} md={10}>
           {step === 1 && (
             <Form1
               name={name}

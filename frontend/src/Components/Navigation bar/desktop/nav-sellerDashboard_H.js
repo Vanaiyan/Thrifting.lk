@@ -58,7 +58,7 @@ const NavSellerDashboard_H = ({ sellerId }) => {
       container
       spacing={2}
       alignItems="center"
-      sx={{ padding: { md: "0 2vw", lg: "2vw 11vw" } ,height:"100px"}}
+      sx={{ padding: { md: "0 2vw", lg: "0 11vw" } ,height:"100px"}}
     >
       <Grid item md={11} lg={11} xs={11}>
         <Box sx={{ display: "flex", alignItems: "center" ,padding:" 0 5px"}}>
