@@ -66,7 +66,7 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
   try {
     await user.save();
 
-    const resetUrl = `${req.protocol}://localhost:3000/password/reset/${resetToken}`;
+    const resetUrl = `https://thrifting-lk-fe.onrender.com/password/reset/${resetToken}`;
     const text = `Your password reset link \n\n${resetUrl}`;
 
     sendEmail({
