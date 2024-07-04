@@ -36,7 +36,7 @@ const RegisterDesk = () => {
               sx={{
                 bgColor: "#fff",
                 padding: "2vh 2vw",
-                margin: "100px 7vw",
+                margin: "100px 20vw",
                 boxShadow: "10px 4px 30px rgba(0, 0, 0, 0.4)",
                 borderRadius: "16px",
               }}
@@ -47,7 +47,7 @@ const RegisterDesk = () => {
                 sx={{ fontWeight: 400, color: "#344054" }}
               >
                 <>
-                  Hey
+                  Hey Seller!
                   <br />
                   Ready to share a bit more about yourself with us?
                 </>

@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  Grid,
-  Typography,
-  TextField,
-  InputLabel,
-  FormControl,
-  Select,
-  MenuItem,
-} from "@mui/material";
-import districts from '../../Data/Districts'
+import { Grid, Typography, TextField, InputLabel, FormControl, Select, MenuItem } from "@mui/material";
+import districts from "../../Data/Districts";
 
-const EditDetailsForm = ({ editMode, handleChange, editableSeller }) => {
-
+const EditDetailsForm = ({ editMode, handleChange, editableSeller, errors }) => {
   return (
     <div>
       <Grid container spacing={1}>
@@ -95,29 +86,29 @@ const EditDetailsForm = ({ editMode, handleChange, editableSeller }) => {
                 fullWidth
                 disabled={!editMode}
                 style={{ marginBottom: "5px" }}
+                error={!!errors.city}
+                helperText={errors.city}
               />
             </Grid>
           </Grid>
           <Grid xs={12} sx={{ display: "flex", padding: "10px" }} gap={2}>
             <Grid xs={6}>
-              <FormControl
-                fullWidth
-                style={{ marginBottom: "5px" }}
-                disabled={!editMode}
-              >
+              <FormControl fullWidth style={{ marginBottom: "5px" }} disabled={!editMode}>
                 <InputLabel>District</InputLabel>
                 <Select
                   label="District"
                   name="district"
                   value={editableSeller.addressField.district}
                   onChange={handleChange}
+                  error={!!errors.district}
                 >
-                  {districts.map((districts) => (
-                    <MenuItem key={districts} value={districts}>
-                      {districts}
+                  {districts.map((district) => (
+                    <MenuItem key={district} value={district}>
+                      {district}
                     </MenuItem>
                   ))}
                 </Select>
+                {errors.district && <Typography color="error">{errors.district}</Typography>}
               </FormControl>
             </Grid>
             <Grid xs={6}>
@@ -129,6 +120,8 @@ const EditDetailsForm = ({ editMode, handleChange, editableSeller }) => {
                 size="medium"
                 fullWidth
                 disabled={!editMode}
+                error={!!errors.postalCode}
+                helperText={errors.postalCode}
               />
             </Grid>
           </Grid>

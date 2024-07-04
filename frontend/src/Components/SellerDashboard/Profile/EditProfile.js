@@ -3,6 +3,7 @@ import { Avatar, Grid, Button, Rating, Snackbar, Alert } from "@mui/material";
 import EditDetailsForm from "./EditDetailsForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import axios from "axios";
+import postalDistricts from "../../Data/PostalCode";
 
 const EditProfile = ({ seller }) => {
   const [editMode, setEditMode] = useState(false);
@@ -12,6 +13,7 @@ const EditProfile = ({ seller }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [errors, setErrors] = useState({});
   const firstLetter_firstName = seller.firstName
     ? seller.firstName.charAt(0)
     : "";
@@ -48,18 +50,45 @@ const EditProfile = ({ seller }) => {
     setChangePassword(false);
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (postalDistricts[editableSeller.addressField.district]) {
+      const cityData = postalDistricts[
+        editableSeller.addressField.district
+      ].find((c) => c.city === editableSeller.addressField.city);
+      if (!cityData) {
+        newErrors.city = `City ${editableSeller.addressField.city} is not valid for the selected district`;
+      }
+       else if (cityData.code !== editableSeller.addressField.postalCode) {
+        newErrors.postalCode = `Postal Code ${editableSeller.addressField.postalCode} does not match the city ${editableSeller.addressField.city}`;
+      // editableSeller.addressField.postalCode = cityData.code;
+      }
+    } else {
+      newErrors.district = "Selected district is not valid";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSave = async () => {
     try {
-      const response = await axios.put(
-        `http://localhost:8000/api/profile/${editableSeller._id}`,
-        editableSeller,
-        { withCredentials: true }
-      );
-      // console.log("Seller details updated successfully:", response.data);
-      setEditMode(false);
-      setSnackbarMessage("Seller details updated successfully");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
+      if (validateForm()) {
+        await axios.put(
+          `http://localhost:8000/api/profile/${editableSeller._id}`,
+          editableSeller,
+          { withCredentials: true }
+        );
+        setEditMode(false);
+        setSnackbarMessage("Seller details updated successfully");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+      } else {
+        setSnackbarMessage(
+          "Validation failed: Please check the highlighted fields for errors."
+        );
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
     } catch (error) {
       console.error("Error updating seller details:", error);
       setSnackbarMessage("Error updating seller details");
@@ -91,9 +120,9 @@ const EditProfile = ({ seller }) => {
             direction="column"
             paddingBottom="50px"
           >
-            <Avatar sx={{ width: 100, height: 100 }}>
-              {`${firstLetter_firstName}${firstLetter_lastName}`}
-            </Avatar>
+            <Avatar
+              sx={{ width: 100, height: 100 }}
+            >{`${firstLetter_firstName}${firstLetter_lastName}`}</Avatar>
             <Rating value={seller.rating} max={10} readOnly />
           </Grid>
           <Grid container justifyContent="center">
@@ -120,6 +149,7 @@ const EditProfile = ({ seller }) => {
                 editMode={editMode}
                 handleChange={handleChange}
                 editableSeller={editableSeller}
+                errors={errors}
               />
               <Grid container spacing={1} justifyContent="center">
                 <Grid item>
@@ -161,7 +191,7 @@ const EditProfile = ({ seller }) => {
       </Grid>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={handleSnackbarClose}
       >
         <Alert

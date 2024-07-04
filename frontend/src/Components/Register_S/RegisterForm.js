@@ -136,12 +136,11 @@ const RegisterForm = () => {
     }
   
     setErrors(newErrors);
-    setOpenAlert(Object.keys(newErrors).length > 0);
+    setOpenAlert(Object.keys(newErrors).length > 0); 
   
     return Object.keys(newErrors).length === 0;
   };
   
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
