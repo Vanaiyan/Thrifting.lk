@@ -1,49 +1,84 @@
 import { Box, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Colors } from "../../Styles/Theme";
-import { collection, getDocs } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
-import { app } from "../../firebase";
 
-export const MsgSender = () => {
-  const [userText, setUserText] = useState([]);
+export const TimeprintSender = ({ message }) => {
+  return (
+    <Typography
+      variant="chat2"
+      sx={{ position: "absolute", bottom: "-11px", right: 2 }}
+    >
+      {message.timestamp
+        ? new Date(message.timestamp).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : ""}
+    </Typography>
+  );
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const db = getFirestore(app);
-
-      try {
-        const querySnapshot = await getDocs(collection(db, "messages"));
-        const data = querySnapshot.docs.map(
-          (doc) => doc.data().text // Access the "text" field directly
-        );
-        setUserText(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // Empty dependency array to run the effect only once when the component mounts
+export const MsgSender = ({ message }) => {
+  const renderMessageText = (text) => {
+    const lines = text.split("\n").map((line, index) => (
+      <React.Fragment key={index}>
+        {line.includes("**") ? (
+          <>
+            {line.split("**")[0]}
+            <strong style={{ fontSize: "14px", textDecoration: "underline" }}>
+              {line.split("**")[1]}
+            </strong>
+            {line.split("**")[2]}
+          </>
+        ) : (
+          line
+        )}
+        <br />
+      </React.Fragment>
+    ));
+    return <Typography variant="chat1">{lines}</Typography>;
+  };
 
   return (
-    <Box
-      sx={{
-        color: "#ffff",
-        padding: "10px",
-        backgroundColor: Colors.org1,
-        borderRadius: "10px",
-        margin: "10px",
-        textAlign: "justify",
-        width: { lg: "30vw", md: "40vw", sm: "50vw", xs: "60vw" },
-      }}
-    >
-      <Typography variant="chat1">
-        {/* Render fetched user data or any other logic you want to apply */}
-        {userText.map((textData) => (
-          <div key={textData.id}>{JSON.stringify(textData)}</div>
-        ))}
-      </Typography>
+    <Box>
+      {message.imageUrl && (
+        <Box
+          sx={{
+            position: "relative",
+            margin: "15px",
+            backgroundColor: Colors.org1,
+            borderRadius: "5px",
+            width: "fit-content",
+            padding: "3px",
+            marginLeft: "auto", // Align the box to the right
+          }}
+        >
+          <img src={message.imageUrl} alt="Attached" height="200vw" />
+          <TimeprintSender message={message} />
+        </Box>
+      )}
+      <Box
+        sx={{
+          color: "#ffff",
+          display: "flex",
+          position: "relative",
+          alignItems: "center",
+          margin: "15px",
+          padding: "10px 40px 10px 10px",
+          backgroundColor: Colors.org1,
+          borderRadius: "25px 5px 25px 25px",
+          width: "fit-content", // Set the width to fit-content
+          textAlign: "justify",
+          marginLeft: "auto", // Align the box to the right
+          maxWidth: { lg: "30vw", md: "40vw", sm: "50vw", xs: "60vw" },
+        }}
+      >
+        {message.text !== null &&
+          message.text.trim() !== "" &&
+          renderMessageText(message.text)}
+
+        <TimeprintSender message={message} />
+      </Box>
     </Box>
   );
 };

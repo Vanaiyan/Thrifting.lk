@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
 import ProductCardsm from "../Cards/ProductCardsm";
-import { Products } from "../Products";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { IconButton, Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import {
+  fetchProducts,
+  getRecommendations,
+} from "../../Actions/homeProductActions"; // Adjust the path accordingly
 import { Colors } from "../../Styles/Theme";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const NextArrow = (props) => {
   const { onClick } = props;
@@ -47,8 +51,23 @@ const PrevArrow = (props) => {
 };
 
 const ProductRow = () => {
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.products);
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        await dispatch(getRecommendations());
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      }
+    };
+
+    fetchRecommendations();
+  }, [dispatch]);
+
   const settings = {
-    infinite: true,
+    infinite: false,
     speed: 1000,
     marginLeft: "10px",
     slidesToShow: 5.4,
@@ -108,17 +127,14 @@ const ProductRow = () => {
         margin: "0 auto",
       }}
     >
-      {" "}
       <Slider {...settings}>
-        {Products.map((product) => (
+        {products.map((product) => (
           <ProductCardsm
             key={product.id}
-            title={product.title}
+            id={product._id}
+            title={product.name}
             price={product.price}
             imageSrc={product.imageSrc}
-            onAddToCartClick={() => {
-              console.log(`Product ${product.id} added to cart`);
-            }}
           />
         ))}
       </Slider>

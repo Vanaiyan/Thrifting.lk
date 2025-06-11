@@ -12,7 +12,9 @@ export const Colors = {
   org4: "#FFE9CC",
   org5: "#ffe4d6",
   org6: "#FFF2EB",
-
+  orgchat: "#fec741",
+  orgchatsub: "#9e845c",
+  chatdark: "#241e31",
   //grey
   Inborder: "#D0D5DD",
   InPholder: "#667085",
@@ -95,6 +97,19 @@ const theme = createTheme({
         fontSize: "12px", // xs
       },
     },
+    subtitle3: {
+      color: Colors.InPholder,
+      fontSize: "14px", // lg
+      "@media (max-width: 1280px)": {
+        fontSize: "14px", // md
+      },
+      "@media (max-width: 960px)": {
+        fontSize: "12px", // sm
+      },
+      "@media (max-width: 600px)": {
+        fontSize: "12px", // xs
+      },
+    },
     chat1: {
       fontSize: "12px", // lg
       fontWeight: "400",
@@ -108,6 +123,20 @@ const theme = createTheme({
         fontSize: "12px", // xs
       },
     },
+    chat2: {
+      color: Colors.dimgrey,
+      fontSize: "10px", // lg
+      fontWeight: "600",
+      "@media (max-width: 1280px)": {
+        fontSize: "10px", // md
+      },
+      "@media (max-width: 960px)": {
+        fontSize: "10px", // sm
+      },
+      "@media (max-width: 600px)": {
+        fontSize: "10px", // xs
+      },
+    },
     subtitle4: {
       fontSize: "12px", // lg
       "@media (max-width: 1280px)": {
@@ -118,6 +147,33 @@ const theme = createTheme({
       },
       "@media (max-width: 600px)": {
         fontSize: "6px", // xs
+      },
+    },
+    // sellerpage titles
+    subtitle5: {
+      fontFamily:'Inter',
+      fontSize: "30px", // lg
+      "@media (max-width: 1280px)": {
+        fontSize: "24px", // md
+      },
+      "@media (max-width: 960px)": {
+        fontSize: "18px", // sm
+      },
+      "@media (max-width: 600px)": {
+        fontSize: "10px", // xs
+      },
+    },
+    title4: {
+      fontFamily:'Roboto Serif',
+      fontSize: "50px", // lg
+      "@media (max-width: 1280px)": {
+        fontSize: "40px", // md
+      },
+      "@media (max-width: 960px)": {
+        fontSize: "35px", // sm
+      },
+      "@media (max-width: 600px)": {
+        fontSize: "30px", // xs
       },
     },
     inputField: {
