@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+// import { getAuth } from "firebase/analytics";
+// import { useCollectionData } from "react-firebase-hooks/firestore";
 import { getFirestore } from "firebase/firestore"; // Update the import
 
 // Your web app's Firebase configuration
@@ -18,4 +19,6 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app, "gs://thrifting-f4411.appspot.com");
+
+// export const analytics = getAuth(app);
+// export const firestore = getFirestore(app); // Use getFirestore with the app instance

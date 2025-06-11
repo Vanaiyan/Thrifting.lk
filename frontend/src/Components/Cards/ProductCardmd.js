@@ -37,7 +37,7 @@ export default function ProductCardmd({ title, price, imageSrc }) {
           component="div"
           sx={{ color: "dimgrey" }}
         >
-          {title}
+          {title}Original Beats Solo Pro
         </Typography>
         <Typography variant="subtitle2">Price: {price}3999</Typography>
       </CardContent>

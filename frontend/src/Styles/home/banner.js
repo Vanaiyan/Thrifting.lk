@@ -2,24 +2,19 @@ import styled from "@emotion/styled";
 import { useTheme } from "@mui/system";
 import { Box, Container, Typography, Button } from "@mui/material";
 
-export const BannerContainer = styled(Box)(({ theme }) => ({
+export const BannerContainer = styled(Container)(({ theme }) => ({
   backgroundImage: `url('images/front-bg.png')`,
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
-  padding: "0 50px",
-  height: "85vh", // Default height for larger screens
+  height: "80vh", // Default height for larger screens
   display: "flex",
   justifyContent: "center",
   borderRadius: "25px",
-  [theme.breakpoints.up("md")]: {
-    margin: "10px 2vw",
-  },
-  [theme.breakpoints.up("lg")]: {
-    margin: "10px 7vw",
-  },
+  marginTop: "10px",
+  // width: { lg: "80vw", md: "75vw  " },
+  // height: { lg: "80vh", md: "60vh", sm: "50vh", xs: "50vh" },
 }));
-
 export const TextContainer = styled(Box)({
   padding: 0,
   margin: 0,
