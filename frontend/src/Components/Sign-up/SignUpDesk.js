@@ -10,7 +10,6 @@ import signupImage from "./images/img-signup.png";
 import NavLogin from "../Navigation bar/nav-login";
 import { useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
 
 const SignUpDesk = () => {
   const [firstName, setFirstName] = useState("");
@@ -104,9 +103,7 @@ const SignUpDesk = () => {
               </Typography>
               <Typography variant="subtitle2">
                 Already have an account?
-                <NavLink to="/login" exact activeClassName="active">
-                  Log In
-                </NavLink>
+                {/* <Link to="/signin">Sign in</Link> */}
               </Typography>
 
               <form onSubmit={handleSubmit}>

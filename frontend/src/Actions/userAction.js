@@ -12,16 +12,10 @@ export const loginUser = async (email, password) => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
-        withCredentials: true,
       }
     );
 
-    const data = response;
-    const cookie = response.data.token;
-
-    document.cookie = `token=${cookie}; path=/`; // Adjust the cookie name and path as needed
-
+    const data = response.data;
     return data;
   } catch (error) {
     console.error("Error:", error);

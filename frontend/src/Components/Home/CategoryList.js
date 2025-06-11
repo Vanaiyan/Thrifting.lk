@@ -8,7 +8,7 @@ const CategoriesList = () => {
       sx={{
         margin: { lg: "0 7vw", md: "0 4vw", sm: "0 1vw", xs: "0" },
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         gap: "20px",
         flexWrap: "wrap",
       }}

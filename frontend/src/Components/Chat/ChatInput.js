@@ -1,150 +1,69 @@
 import React, { useState } from "react";
-import { Paper, Box, InputBase, IconButton, Avatar } from "@mui/material";
+import { Paper, InputBase, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Colors } from "../../Styles/Theme";
-import { useSelector, useDispatch } from "react-redux";
-import { incrementUserPRender } from "../../Reducers/messageSlice";
-import { addMessageToChat } from "../../Actions/chatFirebase";
-import { uploadImage } from "../../Actions/chatFirebase"; // Import the function to handle image upload
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { app } from "../../firebase";
 
-const ChatInput = ({ onSend }) => {
-  const dispatch = useDispatch();
-  const { chatId } = useSelector((state) => state.messages);
-  const { loginUser, currentuser } = useSelector((state) => state.user);
-  const [newMessage, setNewMessage] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null); // New state for image preview
-  const { userPRender } = useSelector((state) => state.messages);
+const ChatInput = () => {
+  const [message, setMessage] = useState(""); // State to track the input message
 
-  const handleSend = async () => {
-    // Check if the newMessage and selectedFile are not empty
-    if (newMessage.trim() === "" && !selectedFile) {
-      return;
-    }
-    // If there's a selected file, upload the image and get the URL
-    let imageUrl = null;
-    if (selectedFile) {
-      imageUrl = await uploadImage(selectedFile);
-    }
+  const db = getFirestore(app);
 
+  const addMessage = async (message) => {
     try {
-      // Send the message to the chat
-      await addMessageToChat(chatId, loginUser._id, newMessage, imageUrl);
+      const now = Timestamp.now();
+      const docRef = await addDoc(collection(db, "messages"), {
+        text: message,
+        createdAt: now,
+      });
 
-      // Clear the input fields
-      setNewMessage("");
-      setSelectedFile(null);
-      setImagePreview(null); // Clear image preview
-
-      // Increment userPRender to trigger a re-render
-      dispatch(incrementUserPRender());
-
-      // Notify the parent component if needed
-      onSend();
-    } catch (error) {
-      console.error("Error adding message to chat:", error);
-      // Handle the error appropriately
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
     }
   };
 
-  const handleFileChange = (event) => {
-    // Handle file selection
-    const file = event.target.files[0];
-    setSelectedFile(file);
-
-    // Preview the selected image
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
+  const handleSend = () => {
+    console.log("Message saved in firebase :", message);
+    addMessage(message);
+    setMessage("");
   };
 
-  const handleAttachClick = async () => {
-    try {
-      const fileInput = document.getElementById("image-input");
-      fileInput.value = null; // Reset the input value to allow selecting the same file
-
-      const [file] = await fileInput.files();
-      if (file) {
-        handleFileChange({ target: { files: [file] } });
-      } else {
-        console.error("No file selected");
-      }
-    } catch (error) {
-      console.error("Error handling file:", error);
-    }
-  };
   return (
     <Paper
-      variant="0"
+      elevation="1"
+      component="form"
       sx={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: 0,
-        padding: " 5px 10px",
-        borderRadius: "20px",
-        borderColor: Colors.org1,
-        border: "1px",
-        backgroundColor: "rgba(0,0,0,0.1)",
         margin: "10px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        border: "1px solid",
+        borderColor: Colors.org4,
+        borderRadius: "4px",
+        padding: "8px",
       }}
     >
-      {/* Image preview */}
-      {imagePreview && (
-        <Avatar
-          alt="Image Preview"
-          src={imagePreview}
-          sx={{ width: 60, height: 60, marginBottom: 1 }}
-        />
-      )}
       <InputBase
         sx={{ ml: 1, flex: 1 }}
         placeholder="Type your message..."
         inputProps={{ "aria-label": "Type your message" }}
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            // Check if the "Enter" key is pressed
-            e.preventDefault(); // Prevent the default behavior of Enter (which adds a new line)
-            handleSend(); // Call the handleSend function when Enter is pressed
-          }
-        }}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)} // Update the message state on input change
       />
-
-      <input
-        type="file"
-        id="image-input"
-        accept="image/*"
-        style={{ display: "none" }}
-        onChange={handleFileChange}
-      />
-      <Box>
-        <label htmlFor="image-input">
-          <IconButton
-            component="span"
-            color="primary"
-            aria-label="attach file"
-            onClick={handleAttachClick}
-          >
-            <AttachFileIcon />
-          </IconButton>
-        </label>
-        <IconButton
-          type="button"
-          onClick={handleSend}
-          aria-label="send"
-          color="primary"
-        >
-          <SendIcon />
-        </IconButton>
-      </Box>
+      <IconButton
+        type="button"
+        onClick={handleSend}
+        aria-label="send"
+        color="primary"
+      >
+        <SendIcon />
+      </IconButton>
+      <IconButton color="primary" aria-label="attach file">
+        <AttachFileIcon />
+      </IconButton>
     </Paper>
   );
 };

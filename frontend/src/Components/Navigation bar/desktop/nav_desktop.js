@@ -1,6 +1,7 @@
 // NavDesktop.js
 import React from "react";
 import {
+  NavContainer,
   NavList,
   NavTitle,
   NavListItemText,
@@ -9,7 +10,6 @@ import {
   ButtonContainer,
   SignUpButton,
 } from "../../../Styles/NavBar/nav01";
-import {NavLink } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { Divider, Grid } from "@mui/material";
 
@@ -17,18 +17,18 @@ export const NavDesktop = () => {
   return (
     <Grid
       container
-      spacing={2}
+      spacing={4}
       alignItems="center"
       sx={{ padding: { md: "0 2vw", lg: "0 7vw" } }}
     >
-      <Grid item md={2.7} lg={3}>
+      <Grid item md={3} lg={3}>
         <NavTitle sx={{ color: "#ff5003" }}>Thrifting.lk</NavTitle>
         <Divider orientation="vertical" flexItem />
       </Grid>
 
       <Grid
         item
-        md={4.3}
+        md={4}
         lg={4}
         sx={{
           display: "flex",
@@ -36,13 +36,9 @@ export const NavDesktop = () => {
           alignItems: "flex-end",
         }}
       >
-        <NavList type="row">
-          <NavLink to="/" exact activeClassName="active">
-            <NavListItemText>Home</NavListItemText>
-          </NavLink>
-          <NavLink to="/seller" exact activeClassName="active">
-            <NavListItemText>SELL</NavListItemText>
-          </NavLink>
+        <NavList type="row" gap="10px">
+          <NavListItemText>HOME</NavListItemText>
+          <NavListItemText>SELL</NavListItemText>
           <NavListItemText>CATEGORIES</NavListItemText>
           <NavListItemText>ABOUT</NavListItemText>
         </NavList>
@@ -73,12 +69,8 @@ export const NavDesktop = () => {
         }}
       >
         <ButtonContainer>
-          <NavLink to="/login" exact activeClassName="active">
-            <NavListItemText>Log In</NavListItemText>
-          </NavLink>
-          <NavLink to="/signup" exact activeClassName="active">
-            <SignUpButton> SignUp</SignUpButton>
-          </NavLink>
+          <NavListItemText>Log In</NavListItemText>
+          <SignUpButton>Sign Up</SignUpButton>
         </ButtonContainer>
       </Grid>
     </Grid>
